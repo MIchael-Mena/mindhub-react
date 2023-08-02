@@ -1,9 +1,8 @@
-import React from 'react'
-import { CssBaseline } from '@mui/material'
 import './App.css'
-
-import Home from './pages/Home'
 import Layout from './layouts/Layout'
+import { CssBaseline } from '@mui/material'
+import React from 'react'
+import Home from './pages/Home'
 
 function App() {
   return (

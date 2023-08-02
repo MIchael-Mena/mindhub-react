@@ -1,6 +1,3 @@
-import React from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
-import UserIcon from '@mui/icons-material/AccountCircle'
 import {
   AppBar,
   Toolbar,
@@ -9,8 +6,16 @@ import {
   Button,
   Box,
 } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import UserIcon from '@mui/icons-material/AccountCircle'
 
-export default function NavBar({ navItems, handleDrawerToggle, height }) {
+interface NavBarProps {
+  navItems: string[]
+  handleDrawerToggle: () => void
+  height: string
+}
+
+const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
   return (
     <AppBar component="nav" position="fixed">
       <Toolbar
@@ -68,3 +73,5 @@ export default function NavBar({ navItems, handleDrawerToggle, height }) {
     </AppBar>
   )
 }
+
+export default NavBar

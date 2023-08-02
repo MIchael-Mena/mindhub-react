@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Drawer,
@@ -10,7 +9,15 @@ import {
   Divider,
 } from '@mui/material'
 
-export default function SideBar(props) {
+interface SideBarProps {
+  navItems: string[]
+  mobileOpen: boolean
+  handleDrawerToggle: () => void
+  width: string
+  minWidth: string
+}
+
+export default function SideBar(props:SideBarProps) {
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>

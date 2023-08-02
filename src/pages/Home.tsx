@@ -1,9 +1,8 @@
-import React from 'react'
-import { Button, Container, Grid, Typography } from '@mui/material'
+import { Button, Grid, Typography } from '@mui/material'
 import './Home.css'
 
-export default function Home() {
-  const imageURL = 'src/assets/no-img-up.png' // La URL de la imagen para la página Home
+const Home = () => {
+  const imageURL = 'src/assets/no-img-up.png'
 
   return (
     <>
@@ -42,3 +41,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home
