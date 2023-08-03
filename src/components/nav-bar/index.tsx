@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import UserIcon from '@mui/icons-material/AccountCircle'
+import './NavBar.css'
 
 interface NavBarProps {
   navItems: string[]
@@ -39,7 +40,8 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
           <MenuIcon />
         </IconButton>
         <Typography
-          variant="h6"
+          className="logo"
+          variant="h5"
           component="div"
           sx={{
             flexGrow: 0,
@@ -50,21 +52,9 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
         </Typography>
         <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
           {navItems.map((item) => (
-            <Button
-              key={item}
-              sx={{
-                color: '#fff',
-                textTransform: 'capitalize',
-              }}
-            >
-              {item}
-            </Button>
+            <Button key={item}>{item}</Button>
           ))}
-          <Button
-            variant="contained"
-            sx={{ textTransform: 'capitalize' }}
-            color="secondary"
-          >
+          <Button variant="contained" color="secondary">
             <UserIcon sx={{ mr: 1 }} />
             Login
           </Button>
