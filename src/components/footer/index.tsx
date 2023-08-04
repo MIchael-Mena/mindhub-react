@@ -1,15 +1,22 @@
-import { Box } from '@mui/material'
+import { Box, Paper } from '@mui/material'
 
 export default function Footer({ height }: { height: string }) {
   return (
     <>
-      <Box
-        component="footer"
-        position="relative"
-        sx={{ textAlign: 'center', height: height }}
-      >
-        Follow us on social media
-      </Box>
+      <Paper>
+        <Box
+          component="footer"
+          position="relative"
+          sx={{
+            height: height,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          Follow us on social media
+        </Box>
+      </Paper>
     </>
   )
 }

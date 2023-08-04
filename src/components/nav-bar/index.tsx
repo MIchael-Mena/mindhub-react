@@ -54,7 +54,7 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
           {navItems.map((item) => (
             <Button key={item}>{item}</Button>
           ))}
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" sx={{ ml: 1 }}>
             <UserIcon sx={{ mr: 1 }} />
             Login
           </Button>

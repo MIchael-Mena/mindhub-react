@@ -85,10 +85,28 @@ const theme = createTheme({
         disableRipple: true,
         style: {
           textTransform: 'none',
-          borderRadius: '0.7rem',
-          color: '#fff',
+          // borderRadius: '0.7rem',
         },
       },
+      variants: [
+        {
+          props: { variant: 'text' },
+          style: {
+            color: '#fff',
+            borderRadius: '0',
+            ':hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            },
+          },
+        },
+        {
+          props: { variant: 'contained' },
+          style: {
+            color: '#fff',
+            borderRadius: '0.7rem',
+          },
+        },
+      ],
     },
   },
 })

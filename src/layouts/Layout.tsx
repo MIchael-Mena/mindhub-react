@@ -26,6 +26,7 @@ const Layout = ({ children }: LayoutProps) => {
           minHeight: componentSizes.main,
           maxWidth: 'lg',
           display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {children}

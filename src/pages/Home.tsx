@@ -1,57 +1,6 @@
-import { Button, Grid, Typography, Paper } from '@mui/material'
+import { Button, Grid, Typography } from '@mui/material'
 import './Home.css'
-
-import Carousel from 'react-material-ui-carousel'
-
-function Example() {
-  var items = [
-    {
-      name: 'Random Name #1',
-      description: 'Probably the most random thing you have ever seen!',
-    },
-    {
-      name: 'Random Name #2',
-      description: 'Hello World!',
-    },
-  ]
-
-  return (
-    <Carousel
-      sx={{ width: 'inherit' }}
-      indicatorIconButtonProps={{
-        style: {
-          color: 'yellow',
-        },
-      }}
-      activeIndicatorIconButtonProps={{
-        style: {
-          backgroundColor: '#fff',
-        },
-      }}
-      indicatorContainerProps={{
-        style: {
-          marginTop: '2rem', // 5
-          textAlign: 'center', // 4
-        },
-      }}
-    >
-      {items.map((item, i) => (
-        <Item key={i} item={item} />
-      ))}
-    </Carousel>
-  )
-}
-
-function Item(props: { item: { name: string; description: string } }) {
-  return (
-    <Paper>
-      <h2>{props.item.name}</h2>
-      <p>{props.item.description}</p>
-
-      <Button className="CheckButton">Check it out!</Button>
-    </Paper>
-  )
-}
+import CitysCarousel from '../components/citys-carousel'
 
 const Home = () => {
   const imageURL = 'src/assets/no-img-up.png'
@@ -72,6 +21,7 @@ const Home = () => {
             View More
           </Button>
         </Grid>
+
         <Grid
           item
           xs={12}
@@ -85,9 +35,8 @@ const Home = () => {
         >
           <img src={imageURL} alt="no-img" className="main-img" />
         </Grid>
-        {/* <Divider/> */}
-        <Example />
       </Grid>
+      <CitysCarousel />
     </>
   )
 }
