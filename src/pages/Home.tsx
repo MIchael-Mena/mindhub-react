@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material'
+import { Button, Grid, Paper, Typography } from '@mui/material'
 import './Home.css'
 import CitysCarousel from '../components/citys-carousel'
 
@@ -7,6 +7,19 @@ const Home = () => {
 
   return (
     <>
+      <Paper>
+        <Typography variant="h2" component="h1" gutterBottom>
+          MyTinerary
+        </Typography>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Find your perfect trip, designed by insiders who know and love their
+          cities!
+        </Typography>
+        <Button variant="contained" color="primary">
+          Start Exploring
+        </Button>
+      </Paper>
+
       <Grid container spacing={2} m="0" pb="1rem" alignSelf="center">
         <Grid item xs={12} sm={8}>
           <Typography variant="h1" sx={{ fontWeight: 'bold', my: 2 }}>
@@ -21,7 +34,6 @@ const Home = () => {
             View More
           </Button>
         </Grid>
-
         <Grid
           item
           xs={12}
