@@ -9,6 +9,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import UserIcon from '@mui/icons-material/AccountCircle'
 import './NavBar.css'
+import { Link as Anchor } from 'react-router-dom'
 
 interface NavBarProps {
   navItems: string[]
@@ -51,8 +52,10 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
           My Tinerary
         </Typography>
         <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
-          {navItems.map((item) => (
-            <Button key={item}>{item}</Button>
+          {navItems.map((item, key) => (
+            <Anchor to={`/${item}`} key={key}>
+              <Button>{item}</Button>
+            </Anchor>
           ))}
           <Button variant="contained" color="secondary" sx={{ ml: 1 }}>
             <UserIcon sx={{ mr: 1 }} />

@@ -1,13 +1,13 @@
-import { ReactNode } from 'react'
 import { Container } from '@mui/material'
 import Header from '../components/header'
 import Footer from '../components/footer'
+import { Outlet } from 'react-router-dom'
 
-interface LayoutProps {
-  children: ReactNode
-}
+// interface LayoutProps {
+//   children: ReactNode
+// }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = () => {
   const componentSizes = {
     header: '70px',
     main: 'calc(100vh - 140px)',
@@ -21,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
         component="main"
         sx={{
           position: 'relative',
-          px: { xs: 2, sm: 5 },
+          px: { xs: 0, sm: 5, md: 10 },
           mt: componentSizes.header,
           minHeight: componentSizes.main,
           maxWidth: 'lg',
@@ -29,7 +29,7 @@ const Layout = ({ children }: LayoutProps) => {
           flexDirection: 'column',
         }}
       >
-        {children}
+        <Outlet />
       </Container>
       <Footer height={componentSizes.footer} />
     </>
