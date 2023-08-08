@@ -5,11 +5,12 @@ import {
   Typography,
   Button,
   Box,
+  useTheme,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import UserIcon from '@mui/icons-material/AccountCircle'
 import './NavBar.css'
-import { Link as Anchor } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 interface NavBarProps {
   navItems: string[]
@@ -18,6 +19,14 @@ interface NavBarProps {
 }
 
 const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
+  const myTheme = useTheme()
+  const pathName = useLocation().pathname
+  const isActiveItem = (item: string) => pathName === `/${item}`
+  const activeButtonStyle = {
+    color: myTheme.palette.primary.main,
+    backgroundColor: myTheme.palette.primary.dark,
+  }
+
   return (
     <AppBar component="nav" position="fixed">
       <Toolbar
@@ -53,9 +62,22 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
         </Typography>
         <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
           {navItems.map((item, key) => (
-            <Anchor to={`/${item}`} key={key}>
-              <Button>{item}</Button>
-            </Anchor>
+            <NavLink
+              to={`/${item}`}
+              key={key}
+              // className={(navData) =>
+              //   navData.isActive ? 'active-nav-link' : 'none'
+              // }
+            >
+              <Button
+                className={`hover-effect-nav-link ${
+                  isActiveItem(item) ? 'active-nav-link' : ''
+                }`}
+                sx={isActiveItem(item) ? activeButtonStyle : {}}
+              >
+                {item}
+              </Button>
+            </NavLink>
           ))}
           <Button variant="contained" color="secondary" sx={{ ml: 1 }}>
             <UserIcon sx={{ mr: 1 }} />

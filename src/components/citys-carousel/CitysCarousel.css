@@ -1,0 +1,14 @@
+/* No es necesario important si uso la propiedad style en el .tsx */
+
+.nav-buttons-wrapper {
+  margin: 0 3rem;
+  bottom: 1%;
+  top: unset !important;
+  height: auto !important;
+}
+
+.indicator-container {
+  text-align: center;
+  padding: 1rem 0 !important;
+  margin: 0 !important;
+}

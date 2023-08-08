@@ -1,22 +1,19 @@
 import Carousel from 'react-material-ui-carousel'
 import PopularDestinations from '../popular-destinations'
 import { items } from '../popular-destinations/destination-items'
-import { Button } from '@mui/material'
-// import HomeIcon from '@mui/icons-material/Home'
+import { Button, Theme } from '@mui/material'
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
+import { useTheme } from '@mui/material/styles'
 import './CitysCarousel.css'
-import { useTheme } from '@emotion/react'
 
 const CitysCarousel = () => {
-  const theme = useTheme()
-  // @ts-ignore - La propiedad palette si existe, pero no está tipada
-  const color = theme.palette.background.paper
-
+  const theme: Theme = useTheme()
   return (
     <Carousel
       navButtonsAlwaysVisible
-      sx={{ width: 'inherit', mb: 2 }}
+      autoPlay={false}
+      sx={{ mb: 2, mx: 'auto', width: { xs: '100%', sm: '90%', md: '80%' } }}
       NavButton={({ onClick, className, style, next, prev }) => {
         return (
           <Button
@@ -43,29 +40,22 @@ const CitysCarousel = () => {
       }}
       navButtonsWrapperProps={{
         // Contenedor de los botones de navegación
-        style: {
-          margin: '0 3rem',
-          bottom: '1%',
-          top: 'unset',
-          height: 'auto',
-        },
+        className: 'nav-buttons-wrapper',
       }}
       indicatorIconButtonProps={{
         style: {
-          color: 'yellow',
+          color: theme.palette.secondary.main,
         },
       }}
       activeIndicatorIconButtonProps={{
         style: {
-          backgroundColor: '#fff',
+          color: theme.palette.getContrastText(theme.palette.background.paper),
         },
       }}
       indicatorContainerProps={{
+        className: 'indicator-container',
         style: {
-          textAlign: 'center',
-          backgroundColor: color,
-          padding: '1rem 0',
-          margin: '0 ',
+          backgroundColor: theme.palette.background.paper,
         },
       }}
     >
