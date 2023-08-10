@@ -27,10 +27,10 @@ export default function Footer({ height }: { height: string }) {
     {
       title: 'Contact',
       links: [
-        { label: 'New York, NY 10012, US', icon: <Home /> },
-        { label: 'info@example.com', icon: <Email /> },
-        { label: '+ 01 234 567 88', icon: <Phone /> },
-        { label: '+ 01 234 567 89', icon: <Print /> },
+        { label: 'New York, NY 10012, US', icon: <Home fontSize="small" /> },
+        { label: 'info@example.com', icon: <Email fontSize="small" /> },
+        { label: '+ 01 234 567 88', icon: <Phone fontSize="small" /> },
+        { label: '+ 01 234 567 89', icon: <Print fontSize="small" /> },
       ],
     },
   ]

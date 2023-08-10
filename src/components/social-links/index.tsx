@@ -7,13 +7,13 @@ const SocialLinks = () => {
   return (
     <Box display={'flex'} gap={4}>
       <Link href="#" color={'primary'}>
-        <FacebookIcon fontSize="large" />
+        <FacebookIcon />
       </Link>
       <Link href="#" color={'primary'}>
-        <TwitterIcon fontSize="large" />
+        <TwitterIcon />
       </Link>
       <Link href="#" color={'primary'}>
-        <InstagramIcon fontSize="large" />
+        <InstagramIcon />
       </Link>
     </Box>
   )

@@ -24,7 +24,6 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
   const isActiveItem = (item: string) => pathName === `/${item}`
   const activeButtonStyle = {
     color: myTheme.palette.primary.main,
-    backgroundColor: myTheme.palette.primary.dark,
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Destination } from '../../models/Destination'
 import { Box, Button, Typography, useTheme } from '@mui/material'
+import ReadMoreIcon from '@mui/icons-material/ReadMore'
 import './CardDestination.css'
 
 const CardDestination = (destination: Destination) => {
@@ -22,6 +23,7 @@ const CardDestination = (destination: Destination) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* City Title */}
       <Box
         position={'absolute'}
         borderRadius={'5px'}
@@ -36,10 +38,18 @@ const CardDestination = (destination: Destination) => {
         alignItems={'center'}
         sx={{ backgroundColor: myTheme.palette.background.paper, zIndex: 3 }}
       >
-        <Typography variant="h5" className="title-container">
+        <Typography variant="h6" className="title-container">
           {destination.city}
         </Typography>
       </Box>
+
+      {/* Read More Icon */}
+      <ReadMoreIcon
+        className={`read-more-icon ${
+          isHovered ? 'read-more-icon-hovered' : 'read-more-icon-not-hovered'
+        }`}
+        fontSize="large"
+      />
 
       <Box
         overflow={'hidden'}

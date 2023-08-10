@@ -13,11 +13,7 @@ const ColumItems = ({ title, links }: ColumItemsProps) => {
       </Typography>
       {links.map((link, index) => (
         <Typography key={index}>
-          {link.icon && (
-            <Icon sx={{ mr: 1 }} fontSize="small">
-              {link.icon}
-            </Icon>
-          )}
+          {link.icon && <Icon sx={{ mr: 1 }}>{link.icon}</Icon>}
           <Link href={link.url}>{link.label}</Link>
         </Typography>
       ))}
