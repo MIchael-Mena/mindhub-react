@@ -5,7 +5,6 @@ import Logo from '../components/logo'
 import { Link as Anchor } from 'react-router-dom'
 
 const Home = () => {
-  // const imageURL = 'src/assets/images/no-img-up.png'
   const imageURL = 'src/assets/images/hero-intro.png'
 
   return (
@@ -39,12 +38,6 @@ const Home = () => {
           }}
         >
           <img src={imageURL} alt="logo" width="100%" height="auto" />
-          {/* <Logo size="large" />
-
-          <Typography variant="h6" textAlign={'center'} mt={{ xs: 1, sm: 3 }}>
-            Find your perfect trip, designed by insiders who know and love their
-            cities!
-          </Typography> */}
         </Grid>
 
         <Grid

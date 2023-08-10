@@ -4,12 +4,3 @@
 body {
   min-width: 320px;
 }
-
-.no-padding {
-  padding: 0 !important;
-}
-
-.MuiButton-root:active {
-  /* Estilos que se aplicarán cuando el botón esté siendo presionado */
-  outline: 2px solid #fff;
-}

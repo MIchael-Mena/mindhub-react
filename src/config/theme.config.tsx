@@ -86,6 +86,15 @@ const theme = createTheme({
     MuiLink: {
       defaultProps: {
         underline: 'none',
+        color: '#a7a7a7',
+      },
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            color: '#fff',
+            // fontWeight: 500,
+          },
+        },
       },
     },
     MuiButton: {
@@ -94,6 +103,13 @@ const theme = createTheme({
         style: {
           textTransform: 'none',
           // borderRadius: '0.7rem',
+        },
+      },
+      styleOverrides: {
+        root: {
+          '&:active': {
+            outline: '2px solid #fff;',
+          },
         },
       },
       variants: [

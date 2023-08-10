@@ -4,15 +4,6 @@ import ColumItems from '../colum-items'
 import containerBreakpoints from '../../layouts/container-breakpoints'
 
 export default function Footer({ height }: { height: string }) {
-  const socialLinks = [
-    //  { icon: faFacebookF, url: '#' },
-    //  { icon: faTwitter, url: '#' },
-    //  { icon: faGoogle, url: '#' },
-    //  { icon: faInstagram, url: '#' },
-    //  { icon: faLinkedin, url: '#' },
-    //  { icon: faGithub, url: '#' },
-  ]
-
   const columns = [
     {
       title: 'Products',
@@ -45,25 +36,14 @@ export default function Footer({ height }: { height: string }) {
 
   return (
     <>
-      <Paper
-        component="footer"
-        sx={
-          {
-            // width: '100%',
-            // display: 'flex',
-            // flexDirection: 'column',
-            // // justifyContent: 'center',
-            // alignItems: 'center',
-          }
-        }
-      >
+      <Paper component="footer">
         {/* Social Media Section */}
         <Box
           position="relative"
           sx={{
             display: 'flex',
             minHeight: height,
-            justifyContent: { xs: 'center', lg: 'between' },
+            justifyContent: { xs: 'center', md: 'space-evenly' },
             alignItems: 'center',
             borderBottom: '1px solid',
           }}
@@ -71,7 +51,7 @@ export default function Footer({ height }: { height: string }) {
           {/* Left */}
           <Box
             sx={{ me: { xs: 0, lg: 5 } }}
-            display={{ xs: 'none', lg: 'block' }}
+            display={{ xs: 'none', md: 'block' }}
           >
             <span>Get connected with us on social networks:</span>
           </Box>
@@ -83,7 +63,6 @@ export default function Footer({ height }: { height: string }) {
         </Box>
         {/* Social Media Section */}
 
-        {/* <Container sx={{ textAlign: { xs: 'center', md: 'start' } }}> */}
         <Grid
           mt={3}
           container
@@ -96,20 +75,11 @@ export default function Footer({ height }: { height: string }) {
           sx={{ ...containerBreakpoints }}
         >
           {columns.map((column, index) => (
-            <Grid
-              item
-              xs={12}
-              md={3}
-              lg={column.title === 'Contact' ? 4 : 2}
-              xl={3}
-              mb={4}
-              key={index}
-            >
+            <Grid item xs={12} md={3} mb={4} key={index}>
               <ColumItems title={column.title} links={column.links} />
             </Grid>
           ))}
         </Grid>
-        {/* </Container> */}
 
         {/* Copyright */}
         <Box

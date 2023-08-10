@@ -13,7 +13,7 @@ const ColumItems = ({ title, links }: ColumItemsProps) => {
       </Typography>
       {links.map((link, index) => (
         <Typography key={index}>
-          <Link href={link.url} color="inherit" className="text-reset">
+          <Link href={link.url} className="text-reset">
             {link.label}
           </Link>
         </Typography>
