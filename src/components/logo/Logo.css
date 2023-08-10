@@ -1,0 +1,8 @@
+.logo-text {
+  text-shadow: 2px 2px 5px #ac1e1e;
+  cursor: default;
+}
+
+.logo-text:hover {
+  color: #d27685;
+}

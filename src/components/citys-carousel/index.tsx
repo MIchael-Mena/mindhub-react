@@ -12,7 +12,6 @@ const CitysCarousel = () => {
   return (
     <Carousel
       navButtonsAlwaysVisible
-      autoPlay={false}
       sx={{ mb: 2, mx: 'auto', width: { xs: '100%', sm: '90%', md: '80%' } }}
       NavButton={({ onClick, className, style, next, prev }) => {
         return (

@@ -12,3 +12,9 @@
   padding: 1rem 0 !important;
   margin: 0 !important;
 }
+
+@media (max-width: 450px) {
+  .nav-buttons-wrapper {
+    margin: 0 1rem;
+  }
+}

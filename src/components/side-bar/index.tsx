@@ -1,13 +1,13 @@
 import {
   Box,
   Drawer,
-  Typography,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Divider,
 } from '@mui/material'
+import Logo from '../logo'
 
 interface SideBarProps {
   navItems: string[]
@@ -17,12 +17,10 @@ interface SideBarProps {
   minWidth: string
 }
 
-export default function SideBar(props:SideBarProps) {
+export default function SideBar(props: SideBarProps) {
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        My Tinerary
-      </Typography>
+      <Logo isVisibleInSm={false} />
       <Divider />
       <List>
         {props.navItems.map((item) => (

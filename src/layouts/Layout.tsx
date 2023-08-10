@@ -2,6 +2,7 @@ import { Container } from '@mui/material'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import { Outlet } from 'react-router-dom'
+import containerBreakpoints from './container-breakpoints'
 
 // interface LayoutProps {
 //   children: ReactNode
@@ -21,12 +22,11 @@ const Layout = () => {
         component="main"
         sx={{
           position: 'relative',
-          px: { xs: 0, sm: 5, md: 10 },
           mt: componentSizes.header,
           minHeight: componentSizes.main,
-          maxWidth: 'lg',
           display: 'flex',
           flexDirection: 'column',
+          ...containerBreakpoints,
         }}
       >
         <Outlet />

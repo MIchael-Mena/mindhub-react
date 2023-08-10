@@ -25,26 +25,26 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Aleo, serif',
     h1: {
       fontSize: '3rem',
-      fontWeight: 500,
+      fontWeight: 800,
     },
     h2: {
       fontSize: '2.5rem',
-      fontWeight: 500,
+      fontWeight: 700,
     },
     h3: {
       fontSize: '2rem',
-      fontWeight: 500,
+      fontWeight: 700,
     },
     h4: {
       fontSize: '1.5rem',
-      fontWeight: 500,
+      fontWeight: 600,
     },
     h5: {
       fontSize: '1.25rem',
-      fontWeight: 500,
+      fontWeight: 600,
     },
     h6: {
       fontSize: '1rem',
@@ -52,23 +52,26 @@ const theme = createTheme({
     },
     subtitle1: {
       fontSize: '1rem',
-      fontWeight: 400,
+      fontWeight: 500,
     },
     subtitle2: {
       fontSize: '0.875rem',
       fontWeight: 400,
     },
     body1: {
+      fontFamily: 'Roboto, sans-serif',
       fontSize: '1rem',
       fontWeight: 400,
     },
     body2: {
+      fontFamily: 'Roboto, sans-serif',
       fontSize: '0.875rem',
       fontWeight: 400,
     },
     button: {
       fontSize: '0.875rem',
-      fontWeight: 500,
+      fontWeight: 600,
+      letterSpacing: '0.05em',
     },
     caption: {
       fontSize: '0.75rem',
@@ -80,6 +83,11 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiLink: {
+      defaultProps: {
+        underline: 'none',
+      },
+    },
     MuiButton: {
       defaultProps: {
         disableRipple: true,
@@ -103,6 +111,12 @@ const theme = createTheme({
           props: { variant: 'contained' },
           style: {
             color: '#fff',
+            borderRadius: '0.7rem',
+          },
+        },
+        {
+          props: { variant: 'outlined' },
+          style: {
             borderRadius: '0.7rem',
           },
         },
