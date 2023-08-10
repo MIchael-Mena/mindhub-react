@@ -32,12 +32,6 @@ export default function Footer({ height }: { height: string }) {
         { label: '+ 01 234 567 88', icon: <Phone /> },
         { label: '+ 01 234 567 89', icon: <Print /> },
       ],
-      // links: [
-      //   { label: 'New York, NY 10012, US', icon: 'faHome' },
-      //   { label: 'info@example.com', icon: 'faEnvelope' },
-      //   { label: '+ 01 234 567 88', icon: 'faPhone' },
-      //   { label: '+ 01 234 567 89', icon: 'faPrint' },
-      // ],
     },
   ]
 
@@ -55,18 +49,14 @@ export default function Footer({ height }: { height: string }) {
             borderBottom: '1px solid',
           }}
         >
-          {/* Left */}
           <Box
             sx={{ me: { xs: 0, lg: 5 } }}
             display={{ xs: 'none', md: 'block' }}
           >
             <span>Get connected with us on social networks:</span>
           </Box>
-          {/* Left */}
 
-          {/* Right */}
           <SocialLinks />
-          {/* Right */}
         </Box>
         {/* Social Media Section */}
 

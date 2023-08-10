@@ -13,7 +13,6 @@ const ColumItems = ({ title, links }: ColumItemsProps) => {
       </Typography>
       {links.map((link, index) => (
         <Typography key={index}>
-          {/* Lugar para el icono */}
           {link.icon && (
             <Icon sx={{ mr: 1 }} fontSize="small">
               {link.icon}
