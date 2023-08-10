@@ -23,7 +23,6 @@ const CardDestination = (destination: Destination) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* City Title */}
       <Box
         position={'absolute'}
         borderRadius={'5px'}
@@ -40,12 +39,9 @@ const CardDestination = (destination: Destination) => {
       >
         <Typography variant="h5">{destination.country}</Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-        <Typography variant="h6" className="title-container">
-          {destination.city}
-        </Typography>
+        <Typography variant="h6">{destination.city}</Typography>
       </Box>
 
-      {/* Read More Icon */}
       <ReadMoreIcon
         className={`read-more-icon ${
           isHovered ? 'read-more-icon-hovered' : 'read-more-icon-not-hovered'
