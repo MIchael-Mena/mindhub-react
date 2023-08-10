@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Destination } from '../../models/Destination'
-import { Box, Button, Typography, useTheme } from '@mui/material'
+import { Box, Button, Divider, Typography, useTheme } from '@mui/material'
 import ReadMoreIcon from '@mui/icons-material/ReadMore'
 import './CardDestination.css'
 
@@ -38,6 +38,8 @@ const CardDestination = (destination: Destination) => {
         alignItems={'center'}
         sx={{ backgroundColor: myTheme.palette.background.paper, zIndex: 3 }}
       >
+        <Typography variant="h5">{destination.country}</Typography>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
         <Typography variant="h6" className="title-container">
           {destination.city}
         </Typography>

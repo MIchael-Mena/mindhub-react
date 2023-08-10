@@ -38,21 +38,20 @@
   right: 0;
 }
 
-.title-container {
-  text-align: center;
-}
-
 .read-more-icon {
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: 0px;
+  top: 0px;
+  padding: 0.2rem;
+  border: 1px solid #fff;
   z-index: 4;
   background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
+  border-radius: 0 50% 0 5px;
   transition: all 0.4s ease-in-out;
 }
 
 .read-more-icon-hovered {
+  border-radius: 0 5px 0 50%;
   animation: rotateInAnimation 0.4s ease-in-out forwards;
 }
 
