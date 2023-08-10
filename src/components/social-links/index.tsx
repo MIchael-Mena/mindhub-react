@@ -5,14 +5,14 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 
 const SocialLinks = () => {
   return (
-    <Box display={'flex'} gap={3}>
-      <Link href="#" className="me-4 text-reset" color={'primary'}>
+    <Box display={'flex'} gap={4}>
+      <Link href="#" color={'primary'}>
         <FacebookIcon />
       </Link>
-      <Link href="#" className="me-4 text-reset" color={'primary'}>
+      <Link href="#" color={'primary'}>
         <TwitterIcon />
       </Link>
-      <Link href="#" className="me-4 text-reset" color={'primary'}>
+      <Link href="#" color={'primary'}>
         <InstagramIcon />
       </Link>
     </Box>

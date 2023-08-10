@@ -18,7 +18,12 @@ const Home = () => {
         my={{ xs: 0, sm: 3 }}
       >
         <Logo size="large" />
-        <Typography variant="h6" textAlign={'center'} mt={{ xs: 1, sm: 3 }}>
+        <Typography
+          variant="h6"
+          textAlign={'center'}
+          mt={{ xs: 1, sm: 2 }}
+          fontStyle={'italic'}
+        >
           Find your perfect trip, designed by insiders who know and love their
           cities!
         </Typography>

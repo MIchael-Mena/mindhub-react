@@ -1,8 +1,8 @@
-import { Box, Typography, Link } from '@mui/material'
+import { Box, Typography, Link, Icon } from '@mui/material'
 
 interface ColumItemsProps {
   title: string
-  links: { label: string; url?: string; icon?: string }[]
+  links: { label: string; url?: string; icon?: React.ReactNode }[]
 }
 
 const ColumItems = ({ title, links }: ColumItemsProps) => {
@@ -13,9 +13,13 @@ const ColumItems = ({ title, links }: ColumItemsProps) => {
       </Typography>
       {links.map((link, index) => (
         <Typography key={index}>
-          <Link href={link.url} className="text-reset">
-            {link.label}
-          </Link>
+          {/* Lugar para el icono */}
+          {link.icon && (
+            <Icon sx={{ mr: 1 }} fontSize="small">
+              {link.icon}
+            </Icon>
+          )}
+          <Link href={link.url}>{link.label}</Link>
         </Typography>
       ))}
     </Box>
