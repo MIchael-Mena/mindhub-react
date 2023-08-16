@@ -13,10 +13,10 @@ const useStyles = () => {
           boxShadow: '0 0 3px 1px #579e57',
         },
       },
-      containerBreakpoints: {
-        px: { xs: 0, sm: 5, md: 10 },
-        maxWidth: 'lg',
-      },
+      // containerBreakpoints: {
+      //   px: { xs: 0, sm: 5, md: 10 },
+      //   maxWidth: 'lg',
+      // },
     }
   }, [theme])
 }

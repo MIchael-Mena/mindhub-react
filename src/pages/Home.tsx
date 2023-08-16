@@ -1,4 +1,11 @@
-import { Box, Button, Divider, Grid, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+} from '@mui/material'
 import CitysCarousel from '../components/citys-carousel'
 import Logo from '../components/logo'
 import { Link as Anchor } from 'react-router-dom'
@@ -7,7 +14,7 @@ const Home = () => {
   const imageHero = 'src/assets/images/hero-intro.png'
 
   return (
-    <>
+    <Container disableGutters maxWidth="lg">
       <Box
         px={6}
         display="flex"
@@ -74,7 +81,7 @@ const Home = () => {
       <Divider sx={{ my: 4 }} />
 
       <CitysCarousel />
-    </>
+    </Container>
   )
 }
 

@@ -4,6 +4,7 @@ type ThemeProp = {
   children: React.ReactNode
 }
 
+const defaultTheme = createTheme()
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -83,6 +84,15 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          [defaultTheme.breakpoints.up('md')]: {
+            paddingInline: defaultTheme.spacing(10),
+          },
+        },
+      },
+    },
     MuiLink: {
       defaultProps: {
         underline: 'none',

@@ -1,11 +1,9 @@
-import { Box, Grid, Link, Paper } from '@mui/material'
+import { Box, Container, Grid, Link, Paper } from '@mui/material'
 import SocialLinks from '../social-links'
 import ColumItems from '../colum-items'
 import { Email, Home, Phone, Print } from '@mui/icons-material'
-import useStyles from '../../shared/use-styles'
 
 export default function Footer({ height }: { height: string }) {
-  const myStyles = useStyles()
   const columns = [
     {
       title: 'Products',
@@ -61,8 +59,9 @@ export default function Footer({ height }: { height: string }) {
         </Box>
         {/* Social Media Section */}
 
-        <Box sx={myStyles.containerBreakpoints}>
+        <Container disableGutters maxWidth="lg">
           <Grid
+            // sx={myStyles.containerBreakpoints}
             mt={3}
             container
             spacing={1}
@@ -78,7 +77,7 @@ export default function Footer({ height }: { height: string }) {
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </Container>
 
         {/* Copyright */}
         <Box
