@@ -1,11 +1,10 @@
 import { Box, Button, Divider, Grid, Typography } from '@mui/material'
-import './Home.css'
 import CitysCarousel from '../components/citys-carousel'
 import Logo from '../components/logo'
 import { Link as Anchor } from 'react-router-dom'
 
 const Home = () => {
-  const imageURL = 'src/assets/images/hero-intro.png'
+  const imageHero = 'src/assets/images/hero-intro.png'
 
   return (
     <>
@@ -42,7 +41,7 @@ const Home = () => {
             flexDirection: 'column',
           }}
         >
-          <img src={imageURL} alt="logo" width="100%" height="auto" />
+          <img src={imageHero} alt="logo" width="100%" height="auto" />
         </Grid>
 
         <Grid

@@ -8,6 +8,8 @@ import {
   Divider,
 } from '@mui/material'
 import Logo from '../logo'
+import { Link as Anchor, useLocation } from 'react-router-dom'
+import useStyles from '../../shared/use-styles'
 
 interface SideBarProps {
   navItems: string[]
@@ -18,17 +20,27 @@ interface SideBarProps {
 }
 
 export default function SideBar(props: SideBarProps) {
+  const myStyles = useStyles()
+  const pathName = useLocation().pathname
+  const isActiveItem = (item: string) => pathName === `/${item}`
+
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Logo isVisibleInSm={false} />
       <Divider />
       <List>
         {props.navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
+          <Anchor key={item} to={`/${item}`}>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ textAlign: 'center' }}>
+                <ListItemText
+                  primary={item}
+                  aria-label={item}
+                  sx={isActiveItem(item) ? myStyles.navLinkActive : {}}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Anchor>
         ))}
       </List>
     </Box>

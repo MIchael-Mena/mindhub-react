@@ -1,10 +1,11 @@
 import { Box, Grid, Link, Paper } from '@mui/material'
 import SocialLinks from '../social-links'
 import ColumItems from '../colum-items'
-import containerBreakpoints from '../../layouts/container-breakpoints'
 import { Email, Home, Phone, Print } from '@mui/icons-material'
+import useStyles from '../../shared/use-styles'
 
 export default function Footer({ height }: { height: string }) {
+  const myStyles = useStyles()
   const columns = [
     {
       title: 'Products',
@@ -60,23 +61,24 @@ export default function Footer({ height }: { height: string }) {
         </Box>
         {/* Social Media Section */}
 
-        <Grid
-          mt={3}
-          container
-          spacing={1}
-          display={'flex'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          textAlign={{ xs: 'center', md: 'start' }}
-          mx={'auto'}
-          sx={{ ...containerBreakpoints }}
-        >
-          {columns.map((column, index) => (
-            <Grid item xs={12} sm={6} md={3} mb={4} key={index}>
-              <ColumItems title={column.title} links={column.links} />
-            </Grid>
-          ))}
-        </Grid>
+        <Box sx={myStyles.containerBreakpoints}>
+          <Grid
+            mt={3}
+            container
+            spacing={1}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            textAlign={{ xs: 'center', md: 'start' }}
+            mx={'auto'}
+          >
+            {columns.map((column, index) => (
+              <Grid item xs={12} sm={6} md={3} mb={4} key={index}>
+                <ColumItems title={column.title} links={column.links} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
 
         {/* Copyright */}
         <Box

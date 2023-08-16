@@ -1,10 +1,10 @@
 import { RefObject, useEffect, useRef } from 'react'
 
 const useDebouncedKeyDown = (
-  event: any,
+  event: string,
   callback: (e: KeyboardEvent) => void,
   delay: number,
-  element: RefObject<HTMLDivElement> | null
+  element: RefObject<HTMLElement> | null = null
 ) => {
   const debouncedCallback = useRef<number | undefined>()
 
@@ -21,22 +21,15 @@ const useDebouncedKeyDown = (
       }, delay)
     }
 
-    if (element) {
-      element.current?.addEventListener(event, handleEvent)
-    } else {
-      document.addEventListener(event, handleEvent)
-    }
+    const targetElement = element ? element.current : document
+
+    targetElement?.addEventListener(event, handleEvent as EventListener)
 
     return () => {
-      if (element) {
-        element.current?.removeEventListener(event, handleEvent)
-      } else {
-        document.removeEventListener(event, handleEvent)
-      }
-
+      targetElement?.removeEventListener(event, handleEvent as EventListener)
       clearTimeout(debouncedCallback.current)
     }
-  }, [callback, delay])
+  }, [callback, delay, element, event])
 }
 
 export default useDebouncedKeyDown

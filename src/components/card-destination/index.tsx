@@ -7,12 +7,7 @@ const CardDestination = (destination: Destination) => {
   const myTheme = useTheme()
 
   return (
-    <Box
-      className="card-destination"
-      mt={{ xs: 3, sm: 0 }}
-      // onMouseEnter={handleMouseEnter}
-      // onMouseLeave={handleMouseLeave}
-    >
+    <Box className="card-destination" mt={{ xs: 3, sm: 0 }}>
       <Box
         position={'absolute'}
         borderRadius={'5px'}
@@ -22,7 +17,7 @@ const CardDestination = (destination: Destination) => {
         top={0 - 20}
         width={{ xs: 'calc(100% - 30px)', sm: 'auto' }}
         minHeight={40}
-        maxWidth={'calc(100% - 30px)'} // 15px a la izquierda y derecha
+        maxWidth={'calc(100% - 30px)'} // 15px a la izquierda y derecha el bordeRadius
         display={'flex'}
         justifyContent={'center'}
         alignItems={'center'}

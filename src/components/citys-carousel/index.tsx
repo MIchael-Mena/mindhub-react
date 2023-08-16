@@ -6,18 +6,22 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
 import { useTheme } from '@mui/material/styles'
 import useDebouncedKeyDown from '../../hooks/useDebounceKeyDown'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import useStyles from '../../shared/use-styles'
 import './CitysCarousel.css'
 
 const CitysCarousel = () => {
+  const [activeHover, setActiveHover] = useState(false)
+
   const theme: Theme = useTheme()
+  const myStyles = useStyles()
   const carousel = useRef<HTMLDivElement>(null)
   const leftButton = useRef<HTMLButtonElement>(null)
   const rightButton = useRef<HTMLButtonElement>(null)
   const timeAnimation = 500
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (carousel.current !== document.activeElement) return
+    if (!activeHover) return
     if (e.key === 'ArrowLeft') {
       leftButton.current?.click()
     } else if (e.key === 'ArrowRight') {
@@ -25,7 +29,7 @@ const CitysCarousel = () => {
     }
   }
 
-  useDebouncedKeyDown(handleKeyDown, timeAnimation, carousel)
+  useDebouncedKeyDown('keydown', handleKeyDown, timeAnimation)
 
   const nextButton = (
     onclick: Function,
@@ -70,19 +74,27 @@ const CitysCarousel = () => {
   return (
     <>
       <Box
-        tabIndex={1}
         ref={carousel}
-        sx={{
-          mb: 2,
-          mx: 'auto',
-          width: { xs: '100%', sm: '90%', md: '80%' },
-          ':hover': {
-            boxShadow: '0 0 2px 1px rgba(255, 255, 255, 0.8)',
-          },
-          borderRadius: '25px 25px 0 0',
-          overflow: 'hidden',
-          transition: 'box-shadow 0.3s ease-in-out',
+        onMouseEnter={() => {
+          if (activeHover) return
+          setActiveHover(true)
         }}
+        onMouseLeave={() => {
+          if (!activeHover) return
+          setActiveHover(false)
+        }}
+        tabIndex={1}
+        sx={[
+          {
+            mb: 2,
+            mx: 'auto',
+            width: { xs: '100%', sm: '90%', md: '80%' },
+            borderRadius: '25px 25px 0 0',
+            overflow: 'hidden',
+            transition: 'box-shadow 0.2s ease-in-out',
+          },
+          myStyles.shadowBoxGreen,
+        ]}
       >
         <Carousel
           navButtonsAlwaysVisible

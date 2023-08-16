@@ -1,8 +1,12 @@
+import { Box } from '@mui/material'
+
 const Cities = () => {
   return (
-    <div>
-      <h1>Cities</h1>
-    </div>
+    <>
+      <Box>
+        <h1>Cities</h1>
+      </Box>
+    </>
   )
 }
 

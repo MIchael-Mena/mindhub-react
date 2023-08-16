@@ -2,13 +2,14 @@ import { Container } from '@mui/material'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import { Outlet } from 'react-router-dom'
-import containerBreakpoints from './container-breakpoints'
+import useStyles from '../shared/use-styles'
 
 // interface LayoutProps {
 //   children: ReactNode
 // }
 
 const Layout = () => {
+  const myStyles = useStyles()
   const componentSizes = {
     header: '70px',
     main: 'calc(100vh - 140px)',
@@ -26,7 +27,7 @@ const Layout = () => {
           minHeight: componentSizes.main,
           display: 'flex',
           flexDirection: 'column',
-          ...containerBreakpoints,
+          ...myStyles.containerBreakpoints,
         }}
       >
         <Outlet />

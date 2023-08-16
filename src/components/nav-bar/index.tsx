@@ -1,16 +1,10 @@
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Button,
-  Box,
-  useTheme,
-} from '@mui/material'
+import { AppBar, Toolbar, IconButton, Button, Box } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import UserIcon from '@mui/icons-material/AccountCircle'
 import { NavLink, useLocation } from 'react-router-dom'
 import Logo from '../logo'
 import './NavBar.css'
+import useStyles from '../../shared/use-styles'
 
 interface NavBarProps {
   navItems: string[]
@@ -19,12 +13,9 @@ interface NavBarProps {
 }
 
 const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
-  const myTheme = useTheme()
-  const pathName = useLocation().pathname
+  const myStyles = useStyles()
+  const pathName = useLocation().pathname // Cada vez que cambia la ruta, vuelve a renderizar el componente
   const isActiveItem = (item: string) => pathName === `/${item}`
-  const activeButtonStyle = {
-    color: myTheme.palette.primary.main,
-  }
 
   return (
     <AppBar component="nav" position="fixed">
@@ -65,7 +56,7 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
                   className={`hover-effect-nav-link ${
                     isActiveItem(item) ? 'active-nav-link' : ''
                   }`}
-                  sx={isActiveItem(item) ? activeButtonStyle : {}}
+                  sx={isActiveItem(item) ? myStyles.navLinkActive : {}}
                 >
                   {item}
                 </Button>
