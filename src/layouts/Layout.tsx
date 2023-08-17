@@ -24,12 +24,11 @@ const Layout = () => {
           mt: componentSizes.header,
           minHeight: componentSizes.main,
           display: 'flex',
-          flexDirection: 'column',
         }}
       >
         <Outlet />
       </Box>
-      <Footer height={componentSizes.footer} />
+      <Footer minHeight={componentSizes.footer} />
     </>
   )
 }

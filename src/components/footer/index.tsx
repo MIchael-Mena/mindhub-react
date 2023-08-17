@@ -3,7 +3,7 @@ import SocialLinks from '../social-links'
 import ColumItems from '../colum-items'
 import { Email, Home, Phone, Print } from '@mui/icons-material'
 
-export default function Footer({ height }: { height: string }) {
+export default function Footer({ minHeight }: { minHeight: string }) {
   const columns = [
     {
       title: 'Products',
@@ -42,7 +42,7 @@ export default function Footer({ height }: { height: string }) {
           position="relative"
           sx={{
             display: 'flex',
-            minHeight: height,
+            minHeight: minHeight,
             justifyContent: { xs: 'center', md: 'space-evenly' },
             alignItems: 'center',
             borderBottom: '1px solid',

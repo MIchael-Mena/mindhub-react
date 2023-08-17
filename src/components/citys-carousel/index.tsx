@@ -1,13 +1,13 @@
 import Carousel from 'react-material-ui-carousel'
 import PopularDestinations from '../popular-destinations'
-import { items } from '../popular-destinations/destination-items'
+import { popularDestinations } from '../../services/popularDestinations'
 import { Box, Button, Theme } from '@mui/material'
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
 import { useTheme } from '@mui/material/styles'
 import useDebouncedKeyDown from '../../hooks/useDebounceKeyDown'
 import { useRef, useState } from 'react'
-import useStyles from '../../shared/use-styles'
+import useStyles from '../../hooks/use-styles'
 import './CitysCarousel.css'
 
 const CitysCarousel = () => {
@@ -132,7 +132,7 @@ const CitysCarousel = () => {
             },
           }}
         >
-          {items.map((item, i) => (
+          {popularDestinations.map((item, i) => (
             <PopularDestinations key={i} destinations={item} />
           ))}
         </Carousel>

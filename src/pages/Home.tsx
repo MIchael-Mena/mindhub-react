@@ -25,7 +25,8 @@ const Home = () => {
       >
         <Logo size="large" />
         <Typography
-          variant="h6"
+          variant="h5"
+          color={'success.main'}
           textAlign={'center'}
           mt={{ xs: 1, sm: 2 }}
           fontStyle={'italic'}
@@ -35,13 +36,14 @@ const Home = () => {
         </Typography>
       </Box>
 
-      <Grid container spacing={{ xs: 0 }} mx={2} minHeight={600} width={'auto'}>
+      <Grid container spacing={{ xs: 0 }} mx={3} minHeight={600} width={'auto'}>
         <Grid
           item
           xs={12}
           sm={6}
           sx={{
-            px: 6,
+            pl: { xs: 6, sm: 0 },
+            pr: { xs: 6 },
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -62,10 +64,10 @@ const Home = () => {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="h1" sx={{ fontWeight: 'bold', my: 2 }}>
+          <Typography variant="h1" fontWeight={'bold'} my={2}>
             Find the perfect destination
           </Typography>
-          <Typography variant="body1" sx={{ my: 2 }}>
+          <Typography variant="body1" my={2}>
             Our app will help you find the perfect path for your next trip. With
             an easy-to-use interface and a host of itinerary options, planning
             your next trip has never been easier.

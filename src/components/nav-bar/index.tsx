@@ -4,7 +4,7 @@ import UserIcon from '@mui/icons-material/AccountCircle'
 import { NavLink, useLocation } from 'react-router-dom'
 import Logo from '../logo'
 import './NavBar.css'
-import useStyles from '../../shared/use-styles'
+import useStyles from '../../hooks/use-styles'
 
 interface NavBarProps {
   navItems: string[]

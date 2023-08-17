@@ -1,6 +1,6 @@
-import { Destination } from '../../models/Destination'
+import { Destination } from '../models/Destination'
 
-export const items: Destination[][] = [
+export const popularDestinations: Destination[][] = [
   [
     {
       country: 'France',

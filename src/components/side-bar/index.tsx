@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import Logo from '../logo'
 import { Link as Anchor, useLocation } from 'react-router-dom'
-import useStyles from '../../shared/use-styles'
+import useStyles from '../../hooks/use-styles'
 
 interface SideBarProps {
   navItems: string[]
