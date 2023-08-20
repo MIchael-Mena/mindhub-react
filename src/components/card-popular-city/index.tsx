@@ -1,9 +1,9 @@
-import { Destination } from '../../models/Destination'
+import { City } from '../../models/City'
 import { Box, Button, Divider, Typography, useTheme } from '@mui/material'
 import ReadMoreIcon from '@mui/icons-material/ReadMore'
-import './CardDestination.css'
+import './CardPopularCity.css'
 
-const CardDestination = (destination: Destination) => {
+const CardPopularCity = (destination: City) => {
   const myTheme = useTheme()
 
   return (
@@ -28,7 +28,7 @@ const CardDestination = (destination: Destination) => {
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
         <Typography variant="h6" textAlign="center">
-          {destination.city}
+          {destination.name}
         </Typography>
       </Box>
 
@@ -43,7 +43,11 @@ const CardDestination = (destination: Destination) => {
         height={'100%'}
         position={'relative'}
       >
-        <img src={destination.image} alt="Imagen" className="image-container" />
+        <img
+          src={destination.images[0]}
+          alt="Imagen"
+          className="image-container"
+        />
         <Box className="description-container">
           <Typography variant="body1">{destination.description}</Typography>
           <Button variant="outlined" color="success" sx={{ mt: 4 }}>
@@ -55,4 +59,4 @@ const CardDestination = (destination: Destination) => {
   )
 }
 
-export default CardDestination
+export default CardPopularCity

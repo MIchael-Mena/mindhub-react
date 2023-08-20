@@ -40,7 +40,7 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
           <MenuIcon fontSize="large" />
         </IconButton>
 
-        <Logo isVisibleInXs={false} />
+        <Logo isVisibleInXs={false} sizeSm="small" />
 
         <Box>
           <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>

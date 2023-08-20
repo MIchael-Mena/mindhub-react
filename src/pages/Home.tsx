@@ -1,40 +1,27 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from '@mui/material'
+import { Button, Container, Divider, Grid, Typography } from '@mui/material'
 import CitysCarousel from '../components/citys-carousel'
 import Logo from '../components/logo'
+import Hero from '../components/hero'
 import { Link as Anchor } from 'react-router-dom'
 
 const Home = () => {
-  const imageHero = 'src/assets/images/hero-intro.png'
+  const imageHero = 'src/assets/images/cities-bg.png'
+  const imageToCities = 'src/assets/images/hero-intro.png'
 
   return (
     <Container disableGutters maxWidth="lg">
-      <Box
-        px={6}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        my={{ xs: 0, sm: 3 }}
-      >
-        <Logo size="large" />
+      <Hero imageHero={imageHero} sizeImage="65%">
+        <Logo sizeXs={'medium'} sizeSm={'large'} />
         <Typography
           variant="h5"
           color={'success.main'}
           textAlign={'center'}
-          mt={{ xs: 1, sm: 2 }}
           fontStyle={'italic'}
         >
           Find your perfect trip, designed by insiders who know and love their
           cities!
         </Typography>
-      </Box>
+      </Hero>
 
       <Grid container spacing={{ xs: 0 }} mx={3} minHeight={600} width={'auto'}>
         <Grid
@@ -50,7 +37,7 @@ const Home = () => {
             flexDirection: 'column',
           }}
         >
-          <img src={imageHero} alt="logo" width="100%" height="auto" />
+          <img src={imageToCities} alt="logo" width="100%" height="auto" />
         </Grid>
 
         <Grid

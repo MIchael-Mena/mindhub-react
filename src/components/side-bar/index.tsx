@@ -26,7 +26,7 @@ export default function SideBar(props: SideBarProps) {
 
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Logo isVisibleInSm={false} />
+      <Logo isVisibleInSm={false} sizeXs="small" />
       <Divider />
       <List>
         {props.navItems.map((item) => (

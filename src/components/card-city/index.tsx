@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardActions,
@@ -10,12 +9,12 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
-import { Destination } from '../../models/Destination'
 // import { Place } from '@mui/icons-material'
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone'
+import { City } from '../../models/City'
 
 interface CardCityProps {
-  city: Destination
+  city: City
 }
 
 const CardCity = ({ city }: CardCityProps) => {
@@ -39,8 +38,8 @@ const CardCity = ({ city }: CardCityProps) => {
           component="img"
           height="140"
           sx={{ border: '1px solid #ccc', borderRadius: '15px 15px 0 0' }}
-          image={city.image}
-          alt={city.city}
+          image={city.images[0]}
+          alt={city.name}
         />
 
         <CardContent sx={{ pb: 0 }}>
@@ -66,7 +65,7 @@ const CardCity = ({ city }: CardCityProps) => {
               <PlaceTwoToneIcon />
             </IconButton>
             <Typography variant="h6" color={'secondary'}>
-              {city.city}
+              {city.name}
             </Typography>
           </Paper>
           <Typography variant="body2" color="textSecondary">

@@ -1,4 +1,4 @@
-import { Box, SvgIcon, Typography } from '@mui/material'
+import { Box, SvgIcon, Theme, Typography, useMediaQuery } from '@mui/material'
 import { ReactComponent as MyTineraryIcon } from '../../assets/icons/logo-tinerary.svg'
 import './Logo.css'
 import { Variant } from '@mui/material/styles/createTypography'
@@ -7,6 +7,8 @@ interface logoProps {
   isVisibleInXs?: boolean
   isVisibleInSm?: boolean
   size?: 'small' | 'medium' | 'large'
+  sizeXs?: 'small' | 'medium' | 'large'
+  sizeSm?: 'small' | 'medium' | 'large'
 }
 
 const logoSize = (size: string) => {
@@ -37,9 +39,16 @@ const logoSize = (size: string) => {
 const Logo = ({
   isVisibleInXs = true,
   isVisibleInSm = true,
-  size = 'small',
+  size,
+  sizeXs = 'small',
+  sizeSm = 'medium',
 }: logoProps) => {
-  const { textSize, iconSize } = logoSize(size)
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('sm')
+  )
+  const { textSize, iconSize } = logoSize(
+    size || (isSmallScreen ? sizeXs : sizeSm)
+  )
 
   return (
     <Box
