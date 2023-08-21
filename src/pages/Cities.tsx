@@ -1,11 +1,10 @@
-import { Box, Container, Divider, Typography } from '@mui/material'
-import Finder from '../components/finder'
-import CardCity from '../components/card-city'
-import { destinations } from '../services/destinations'
-import Hero from '../components/hero'
+import { Container, Divider, Typography } from '@mui/material';
+import Finder from '../components/finder';
+import Hero from '../components/hero';
+import { CitiesList } from '../components/cities-list';
 
 const Cities = () => {
-  const heroImage = 'src/assets/images/city-bg.png'
+  const heroImage = 'src/assets/images/city-bg.png';
 
   return (
     <>
@@ -33,22 +32,10 @@ const Cities = () => {
 
         <Finder />
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: 3,
-            marginTop: 4,
-          }}
-        >
-          {destinations.map((city, index) => (
-            <CardCity key={index} city={city} />
-          ))}
-        </Box>
+        <CitiesList />
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Cities
+export default Cities;

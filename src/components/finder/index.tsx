@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import { Box, InputBase, IconButton } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import './finder.css'
+import React, { useState } from 'react';
+import { Box, InputBase, IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import './finder.css';
 
 const Finder = () => {
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value)
-  }
+    setSearchQuery(event.target.value);
+  };
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log('Realizar búsqueda con:', searchQuery)
-  }
+    event.preventDefault();
+    console.log('Realizar búsqueda con:', searchQuery);
+  };
 
   return (
     <>
@@ -68,7 +68,7 @@ const Finder = () => {
       </Box>
       {/* <div className="double-border">Hover</div> */}
     </>
-  )
-}
+  );
+};
 
-export default Finder
+export default Finder;

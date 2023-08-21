@@ -6,23 +6,23 @@ import {
   ListItemButton,
   ListItemText,
   Divider,
-} from '@mui/material'
-import Logo from '../logo'
-import { Link as Anchor, useLocation } from 'react-router-dom'
-import useStyles from '../../hooks/use-styles'
+} from '@mui/material';
+import Logo from '../logo';
+import { Link as Anchor, useLocation } from 'react-router-dom';
+import useStyles from '../../hooks/useStyles';
 
 interface SideBarProps {
-  navItems: string[]
-  mobileOpen: boolean
-  handleDrawerToggle: () => void
-  width: string
-  minWidth: string
+  navItems: string[];
+  mobileOpen: boolean;
+  handleDrawerToggle: () => void;
+  width: string;
+  minWidth: string;
 }
 
 export default function SideBar(props: SideBarProps) {
-  const myStyles = useStyles()
-  const pathName = useLocation().pathname
-  const isActiveItem = (item: string) => pathName === `/${item}`
+  const myStyles = useStyles();
+  const pathName = useLocation().pathname;
+  const isActiveItem = (item: string) => pathName === `/${item}`;
 
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -44,9 +44,9 @@ export default function SideBar(props: SideBarProps) {
         ))}
       </List>
     </Box>
-  )
+  );
 
-  const container = () => document.body
+  const container = () => document.body;
 
   return (
     <Box component="nav">
@@ -70,5 +70,5 @@ export default function SideBar(props: SideBarProps) {
         {drawer}
       </Drawer>
     </Box>
-  )
+  );
 }

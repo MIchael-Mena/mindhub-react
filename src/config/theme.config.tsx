@@ -1,10 +1,10 @@
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 type ThemeProp = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
-const defaultTheme = createTheme()
+const defaultTheme = createTheme();
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -149,7 +149,7 @@ const theme = createTheme({
       ],
     },
   },
-})
+});
 
 export const ThemeConfig: React.FC<ThemeProp> = ({ children }) => {
   return (
@@ -157,5 +157,5 @@ export const ThemeConfig: React.FC<ThemeProp> = ({ children }) => {
       <CssBaseline />
       {children}
     </ThemeProvider>
-  )
-}
+  );
+};

@@ -1,21 +1,21 @@
-import { AppBar, Toolbar, IconButton, Button, Box } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import UserIcon from '@mui/icons-material/AccountCircle'
-import { NavLink, useLocation } from 'react-router-dom'
-import Logo from '../logo'
-import './NavBar.css'
-import useStyles from '../../hooks/use-styles'
+import { AppBar, Toolbar, IconButton, Button, Box } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import UserIcon from '@mui/icons-material/AccountCircle';
+import { NavLink, useLocation } from 'react-router-dom';
+import Logo from '../logo';
+import './NavBar.css';
+import useStyles from '../../hooks/useStyles';
 
 interface NavBarProps {
-  navItems: string[]
-  handleDrawerToggle: () => void
-  height: string
+  navItems: string[];
+  handleDrawerToggle: () => void;
+  height: string;
 }
 
 const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
-  const myStyles = useStyles()
-  const pathName = useLocation().pathname // Cada vez que cambia la ruta, vuelve a renderizar el componente
-  const isActiveItem = (item: string) => pathName === `/${item}`
+  const myStyles = useStyles();
+  const pathName = useLocation().pathname; // Cada vez que cambia la ruta, vuelve a renderizar el componente
+  const isActiveItem = (item: string) => pathName === `/${item}`;
 
   return (
     <AppBar component="nav" position="fixed">
@@ -70,7 +70,7 @@ const NavBar = ({ navItems, handleDrawerToggle, height }: NavBarProps) => {
         </Box>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

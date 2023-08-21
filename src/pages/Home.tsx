@@ -1,12 +1,12 @@
-import { Button, Container, Divider, Grid, Typography } from '@mui/material'
-import CitysCarousel from '../components/citys-carousel'
-import Logo from '../components/logo'
-import Hero from '../components/hero'
-import { Link as Anchor } from 'react-router-dom'
+import { Button, Container, Divider, Grid, Typography } from '@mui/material';
+import CitysCarousel from '../components/citys-carousel';
+import Logo from '../components/logo';
+import Hero from '../components/hero';
+import { Link as Anchor } from 'react-router-dom';
 
 const Home = () => {
-  const imageHero = 'src/assets/images/cities-bg.png'
-  const imageToCities = 'src/assets/images/hero-intro.png'
+  const imageHero = 'src/assets/images/cities-bg.png';
+  const imageToCities = 'src/assets/images/hero-intro.png';
 
   return (
     <Container disableGutters maxWidth="lg">
@@ -71,7 +71,7 @@ const Home = () => {
 
       <CitysCarousel />
     </Container>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -1,87 +1,61 @@
-import Carousel from 'react-material-ui-carousel'
-import PopularDestinations from '../popular-destinations'
-import { popularDestinations } from '../../services/popularDestinations'
-import { Box, Button, Theme } from '@mui/material'
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
-import { useTheme } from '@mui/material/styles'
-import useDebouncedKeyDown from '../../hooks/useDebounceKeyDown'
-import { useRef, useState } from 'react'
-import useStyles from '../../hooks/use-styles'
-import './CitysCarousel.css'
+import Carousel from 'react-material-ui-carousel';
+import PopularDestinations from '../popular-destinations';
+import { Box, Theme } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import useDebouncedKeyDown from '../../hooks/useDebounceKeyDown';
+import useStyles from '../../hooks/useStyles';
+import { useMemo, useRef, useState } from 'react';
+import { City } from '../../models/City';
+import { useApiService } from '../../hooks/useApiService';
+import { ApiService } from '../../services/api.service';
+import { NextButton, PrevButton } from './carouselNavButtons';
+import './CitysCarousel.css';
 
 const CitysCarousel = () => {
-  const [activeHover, setActiveHover] = useState(false)
+  const theme: Theme = useTheme();
+  const myStyles = useStyles();
+  const [activeHover, setActiveHover] = useState(false);
+  const carousel = useRef<HTMLDivElement>(null);
+  const leftButton = useRef<HTMLButtonElement>(null);
+  const rightButton = useRef<HTMLButtonElement>(null);
+  const timeAnimation = 500;
 
-  const theme: Theme = useTheme()
-  const myStyles = useStyles()
-  const carousel = useRef<HTMLDivElement>(null)
-  const leftButton = useRef<HTMLButtonElement>(null)
-  const rightButton = useRef<HTMLButtonElement>(null)
-  const timeAnimation = 500
+  const { data: popularCities } = useApiService<City[]>(() =>
+    ApiService.getData('/cities', { limit: 12, sort: 'rating', order: 'desc' })
+  );
+
+  const groupedCities = useMemo(() => {
+    const chunkSize = 4;
+    const result: City[][] = [];
+    for (let i = 0; i < popularCities.length; i += chunkSize) {
+      const chunk = popularCities.slice(i, i + chunkSize);
+      result.push(chunk);
+    }
+    return result;
+  }, [popularCities]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (!activeHover) return
+    if (!activeHover) return;
     if (e.key === 'ArrowLeft') {
-      leftButton.current?.click()
+      leftButton.current?.click();
     } else if (e.key === 'ArrowRight') {
-      rightButton.current?.click()
+      rightButton.current?.click();
     }
-  }
+  };
 
-  useDebouncedKeyDown('keydown', handleKeyDown, timeAnimation)
-
-  const nextButton = (
-    onclick: Function,
-    className: string,
-    style: React.CSSProperties
-  ) => {
-    return (
-      <Button
-        ref={rightButton}
-        variant="outlined"
-        color="primary"
-        onClick={(event) => onclick(event)}
-        className={className}
-        style={style}
-      >
-        Next
-        <ArrowCircleRightIcon sx={{ ml: 1 }} />
-      </Button>
-    )
-  }
-
-  const prevButton = (
-    onClick: Function,
-    className: string,
-    style: React.CSSProperties
-  ) => {
-    return (
-      <Button
-        ref={leftButton}
-        variant="outlined"
-        color="primary"
-        onClick={(event) => onClick(event)}
-        className={className}
-        style={style}
-      >
-        <ArrowCircleLeftIcon sx={{ mr: 1 }} />
-        Prev
-      </Button>
-    )
-  }
+  useDebouncedKeyDown('keydown', handleKeyDown, timeAnimation);
 
   return (
     <>
       <Box
         ref={carousel}
         onMouseEnter={() => {
-          if (activeHover) return
-          setActiveHover(true)
+          if (activeHover) return;
+          setActiveHover(true);
         }}
         onMouseLeave={() => {
-          if (!activeHover) return
-          setActiveHover(false)
+          if (!activeHover) return;
+          setActiveHover(false);
         }}
         tabIndex={1}
         sx={[
@@ -104,10 +78,24 @@ const CitysCarousel = () => {
           NavButton={({ onClick, className, style, next, prev }) => {
             return (
               <>
-                {next && nextButton(onClick, className, style)}
-                {prev && prevButton(onClick, className, style)}
+                {next && (
+                  <NextButton
+                    ref={rightButton}
+                    onClick={onClick}
+                    className={className}
+                    style={style}
+                  />
+                )}
+                {prev && (
+                  <PrevButton
+                    ref={leftButton}
+                    onClick={onClick}
+                    className={className}
+                    style={style}
+                  />
+                )}
               </>
-            )
+            );
           }}
           navButtonsWrapperProps={{
             // Contenedor de los botones de navegación
@@ -132,13 +120,13 @@ const CitysCarousel = () => {
             },
           }}
         >
-          {popularDestinations.map((item, i) => (
-            <PopularDestinations key={i} destinations={item} />
+          {groupedCities.map((cities, i) => (
+            <PopularDestinations key={i} destinations={cities} />
           ))}
         </Carousel>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default CitysCarousel
+export default CitysCarousel;
