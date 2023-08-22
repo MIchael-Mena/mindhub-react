@@ -59,7 +59,11 @@ const Home = () => {
             an easy-to-use interface and a host of itinerary options, planning
             your next trip has never been easier.
           </Typography>
-          <Anchor to="/Cities" style={{ width: '100%', display: 'contents' }}>
+          <Anchor
+            to="/Cities"
+            style={{ width: '100%', display: 'contents' }}
+            onClick={() => window.scrollTo(0, 0)}
+          >
             <Button variant="contained" color="primary" sx={{ my: 2 }}>
               View More
             </Button>

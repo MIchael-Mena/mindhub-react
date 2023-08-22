@@ -8,7 +8,7 @@ import { useMemo, useRef, useState } from 'react';
 import { City } from '../../models/City';
 import { useApiService } from '../../hooks/useApiService';
 import { ApiService } from '../../services/api.service';
-import { NextButton, PrevButton } from './carouselNavButtons';
+import { NextButton, PrevButton } from './CarouselNavButtons';
 import './CitysCarousel.css';
 
 const CitysCarousel = () => {
@@ -43,6 +43,7 @@ const CitysCarousel = () => {
     }
   };
 
+  // Debounceamos el evento keydown para que no se dispare muchas veces
   useDebouncedKeyDown('keydown', handleKeyDown, timeAnimation);
 
   return (

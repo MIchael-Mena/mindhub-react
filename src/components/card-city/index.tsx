@@ -8,13 +8,13 @@ import {
   IconButton,
   Paper,
   Typography,
-} from '@mui/material'
-// import { Place } from '@mui/icons-material'
-import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone'
-import { City } from '../../models/City'
+} from '@mui/material';
+import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
+import { City } from '../../models/City';
+import { Link as Anchor } from 'react-router-dom';
 
 interface CardCityProps {
-  city: City
+  city: City;
 }
 
 const CardCity = ({ city }: CardCityProps) => {
@@ -74,13 +74,18 @@ const CardCity = ({ city }: CardCityProps) => {
         </CardContent>
 
         <CardActions disableSpacing sx={{ justifyContent: 'end', mt: 'auto' }}>
-          <Button variant="outlined" color="success">
-            Explore
-          </Button>
+          <Anchor
+            to={`/CityDetail/${city['_id']}`}
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <Button variant="outlined" color="success">
+              Explore
+            </Button>
+          </Anchor>
         </CardActions>
       </Card>
     </>
-  )
-}
+  );
+};
 
-export default CardCity
+export default CardCity;

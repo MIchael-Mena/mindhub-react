@@ -7,7 +7,10 @@ interface GetDataResponse<T> {
 }
 
 // const {data: cities,loading, error} = useApiService<City[]>(() => ApiService.getData<City[]>('/cities'));
-export const useApiService = <T>(crudMethod: () => Promise<T>) => {
+export const useApiService = <T>(
+  crudMethod: () => Promise<T>,
+  listenTo: React.DependencyList = []
+) => {
   const [state, setState] = useState<GetDataResponse<T>>({
     loading: true,
     data: [] as T,
@@ -24,7 +27,7 @@ export const useApiService = <T>(crudMethod: () => Promise<T>) => {
         error: null,
       });
     };
-  }, []);
+  }, listenTo);
 
   const runApiService = async (crudMethod: () => Promise<T>) => {
     try {

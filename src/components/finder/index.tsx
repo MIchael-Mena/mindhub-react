@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './finder.css';
 
 const Finder = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const searchParam = queryParams.get('search') || '';
+  const [searchQuery, setSearchQuery] = useState(searchParam);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log('handleSearchSubmit');
     event.preventDefault();
-    console.log('Realizar búsqueda con:', searchQuery);
+    if (!searchQuery) {
+      queryParams.delete('search');
+    } else {
+      queryParams.set('search', searchQuery);
+    }
+    navigate({ search: queryParams.toString() }, { preventScrollReset: false });
+    // navigate(`/Cities?${queryParams.toString()}`);
   };
+
+  useEffect(() => {
+    setSearchQuery(searchParam);
+  }, [searchParam]);
 
   return (
     <>
@@ -66,9 +82,11 @@ const Finder = () => {
           </Box>
         </form>
       </Box>
-      {/* <div className="double-border">Hover</div> */}
     </>
   );
 };
+{
+  /* <div className="double-border">Hover</div> */
+}
 
 export default Finder;

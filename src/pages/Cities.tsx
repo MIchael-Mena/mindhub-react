@@ -5,7 +5,6 @@ import { CitiesList } from '../components/cities-list';
 
 const Cities = () => {
   const heroImage = 'src/assets/images/city-bg.png';
-
   return (
     <>
       <Container
