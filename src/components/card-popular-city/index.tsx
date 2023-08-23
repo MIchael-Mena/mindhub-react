@@ -1,10 +1,11 @@
-import { City } from '../../models/City'
-import { Box, Button, Divider, Typography, useTheme } from '@mui/material'
-import ReadMoreIcon from '@mui/icons-material/ReadMore'
-import './CardPopularCity.css'
+import { City } from '../../models/City';
+import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import { Link as Anchor } from 'react-router-dom';
+import './CardPopularCity.css';
 
 const CardPopularCity = (destination: City) => {
-  const myTheme = useTheme()
+  const myTheme = useTheme();
 
   return (
     <Box className="card-destination" mt={{ xs: 3, sm: 0 }}>
@@ -48,15 +49,24 @@ const CardPopularCity = (destination: City) => {
           alt="Imagen"
           className="image-container"
         />
-        <Box className="description-container">
+        <Box className="description-container" p={{ xs: 2, sm: 4 }}>
           <Typography variant="body1">{destination.description}</Typography>
-          <Button variant="outlined" color="success" sx={{ mt: 4 }}>
-            Explore
-          </Button>
+          <Anchor
+            to={`/CityDetail/${destination['_id']}`}
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{ mt: { xs: 2, sm: 4 } }}
+            >
+              Explore
+            </Button>
+          </Anchor>
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default CardPopularCity
+export default CardPopularCity;

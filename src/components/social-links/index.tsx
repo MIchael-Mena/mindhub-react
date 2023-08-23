@@ -1,7 +1,7 @@
-import { Box, Link } from '@mui/material'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import TwitterIcon from '@mui/icons-material/Twitter'
-import InstagramIcon from '@mui/icons-material/Instagram'
+import { Box, Link } from '@mui/material';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
 
 const SocialLinks = () => {
   return (
@@ -16,7 +16,7 @@ const SocialLinks = () => {
         <InstagramIcon />
       </Link>
     </Box>
-  )
-}
+  );
+};
 
-export default SocialLinks
+export default SocialLinks;

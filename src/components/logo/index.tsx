@@ -1,14 +1,14 @@
-import { Box, SvgIcon, Theme, Typography, useMediaQuery } from '@mui/material'
-import { ReactComponent as MyTineraryIcon } from '../../assets/icons/logo-tinerary.svg'
-import './Logo.css'
-import { Variant } from '@mui/material/styles/createTypography'
+import { Box, SvgIcon, Theme, Typography, useMediaQuery } from '@mui/material';
+import { ReactComponent as MyTineraryIcon } from '../../assets/icons/logo-tinerary.svg';
+import './Logo.css';
+import { Variant } from '@mui/material/styles/createTypography';
 
 interface logoProps {
-  isVisibleInXs?: boolean
-  isVisibleInSm?: boolean
-  size?: 'small' | 'medium' | 'large'
-  sizeXs?: 'small' | 'medium' | 'large'
-  sizeSm?: 'small' | 'medium' | 'large'
+  isVisibleInXs?: boolean;
+  isVisibleInSm?: boolean;
+  size?: 'small' | 'medium' | 'large';
+  sizeXs?: 'small' | 'medium' | 'large';
+  sizeSm?: 'small' | 'medium' | 'large';
 }
 
 const logoSize = (size: string) => {
@@ -17,24 +17,24 @@ const logoSize = (size: string) => {
       return {
         textSize: 'h5',
         iconSize: '50px',
-      }
+      };
     case 'medium':
       return {
         textSize: 'h3',
         iconSize: '100px',
-      }
+      };
     case 'large':
       return {
         textSize: 'h2',
         iconSize: '150px',
-      }
+      };
     default:
       return {
         textSize: 'h5',
         iconSize: 'auto',
-      }
+      };
   }
-}
+};
 
 const Logo = ({
   isVisibleInXs = true,
@@ -45,10 +45,10 @@ const Logo = ({
 }: logoProps) => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
-  )
+  );
   const { textSize, iconSize } = logoSize(
     size || (isSmallScreen ? sizeXs : sizeSm)
-  )
+  );
 
   return (
     <Box
@@ -77,7 +77,7 @@ const Logo = ({
         My Tinerary
       </Typography>
     </Box>
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

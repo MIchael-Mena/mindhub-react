@@ -1,7 +1,7 @@
-import { Box, Container, Grid, Link, Paper } from '@mui/material'
-import SocialLinks from '../social-links'
-import ColumItems from '../colum-items'
-import { Email, Home, Phone, Print } from '@mui/icons-material'
+import { Box, Container, Grid, Link, Paper } from '@mui/material';
+import SocialLinks from '../social-links';
+import ColumItems from '../colum-items';
+import { Email, Home, Phone, Print } from '@mui/icons-material';
 
 export default function Footer({ minHeight }: { minHeight: string }) {
   const columns = [
@@ -32,7 +32,7 @@ export default function Footer({ minHeight }: { minHeight: string }) {
         { label: '+ 01 234 567 89', icon: <Print fontSize="small" /> },
       ],
     },
-  ]
+  ];
 
   return (
     <>
@@ -95,5 +95,5 @@ export default function Footer({ minHeight }: { minHeight: string }) {
         {/* Copyright */}
       </Paper>
     </>
-  )
+  );
 }

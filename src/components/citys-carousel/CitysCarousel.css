@@ -11,6 +11,15 @@
   text-align: center;
   padding: 1rem 0 !important;
   margin: 0 !important;
+  min-height: 56px;
+}
+
+.common-paper {
+  border-radius: 0;
+  min-height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 450px) {

@@ -84,6 +84,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          borderRadius: '15px',
+        },
+      },
+    },
     MuiContainer: {
       styleOverrides: {
         root: {

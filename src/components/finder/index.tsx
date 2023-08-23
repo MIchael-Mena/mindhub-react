@@ -16,18 +16,20 @@ const Finder = () => {
   };
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('handleSearchSubmit');
     event.preventDefault();
+    if (searchQuery === searchParam) return; // si no hay cambios, no hago nada
     if (!searchQuery) {
       queryParams.delete('search');
     } else {
       queryParams.set('search', searchQuery);
     }
+
     navigate({ search: queryParams.toString() }, { preventScrollReset: false });
     // navigate(`/Cities?${queryParams.toString()}`);
   };
 
   useEffect(() => {
+    console.log('useEffect');
     setSearchQuery(searchParam);
   }, [searchParam]);
 
@@ -85,8 +87,5 @@ const Finder = () => {
     </>
   );
 };
-{
-  /* <div className="double-border">Hover</div> */
-}
 
 export default Finder;

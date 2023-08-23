@@ -1,6 +1,6 @@
 import Carousel from 'react-material-ui-carousel';
 import PopularDestinations from '../popular-destinations';
-import { Box, Theme } from '@mui/material';
+import { Box, CircularProgress, Paper, Theme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useDebouncedKeyDown from '../../hooks/useDebounceKeyDown';
 import useStyles from '../../hooks/useStyles';
@@ -8,19 +8,23 @@ import { useMemo, useRef, useState } from 'react';
 import { City } from '../../models/City';
 import { useApiService } from '../../hooks/useApiService';
 import { ApiService } from '../../services/api.service';
-import { NextButton, PrevButton } from './CarouselNavButtons';
+import { FailedRequest } from '../failed-request';
+import NavigationButton from '../navigation-button';
 import './CitysCarousel.css';
 
 const CitysCarousel = () => {
   const theme: Theme = useTheme();
   const myStyles = useStyles();
   const [activeHover, setActiveHover] = useState(false);
-  const carousel = useRef<HTMLDivElement>(null);
   const leftButton = useRef<HTMLButtonElement>(null);
   const rightButton = useRef<HTMLButtonElement>(null);
   const timeAnimation = 500;
 
-  const { data: popularCities } = useApiService<City[]>(() =>
+  const {
+    data: popularCities,
+    loading,
+    error,
+  } = useApiService<City[]>(() =>
     ApiService.getData('/cities', { limit: 12, sort: 'rating', order: 'desc' })
   );
 
@@ -49,19 +53,16 @@ const CitysCarousel = () => {
   return (
     <>
       <Box
-        ref={carousel}
         onMouseEnter={() => {
-          if (activeHover) return;
-          setActiveHover(true);
+          if (!activeHover) setActiveHover(true);
         }}
         onMouseLeave={() => {
-          if (!activeHover) return;
-          setActiveHover(false);
+          if (activeHover) setActiveHover(false);
         }}
         tabIndex={1}
         sx={[
           {
-            mb: 2,
+            my: { xs: 2, sm: 6 },
             mx: 'auto',
             width: { xs: '100%', sm: '90%', md: '80%' },
             borderRadius: '25px 25px 0 0',
@@ -80,7 +81,8 @@ const CitysCarousel = () => {
             return (
               <>
                 {next && (
-                  <NextButton
+                  <NavigationButton
+                    direction="next"
                     ref={rightButton}
                     onClick={onClick}
                     className={className}
@@ -88,7 +90,8 @@ const CitysCarousel = () => {
                   />
                 )}
                 {prev && (
-                  <PrevButton
+                  <NavigationButton
+                    direction="prev"
                     ref={leftButton}
                     onClick={onClick}
                     className={className}
@@ -121,9 +124,30 @@ const CitysCarousel = () => {
             },
           }}
         >
-          {groupedCities.map((cities, i) => (
-            <PopularDestinations key={i} destinations={cities} />
-          ))}
+          {loading || error ? (
+            <Paper
+              sx={{ p: { xs: 1, sm: 4 } }}
+              elevation={3}
+              className="common-paper"
+            >
+              {loading ? (
+                <CircularProgress size={'250px'} />
+              ) : (
+                <FailedRequest message="Opps! Something went wrong fetching popular cities." />
+              )}
+            </Paper>
+          ) : (
+            groupedCities.map((cities, i) => (
+              <Paper
+                sx={{ p: { xs: 1, sm: 4 } }}
+                elevation={3}
+                key={i}
+                className="common-paper"
+              >
+                <PopularDestinations destinations={cities} />
+              </Paper>
+            ))
+          )}
         </Carousel>
       </Box>
     </>

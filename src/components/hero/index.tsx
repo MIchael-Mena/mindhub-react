@@ -1,16 +1,16 @@
-import { Box } from '@mui/material'
-import { ReactNode } from 'react'
+import { Box } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface HeroProps {
-  imageHero: string
-  children: ReactNode
+  imageHero: string;
+  children: ReactNode;
   // sizeImage debe ser un porcetanje de 0 a 100 ajustar de acuerdo a la relacion aspecto de la imagen
-  sizeImage?: string
+  sizeImage?: string;
 }
 
 const Hero = ({ imageHero, children, sizeImage = '75%' }: HeroProps) => {
-  const isValidSize = /^([0-9]{1,2}|100)%$/.test(sizeImage)
-  const imageSize = isValidSize ? sizeImage : '75%'
+  const isValidSize = /^([0-9]{1,2}|100)%$/.test(sizeImage);
+  const imageSize = isValidSize ? sizeImage : '75%';
 
   return (
     <>
@@ -56,7 +56,7 @@ const Hero = ({ imageHero, children, sizeImage = '75%' }: HeroProps) => {
         </Box>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

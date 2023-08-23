@@ -1,8 +1,8 @@
-import { Box, Typography, Link, Icon } from '@mui/material'
+import { Box, Typography, Link, Icon } from '@mui/material';
 
 interface ColumItemsProps {
-  title: string
-  links: { label: string; url?: string; icon?: React.ReactNode }[]
+  title: string;
+  links: { label: string; url?: string; icon?: React.ReactNode }[];
 }
 
 const ColumItems = ({ title, links }: ColumItemsProps) => {
@@ -18,7 +18,7 @@ const ColumItems = ({ title, links }: ColumItemsProps) => {
         </Typography>
       ))}
     </Box>
-  )
-}
+  );
+};
 
-export default ColumItems
+export default ColumItems;

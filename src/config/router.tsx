@@ -12,7 +12,6 @@ const router = createBrowserRouter([
       { path: '', element: <Navigate to="/Home" /> },
       { path: '/Home', element: <Home /> },
       { path: '/Cities', element: <Cities /> },
-      // { path: '/Cities:search', element: <Cities /> },
       { path: '/CityDetail/:id', element: <CityDetail /> },
     ],
   },

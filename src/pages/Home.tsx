@@ -71,7 +71,7 @@ const Home = () => {
         </Grid>
       </Grid>
 
-      <Divider sx={{ my: 4 }} />
+      <Divider />
 
       <CitysCarousel />
     </Container>

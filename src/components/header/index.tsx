@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import Box from '@mui/material/Box' // Importa el componente Box de Material UI
-import NavBar from '../nav-bar'
-import SideBar from '../side-bar'
+import { useState } from 'react';
+import Box from '@mui/material/Box'; // Importa el componente Box de Material UI
+import NavBar from '../nav-bar';
+import SideBar from '../side-bar';
 
 interface HeaderProps {
-  height: string
+  height: string;
 }
 
 const Header = ({ height }: HeaderProps) => {
-  const navItems: string[] = ['Home', 'Cities']
-  const [mobileOpen, setMobileOpen] = useState<boolean>(false)
+  const navItems: string[] = ['Home', 'Cities'];
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState)
-  }
+    setMobileOpen((prevState) => !prevState);
+  };
 
   return (
     <>
@@ -32,7 +32,7 @@ const Header = ({ height }: HeaderProps) => {
         />
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
