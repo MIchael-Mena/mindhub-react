@@ -29,7 +29,6 @@ const Finder = () => {
   };
 
   useEffect(() => {
-    console.log('useEffect');
     setSearchQuery(searchParam);
   }, [searchParam]);
 
