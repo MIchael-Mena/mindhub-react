@@ -10,6 +10,7 @@ import {
   Fab,
   Grid,
   Paper,
+  Rating,
   Stack,
   Typography,
 } from '@mui/material';
@@ -35,6 +36,25 @@ const CityDetail = () => {
     loading,
     error,
   } = useApiService<City>(() => ApiService.getData(`/city/${id}`));
+
+  const informationAttributes = [
+    {
+      icon: <LabelImportantTwoTone color="secondary" />,
+      label: `Best time to visit: ${city.bestTime}`,
+    },
+    {
+      icon: <MonetizationOnTwoTone color="secondary" />,
+      label: `Currency: ${city.currency}`,
+    },
+    {
+      icon: <LanguageTwoTone color="secondary" />,
+      label: `Language: ${city.language}`,
+    },
+    {
+      icon: <AccessTimeTwoTone color="secondary" />,
+      label: `Timezone: ${city.timezone}`,
+    },
+  ];
 
   return (
     <Container disableGutters maxWidth="lg" sx={{ alignSelf: 'center' }}>
@@ -72,9 +92,17 @@ const CityDetail = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Box display="inline-flex" gap={1}>
+                  <Box
+                    display="inline-flex"
+                    gap={1}
+                    sx={{
+                      borderBottom: '3px solid #ccc',
+                      borderRadius: 5,
+                      px: 2,
+                    }}
+                  >
                     <FlagCircleOutlined color="primary" fontSize="large" />
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h3" gutterBottom>
                       {city.country}
                     </Typography>
                   </Box>
@@ -82,12 +110,24 @@ const CityDetail = () => {
                     <Fab variant="circular" color="primary" size="medium">
                       <PlaceTwoTone color="secondary" fontSize="large" />
                     </Fab>
-                    <Typography variant="h5">{city.name}</Typography>
+                    <Typography variant="h4">{city.name}</Typography>
                   </Box>
                 </Box>
                 <Typography variant="body1" textAlign="center">
                   {city.description}
                 </Typography>
+                <Box display="inline-flex" gap={1} sx={{ mt: 2 }}>
+                  <Typography variant="h5" gutterBottom>
+                    Rating:
+                  </Typography>
+                  <Rating
+                    name="customized-10"
+                    defaultValue={(city.rating / 10) * 5}
+                    max={5}
+                    precision={0.5}
+                    readOnly
+                  />
+                </Box>
               </Grid>
               <Grid item xs={12} md={6}>
                 <img
@@ -108,7 +148,7 @@ const CityDetail = () => {
                   elevation={0}
                   sx={{
                     p: 2,
-                    mt: 4,
+                    my: 4,
                     borderRadius: 3,
                   }}
                   variant="outlined"
@@ -121,36 +161,30 @@ const CityDetail = () => {
                     justifyContent={'space-around'}
                     sx={{ mt: 1, mb: 1 }}
                   >
-                    <Chip
-                      variant="filled"
-                      color="secondary"
-                      icon={<LabelImportantTwoTone color="secondary" />}
-                      label={`Best time to visit: ${city.bestTime}`}
-                    />
-                    <Chip
-                      variant="filled"
-                      color="secondary"
-                      icon={<MonetizationOnTwoTone color="secondary" />}
-                      label={`Currency: ${city.currency}`}
-                    />
-                    <Chip
-                      variant="filled"
-                      color="secondary"
-                      icon={<LanguageTwoTone color="secondary" />}
-                      label={`Language: ${city.language}`}
-                    />
-
-                    <Chip
-                      variant="filled"
-                      color="secondary"
-                      icon={<AccessTimeTwoTone color="secondary" />}
-                      label={`Timezone: ${city.timezone}`}
-                    />
+                    {informationAttributes.map((attribute, index) => (
+                      <Chip
+                        key={index}
+                        variant="filled"
+                        color="secondary"
+                        icon={attribute.icon}
+                        sx={{
+                          transition: 'all 0.3s ease-in-out',
+                          ':hover': {
+                            // backgroundColor: '#f50057',
+                            backgroundColor: (theme) =>
+                              theme.palette.success.main,
+                            boxShadow: 2,
+                            transform: 'scale(1.05)',
+                          },
+                        }}
+                        label={attribute.label}
+                      />
+                    ))}
                   </Stack>
                 </Paper>
+                <hr />
               </Grid>
               <Grid item xs={12}>
-                <hr />
                 <Typography variant="h5" gutterBottom>
                   Itinerary under construction
                 </Typography>
