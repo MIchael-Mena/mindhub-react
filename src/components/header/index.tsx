@@ -4,10 +4,10 @@ import NavBar from '../nav-bar';
 import SideBar from '../side-bar';
 
 interface HeaderProps {
-  height: string;
+  minHeight: string;
 }
 
-const Header = ({ height }: HeaderProps) => {
+const Header = ({ minHeight }: HeaderProps) => {
   const navItems: string[] = ['Home', 'Cities'];
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
@@ -21,7 +21,7 @@ const Header = ({ height }: HeaderProps) => {
         <NavBar
           navItems={navItems}
           handleDrawerToggle={handleDrawerToggle}
-          height={height}
+          minHeight={minHeight}
         />
         <SideBar
           navItems={navItems}

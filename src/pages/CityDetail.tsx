@@ -102,7 +102,7 @@ const CityDetail = () => {
                     }}
                   >
                     <FlagCircleOutlined color="primary" fontSize="large" />
-                    <Typography variant="h3" gutterBottom>
+                    <Typography variant="h4" gutterBottom>
                       {city.country}
                     </Typography>
                   </Box>
@@ -110,13 +110,13 @@ const CityDetail = () => {
                     <Fab variant="circular" color="primary" size="medium">
                       <PlaceTwoTone color="secondary" fontSize="large" />
                     </Fab>
-                    <Typography variant="h4">{city.name}</Typography>
+                    <Typography variant="h5">{city.name}</Typography>
                   </Box>
                 </Box>
-                <Typography variant="body1" textAlign="center">
+                <Typography variant="body1" textAlign="center" my={3}>
                   {city.description}
                 </Typography>
-                <Box display="inline-flex" gap={1} sx={{ mt: 2 }}>
+                <Box display="inline-flex" gap={1}>
                   <Typography variant="h5" gutterBottom>
                     Rating:
                   </Typography>

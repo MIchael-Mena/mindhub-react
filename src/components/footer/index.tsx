@@ -69,7 +69,6 @@ export default function Footer({ minHeight }: { minHeight: string }) {
             justifyContent={'center'}
             alignItems={'center'}
             textAlign={{ xs: 'center', md: 'start' }}
-            mx={'auto'}
           >
             {columns.map((column, index) => (
               <Grid item xs={12} sm={6} md={3} mb={4} key={index}>
