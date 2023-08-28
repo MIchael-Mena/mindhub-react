@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 
 const Layout = () => {
   const componentSizes = {
@@ -17,8 +17,7 @@ const Layout = () => {
         component="main"
         sx={{
           position: 'relative',
-          mt: 2,
-          // mt: componentSizes.header, // no es necesario, se agrego un toolbar vacio en el nav-bar
+          mt: 1,
           minHeight: componentSizes.main,
           display: 'flex',
         }}
@@ -26,6 +25,12 @@ const Layout = () => {
         <Outlet />
       </Box>
       <Footer minHeight={componentSizes.footer} />
+      <ScrollRestoration
+      // getKey={(key, location) => {
+      //   console.log(key, location);
+      //   return location[0].pathname;
+      // }}
+      />
     </>
   );
 };

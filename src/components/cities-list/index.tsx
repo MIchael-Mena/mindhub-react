@@ -17,8 +17,8 @@ export const CitiesList = () => {
   } = useApiService<City[]>(
     () =>
       !searchParam
-        ? ApiService.getData('/cities')
-        : ApiService.getData('/cities', { search: searchParam }),
+        ? ApiService.getData('/city')
+        : ApiService.getData('/city', { search: searchParam }),
     [searchParam]
   );
 

@@ -71,7 +71,7 @@ const NavBar = ({ navItems, handleDrawerToggle, minHeight }: NavBarProps) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Toolbar />
+      <Toolbar sx={{ minHeight: minHeight }} />
     </>
   );
 };

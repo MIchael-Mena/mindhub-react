@@ -74,10 +74,7 @@ const CardCity = ({ city }: CardCityProps) => {
         </CardContent>
 
         <CardActions disableSpacing sx={{ justifyContent: 'end', mt: 'auto' }}>
-          <Anchor
-            to={`/CityDetail/${city['_id']}`}
-            onClick={() => window.scrollTo(0, 0)}
-          >
+          <Anchor to={`/CityDetail/${city['_id']}`} preventScrollReset={false}>
             <Button variant="outlined" color="success">
               Explore
             </Button>

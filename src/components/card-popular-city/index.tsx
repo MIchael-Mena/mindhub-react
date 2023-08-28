@@ -51,10 +51,7 @@ const CardPopularCity = (destination: City) => {
         />
         <Box className="description-container" p={{ xs: 2, sm: 4 }}>
           <Typography variant="body1">{destination.description}</Typography>
-          <Anchor
-            to={`/CityDetail/${destination['_id']}`}
-            onClick={() => window.scrollTo(0, 0)}
-          >
+          <Anchor to={`/CityDetail/${destination['_id']}`}>
             <Button
               variant="outlined"
               color="success"

@@ -61,8 +61,8 @@ const Home = () => {
           </Typography>
           <Anchor
             to="/Cities"
+            preventScrollReset={false}
             style={{ width: '100%', display: 'contents' }}
-            onClick={() => window.scrollTo(0, 0)}
           >
             <Button variant="contained" color="primary" sx={{ my: 2 }}>
               View More

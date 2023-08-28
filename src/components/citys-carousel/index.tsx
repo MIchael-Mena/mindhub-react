@@ -25,7 +25,7 @@ const CitysCarousel = () => {
     loading,
     error,
   } = useApiService<City[]>(() =>
-    ApiService.getData('/cities', { limit: 12, sort: 'rating', order: 'desc' })
+    ApiService.getData('/city', { limit: 12, sort: 'rating', order: 'desc' })
   );
 
   const groupedCities = useMemo(() => {

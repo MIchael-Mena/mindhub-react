@@ -30,7 +30,7 @@ import {
 
 const CityDetail = () => {
   const { id } = useParams();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     data: city,
     loading,
@@ -66,7 +66,7 @@ const CityDetail = () => {
           variant="extended"
           color="primary"
           size="medium"
-          onClick={() => Navigate(-1)}
+          onClick={() => navigate(-1)}
           sx={{ borderRadius: 15, position: 'absolute', top: -24, left: 20 }}
         >
           <DoubleArrow sx={{ mr: 1, transform: 'rotate(180deg)' }} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './finder.css';
+import './Finder.css';
 
 const Finder = () => {
   const location = useLocation();
@@ -24,7 +24,7 @@ const Finder = () => {
       queryParams.set('search', searchQuery);
     }
 
-    navigate({ search: queryParams.toString() }, { preventScrollReset: false });
+    navigate({ search: queryParams.toString() }, { preventScrollReset: true });
     // navigate(`/Cities?${queryParams.toString()}`);
   };
 
