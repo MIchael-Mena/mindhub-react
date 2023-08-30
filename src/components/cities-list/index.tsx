@@ -6,21 +6,27 @@ import { City } from '../../models/City';
 import { useLocation } from 'react-router-dom';
 import { FailedRequest } from '../failed-request';
 import { CardNotFound } from '../card-city/CardNotFound';
+import { useAppSelector } from '../../store/hooks';
 
 export const CitiesList = () => {
   const location = useLocation();
-  const searchParam = new URLSearchParams(location.search).get('search') || '';
-  const {
-    data: cities,
-    loading,
-    error,
-  } = useApiService<City[]>(
-    () =>
-      !searchParam
-        ? ApiService.getData('/city')
-        : ApiService.getData('/city', { search: searchParam }),
-    [searchParam]
+  const { cities, loading, error } = useAppSelector(
+    (store) => store.citiesReducer
   );
+  console.log(cities);
+  const searchParam = new URLSearchParams(location.search).get('search') || '';
+
+  // const {
+  //   data: cities,
+  //   loading,
+  //   error,
+  // } = useApiService<City[]>(
+  //   () =>
+  //     !searchParam
+  //       ? ApiService.getData('/city')
+  //       : ApiService.getData('/city', { search: searchParam }),
+  //   [searchParam]
+  // );
 
   return (
     <>

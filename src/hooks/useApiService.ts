@@ -6,6 +6,7 @@ interface GetDataResponse<T> {
   error: any | null;
 }
 
+// Ejemplo de uso:
 // const {data: cities,loading, error} = useApiService<City[]>(() => ApiService.getData<City[]>('/cities'));
 export const useApiService = <T>(
   crudMethod: () => Promise<T>,
@@ -46,5 +47,7 @@ export const useApiService = <T>(
     }
   };
 
+  // La primera vez que se ejecuta el hook, se ejecuta el crudMethod y devuelve el estado inicial,
+  // despues de resolverse la promesa de crudMethod se actualiza el estado y se vuelve a renderizar el componente
   return state;
 };
