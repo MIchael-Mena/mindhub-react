@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { ApiResponse } from '../models/ApiResponse';
 
 export class ApiService {
   private static baseUrl: string = 'http://localhost:5000/api';
@@ -10,11 +11,11 @@ export class ApiService {
   constructor() {}
 
   static async getData<T>(
-    uri: string,
+    endPoint: string,
     queryParams: { [key: string]: string | number } = {}
   ): Promise<T> {
     try {
-      const response = await this.instanceAxios.get(uri, {
+      const response = await this.instanceAxios.get<ApiResponse<T>>(endPoint, {
         params: queryParams,
       });
       return response.data.data;

@@ -1,11 +1,15 @@
 import { City } from '../../models/City';
-import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { Link as Anchor } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { updateCitySelected } from '../../store/actions/cities';
 import './CardPopularCity.css';
 
-const CardPopularCity = (destination: City) => {
-  const myTheme = useTheme();
+const CardPopularCity = (city: City) => {
+  const dispatch = useAppDispatch();
+  const pathCityDetail = `/city-detail/${city['_id']}`;
+  const currentPath = window.location.pathname;
 
   return (
     <Box className="card-destination" mt={{ xs: 3, sm: 0 }}>
@@ -22,14 +26,17 @@ const CardPopularCity = (destination: City) => {
         display={'flex'}
         justifyContent={'center'}
         alignItems={'center'}
-        sx={{ backgroundColor: myTheme.palette.background.paper, zIndex: 3 }}
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.paper,
+          zIndex: 3,
+        }}
       >
         <Typography variant="h5" textAlign="center">
-          {destination.country}
+          {city.country}
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
         <Typography variant="h6" textAlign="center">
-          {destination.name}
+          {city.name}
         </Typography>
       </Box>
 
@@ -44,14 +51,14 @@ const CardPopularCity = (destination: City) => {
         height={'100%'}
         position={'relative'}
       >
-        <img
-          src={destination.images[0]}
-          alt="Imagen"
-          className="image-container"
-        />
+        <img src={city.images[0]} alt="Imagen" className="image-container" />
         <Box className="description-container" p={{ xs: 2, sm: 4 }}>
-          <Typography variant="body1">{destination.description}</Typography>
-          <Anchor to={`/CityDetail/${destination['_id']}`}>
+          <Typography variant="body1">{city.description}</Typography>
+          <Anchor
+            to={pathCityDetail}
+            state={{ from: currentPath }}
+            onClick={() => dispatch(updateCitySelected(city))}
+          >
             <Button
               variant="outlined"
               color="success"

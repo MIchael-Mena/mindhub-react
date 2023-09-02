@@ -7,6 +7,7 @@ import { Link as Anchor } from 'react-router-dom';
 const Home = () => {
   const imageHero = 'src/assets/images/cities-bg.png';
   const imageToCities = 'src/assets/images/hero-intro.png';
+  const currentPath = '/home';
 
   return (
     <Container disableGutters maxWidth="lg">
@@ -62,6 +63,7 @@ const Home = () => {
           <Anchor
             to="/Cities"
             preventScrollReset={false}
+            state={{ from: currentPath }}
             style={{ width: '100%', display: 'contents' }}
           >
             <Button variant="contained" color="primary" sx={{ my: 2 }}>

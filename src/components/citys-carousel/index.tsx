@@ -4,12 +4,14 @@ import { Box, CircularProgress, Paper, Theme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useDebouncedKeyDown from '../../hooks/useDebounceKeyDown';
 import useStyles from '../../hooks/useStyles';
-import { useMemo, useRef, useState } from 'react';
-import { City } from '../../models/City';
-import { useApiService } from '../../hooks/useApiService';
-import { ApiService } from '../../services/api.service';
+import { useEffect, useMemo, useRef, useState } from 'react';
+// import { useApiService } from '../../hooks/useApiService';
+// import { ApiService } from '../../services/api.service';
 import { FailedRequest } from '../failed-request';
 import NavigationButton from '../navigation-button';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchPopularCities } from '../../store/actions/cities';
+import { chunkArray } from '../../utils/util';
 import './CitysCarousel.css';
 
 const CitysCarousel = () => {
@@ -24,18 +26,25 @@ const CitysCarousel = () => {
     data: popularCities,
     loading,
     error,
-  } = useApiService<City[]>(() =>
-    ApiService.getData('/city', { limit: 12, sort: 'rating', order: 'desc' })
-  );
+    hasBeenModified,
+  } = useAppSelector((store) => store.citiesReducer.popularCities);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!hasBeenModified) dispatch(fetchPopularCities({ limit: 12 }));
+  }, []);
+
+  // const {
+  //   data: popularCities,
+  //   loading,
+  //   error,
+  // } = useApiService<City[]>(() =>
+  //   ApiService.getData('/city', { limit: 12, sort: 'rating', order: 'desc' })
+  // );
 
   const groupedCities = useMemo(() => {
-    const chunkSize = 4;
-    const result: City[][] = [];
-    for (let i = 0; i < popularCities.length; i += chunkSize) {
-      const chunk = popularCities.slice(i, i + chunkSize);
-      result.push(chunk);
-    }
-    return result;
+    return chunkArray(popularCities, 4);
   }, [popularCities]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -63,8 +72,8 @@ const CitysCarousel = () => {
         sx={[
           {
             my: { xs: 2, sm: 6 },
-            mx: 'auto',
             width: { xs: '100%', sm: '90%', md: '80%' },
+            mx: 'auto',
             borderRadius: '25px 25px 0 0',
             overflow: 'hidden',
             transition: 'box-shadow 0.2s ease-in-out',
@@ -73,6 +82,8 @@ const CitysCarousel = () => {
         ]}
       >
         <Carousel
+          height={'700px'}
+          autoPlay={false}
           navButtonsAlwaysVisible
           duration={timeAnimation}
           animation="slide"

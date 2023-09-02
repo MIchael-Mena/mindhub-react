@@ -1,32 +1,25 @@
 import { useParams } from 'react-router-dom';
-import { useApiService } from '../hooks/useApiService';
-import { ApiService } from '../services/api.service';
-import { City } from '../models/City';
+// import { useApiService } from '../hooks/useApiService';
+// import { ApiService } from '../services/api.service';
+// import { City } from '../models/City';
 import {
   Box,
-  Chip,
   CircularProgress,
   Container,
   Fab,
   Grid,
   Paper,
-  Rating,
-  Stack,
   Typography,
 } from '@mui/material';
 import { FailedRequest } from '../components/failed-request';
 import { useNavigate } from 'react-router-dom';
-import {
-  DoubleArrow,
-  LabelImportantTwoTone,
-  FlagCircleOutlined,
-  LanguageTwoTone,
-  MonetizationOnTwoTone,
-  AccessTimeTwoTone,
-  PlaceTwoTone,
-  // LabelTwoTone,
-  // LuggageOutlined,
-} from '@mui/icons-material';
+import { DoubleArrow } from '@mui/icons-material';
+import { CityAttributes } from '../components/city-attributes';
+import { CityInfo } from '../components/city-info';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { fetchCitySelectedById } from '../store/actions/cities';
+import { useEffect } from 'react';
+import { CardNotFound } from '../components/card-city/CardNotFound';
 
 const CityDetail = () => {
   const { id } = useParams();
@@ -35,26 +28,21 @@ const CityDetail = () => {
     data: city,
     loading,
     error,
-  } = useApiService<City>(() => ApiService.getData(`/city/${id}`));
+  } = useAppSelector((store) => store.citiesReducer.citySelected);
+  const dispatch = useAppDispatch();
 
-  const informationAttributes = [
-    {
-      icon: <LabelImportantTwoTone color="secondary" />,
-      label: `Best time to visit: ${city.bestTime}`,
-    },
-    {
-      icon: <MonetizationOnTwoTone color="secondary" />,
-      label: `Currency: ${city.currency}`,
-    },
-    {
-      icon: <LanguageTwoTone color="secondary" />,
-      label: `Language: ${city.language}`,
-    },
-    {
-      icon: <AccessTimeTwoTone color="secondary" />,
-      label: `Timezone: ${city.timezone}`,
-    },
-  ];
+  useEffect(() => {
+    if (id && city && city._id !== id) {
+      dispatch(fetchCitySelectedById({ id }));
+    }
+  }, [id]);
+  console.log(error);
+
+  // const {
+  //   data: city,
+  //   loading,
+  //   error,
+  // } = useApiService<City>(() => ApiService.getData(`/city/${id}`));
 
   return (
     <Container disableGutters maxWidth="lg" sx={{ alignSelf: 'center' }}>
@@ -66,69 +54,34 @@ const CityDetail = () => {
           variant="extended"
           color="primary"
           size="medium"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            navigate(-1);
+          }}
           sx={{ borderRadius: 15, position: 'absolute', top: -24, left: 20 }}
         >
           <DoubleArrow sx={{ mr: 1, transform: 'rotate(180deg)' }} />
           Go Back
         </Fab>
-        {loading ? (
-          <CircularProgress color="secondary" />
-        ) : error ? (
-          <FailedRequest width="290px" />
+        {loading || error ? (
+          <Box
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            minHeight={500}
+          >
+            {loading ? (
+              <CircularProgress color="secondary" size={200} />
+            ) : error?.code === 'ERR_BAD_REQUEST' ? (
+              <CardNotFound message={`No city found with id "${id}".`} />
+            ) : (
+              <FailedRequest width="290px" />
+            )}
+          </Box>
         ) : (
           <>
             <Grid container spacing={3}>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                display={'flex'}
-                flexDirection={'column'}
-                justifyContent={'space-evenly'}
-              >
-                <Box
-                  display="inline-flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Box
-                    display="inline-flex"
-                    gap={1}
-                    sx={{
-                      borderBottom: '3px solid #ccc',
-                      borderRadius: 5,
-                      px: 2,
-                    }}
-                  >
-                    <FlagCircleOutlined color="primary" fontSize="large" />
-                    <Typography variant="h4" gutterBottom>
-                      {city.country}
-                    </Typography>
-                  </Box>
-                  <Box display="inline-flex" gap={1} alignItems="center">
-                    <Fab variant="circular" color="primary" size="medium">
-                      <PlaceTwoTone color="secondary" fontSize="large" />
-                    </Fab>
-                    <Typography variant="h5">{city.name}</Typography>
-                  </Box>
-                </Box>
-                <Typography variant="body1" textAlign="center" my={3}>
-                  {city.description}
-                </Typography>
-                <Box display="inline-flex" gap={1}>
-                  <Typography variant="h5" gutterBottom>
-                    Rating:
-                  </Typography>
-                  <Rating
-                    name="customized-10"
-                    defaultValue={(city.rating / 10) * 5}
-                    max={5}
-                    precision={0.5}
-                    readOnly
-                  />
-                </Box>
-              </Grid>
+              <CityInfo {...city} />
+
               <Grid item xs={12} md={6}>
                 <img
                   src={city.images[0]}
@@ -142,48 +95,9 @@ const CityDetail = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <hr />
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 2,
-                    my: 4,
-                    borderRadius: 3,
-                  }}
-                  variant="outlined"
-                >
-                  <Stack
-                    direction="row"
-                    flexWrap="wrap"
-                    useFlexGap
-                    spacing={2}
-                    justifyContent={'space-around'}
-                    sx={{ mt: 1, mb: 1 }}
-                  >
-                    {informationAttributes.map((attribute, index) => (
-                      <Chip
-                        key={index}
-                        variant="filled"
-                        color="secondary"
-                        icon={attribute.icon}
-                        sx={{
-                          transition: 'all 0.3s ease-in-out',
-                          ':hover': {
-                            // backgroundColor: '#f50057',
-                            backgroundColor: (theme) =>
-                              theme.palette.success.main,
-                            boxShadow: 2,
-                            transform: 'scale(1.05)',
-                          },
-                        }}
-                        label={attribute.label}
-                      />
-                    ))}
-                  </Stack>
-                </Paper>
-                <hr />
-              </Grid>
+
+              <CityAttributes {...city} />
+
               <Grid item xs={12}>
                 <Typography variant="h5" gutterBottom>
                   Itinerary under construction

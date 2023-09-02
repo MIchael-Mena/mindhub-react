@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
-
-interface GetDataResponse<T> {
-  data: T;
-  loading: boolean;
-  error: any | null;
-}
+import { StatusResponse } from '../models/StatusResponse';
 
 // Ejemplo de uso:
 // const {data: cities,loading, error} = useApiService<City[]>(() => ApiService.getData<City[]>('/cities'));
@@ -12,7 +7,7 @@ export const useApiService = <T>(
   crudMethod: () => Promise<T>,
   listenTo: React.DependencyList = []
 ) => {
-  const [state, setState] = useState<GetDataResponse<T>>({
+  const [state, setState] = useState<StatusResponse<T>>({
     loading: true,
     data: [] as T,
     error: null,

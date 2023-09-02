@@ -12,12 +12,18 @@ import {
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 import { City } from '../../models/City';
 import { Link as Anchor } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { updateCitySelected } from '../../store/actions/cities';
 
 interface CardCityProps {
   city: City;
 }
 
 const CardCity = ({ city }: CardCityProps) => {
+  const pathCityDetail = `/city-detail/${city['_id']}`;
+  const currentPath = window.location.pathname;
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <Card
@@ -74,7 +80,12 @@ const CardCity = ({ city }: CardCityProps) => {
         </CardContent>
 
         <CardActions disableSpacing sx={{ justifyContent: 'end', mt: 'auto' }}>
-          <Anchor to={`/CityDetail/${city['_id']}`} preventScrollReset={false}>
+          <Anchor
+            to={pathCityDetail}
+            preventScrollReset={false}
+            state={{ from: currentPath }}
+            onClick={() => dispatch(updateCitySelected(city))}
+          >
             <Button variant="outlined" color="success">
               Explore
             </Button>

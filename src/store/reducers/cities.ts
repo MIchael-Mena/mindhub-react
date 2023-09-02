@@ -1,36 +1,89 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { City } from '../../models/City';
-import { getCities } from '../actions/cities';
+import {
+  fetchCities,
+  fetchCitySelectedById,
+  fetchPopularCities,
+  updateCitySelected,
+} from '../actions/cities';
+import { StatusResponse } from '../../models/StatusResponse';
 
-const initialState = {
-  // cities: [] as City[],
-  loading: false,
-  error: null,
-  cities: [
-    {
-      _id: '1',
-      name: 'London',
-      country: 'United Kingdom',
-      description:
-        'London is the capital and largest city of England and the United Kingdom. Standing on the River Thames in the south-east of England, at the head of its 50-mile (80 km) estuary leading to the North Sea, London has been a major settlement for two millennia.',
-      images: [],
-      area: 1572,
-      bestTime: 'May, June, July',
-      currency: 'GBP',
-      language: 'English',
-      population: 8900000,
-      timezone: 'UTC+0',
-      capital: true,
-      rating: 4.5,
-      religion: 'Christianity',
-    },
-  ] as City[],
+type GloblaState = {
+  hasBeenModified: boolean; // Si la data ha sido modificada al menos una vez
 };
 
-const citiesReducer = createReducer(initialState, (builder) => {
-  builder.addCase(getCities, (state, action) => {
-    state.cities = action.payload.cities;
-  });
+const citiesState: {
+  cities: StatusResponse<City[]> & GloblaState;
+  popularCities: StatusResponse<City[]> & GloblaState;
+  citySelected: StatusResponse<City> & GloblaState;
+} = {
+  popularCities: {
+    loading: true,
+    error: null,
+    data: [],
+    hasBeenModified: false,
+  },
+  cities: {
+    loading: true,
+    error: null,
+    data: [],
+    hasBeenModified: false,
+  },
+  citySelected: {
+    // data: {} as City,
+    loading: true,
+    error: null,
+    data: {} as City,
+    hasBeenModified: false,
+  },
+};
+
+const citiesReducer = createReducer(citiesState, (builder) => {
+  builder
+    .addCase(updateCitySelected, (state, action) => {
+      state.citySelected.data = action.payload;
+      state.citySelected.loading = false;
+      state.citySelected.hasBeenModified = true;
+    })
+
+    .addCase(fetchCitySelectedById.pending, (state) => {
+      state.citySelected.loading = true;
+    })
+    .addCase(fetchCitySelectedById.fulfilled, (state, action) => {
+      state.citySelected.loading = false;
+      state.citySelected.data = action.payload.city;
+      state.citySelected.hasBeenModified = true;
+    })
+    .addCase(fetchCitySelectedById.rejected, (state, action) => {
+      state.citySelected.loading = false;
+      state.citySelected.error = action.error;
+    })
+
+    .addCase(fetchCities.pending, (state) => {
+      state.cities.loading = true;
+    })
+    .addCase(fetchCities.fulfilled, (state, action) => {
+      state.cities.loading = false;
+      state.cities.data = action.payload.cities;
+      state.cities.hasBeenModified = true;
+    })
+    .addCase(fetchCities.rejected, (state, action) => {
+      state.cities.loading = false;
+      state.cities.error = action.error;
+    })
+
+    .addCase(fetchPopularCities.pending, (state) => {
+      state.popularCities.loading = true;
+    })
+    .addCase(fetchPopularCities.fulfilled, (state, action) => {
+      state.popularCities.loading = false;
+      state.popularCities.data = action.payload.cities;
+      state.popularCities.hasBeenModified = true;
+    })
+    .addCase(fetchPopularCities.rejected, (state, action) => {
+      state.popularCities.loading = false;
+      state.popularCities.error = action.error;
+    });
 });
 
 export default citiesReducer;

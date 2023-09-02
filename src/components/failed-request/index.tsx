@@ -8,6 +8,7 @@ export const FailedRequest = ({
   width?: string;
 }) => {
   const defaultMessage = 'Oops! Something went wrong.';
+  const imageNotFound = '../src/assets/images/404.jpg';
   return (
     <>
       <Box
@@ -27,7 +28,7 @@ export const FailedRequest = ({
           </AlertTitle>
         </Alert>
         <img
-          src="src/assets/images/404.jpg"
+          src={imageNotFound}
           alt="404"
           style={{
             display: 'block',

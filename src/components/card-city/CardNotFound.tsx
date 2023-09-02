@@ -1,7 +1,7 @@
 import { Alert, Card } from '@mui/material';
 
 export const CardNotFound = ({ message }: { message?: string }) => {
-  const notFoundImage = 'src/assets/images/city-not-found.png';
+  const notFoundImage = '../src/assets/images/city-not-found.png';
   const defaultMessage = 'No cities found';
 
   return (

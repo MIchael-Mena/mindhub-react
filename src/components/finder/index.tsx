@@ -24,8 +24,13 @@ const Finder = () => {
       queryParams.set('search', searchQuery);
     }
 
-    navigate({ search: queryParams.toString() }, { preventScrollReset: true });
-    // navigate(`/Cities?${queryParams.toString()}`);
+    navigate(
+      { search: queryParams.toString() }, // navigate a la misma ruta pero con los nuevos queryParams
+      {
+        preventScrollReset: true,
+        state: { from: 'finder' },
+      }
+    );
   };
 
   useEffect(() => {

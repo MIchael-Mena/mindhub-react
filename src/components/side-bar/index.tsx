@@ -10,9 +10,10 @@ import {
 import Logo from '../logo';
 import { Link as Anchor, useLocation } from 'react-router-dom';
 import useStyles from '../../hooks/useStyles';
+import { NavItem } from '../../models/NavItem';
 
 interface SideBarProps {
-  navItems: string[];
+  navItems: NavItem[];
   mobileOpen: boolean;
   handleDrawerToggle: () => void;
   width: string;
@@ -21,22 +22,26 @@ interface SideBarProps {
 
 export default function SideBar(props: SideBarProps) {
   const myStyles = useStyles();
-  const pathName = useLocation().pathname;
-  const isActiveItem = (item: string) => pathName === `/${item}`;
+  const currentPathName = useLocation().pathname;
+  const isActiveItem = (path: string) => currentPathName === path;
 
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Logo isVisibleInSm={false} sizeXs="small" />
       <Divider />
       <List>
-        {props.navItems.map((item) => (
-          <Anchor key={item} to={`/${item}`}>
+        {props.navItems.map((item, key) => (
+          <Anchor
+            key={key}
+            to={item.path}
+            state={{ from: window.location.pathname }}
+          >
             <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: 'center' }}>
                 <ListItemText
-                  primary={item}
-                  aria-label={item}
-                  sx={isActiveItem(item) ? myStyles.navLinkActive : {}}
+                  primary={item.name}
+                  aria-label={item.name}
+                  sx={isActiveItem(item.path) ? myStyles.navLinkActive : {}}
                 />
               </ListItemButton>
             </ListItem>
