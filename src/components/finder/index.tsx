@@ -25,7 +25,7 @@ const Finder = () => {
     }
 
     navigate(
-      { search: queryParams.toString() }, // navigate a la misma ruta pero con los nuevos queryParams
+      { search: queryParams.toString() }, // navigate por default a la misma ruta pero con los nuevos queryParams
       {
         preventScrollReset: true,
         state: { from: 'finder' },

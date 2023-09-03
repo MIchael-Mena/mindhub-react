@@ -1,3 +1,5 @@
+import { Itinerary } from './Itinerary';
+
 export interface City {
   _id?: string;
   name: string;
@@ -13,4 +15,5 @@ export interface City {
   religion: string;
   bestTime: string;
   timezone: string;
+  itineraries?: Itinerary[];
 }

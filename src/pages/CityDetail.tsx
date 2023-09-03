@@ -36,7 +36,6 @@ const CityDetail = () => {
       dispatch(fetchCitySelectedById({ id }));
     }
   }, [id]);
-  console.log(error);
 
   // const {
   //   data: city,
