@@ -32,30 +32,39 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           flexDirection: { xs: 'column', md: 'row' },
           height: { xs: 'auto', md: itineraries.length > 2 ? 175 : 150 },
           borderRadius: 3,
+          overflow: 'hidden',
         }}
       >
-        {
-          <Tabs
-            orientation={matches ? 'horizontal' : 'vertical'}
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Itineraries"
-            sx={
-              matches
-                ? { borderBottom: 1, borderColor: 'divider', mx: 'auto' }
-                : { borderRight: 1, borderColor: 'divider', my: 'auto' }
-            }
-          >
-            {itineraries.map((itinerary, key) => (
-              <Tab
-                label={itinerary.title}
-                {...a11yProps(key)}
-                key={itinerary._id}
-              />
-            ))}
-          </Tabs>
-        }
+        <Tabs
+          orientation={matches ? 'horizontal' : 'vertical'}
+          variant="scrollable"
+          // scrollButtons="auto"
+          allowScrollButtonsMobile
+          value={value}
+          onChange={handleChange}
+          aria-label="Itineraries"
+          sx={
+            matches
+              ? {
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                  mx: 'auto',
+                }
+              : {
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  my: itineraries.length <= 2 ? 'auto' : 0,
+                }
+          }
+        >
+          {itineraries.map((itinerary, key) => (
+            <Tab
+              label={itinerary.title}
+              {...a11yProps(key)}
+              key={itinerary._id}
+            />
+          ))}
+        </Tabs>
 
         {itineraries.map((itinerary, key) => (
           <TabPanel value={value} index={key} key={key}>

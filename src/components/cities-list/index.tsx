@@ -27,18 +27,19 @@ export const CitiesList = () => {
   const searchParam = new URLSearchParams(location.search).get('search') || '';
 
   useEffect(() => {
-    // Con esta version funciona el scroll restoration al volver a cities-list desde city-detail
-    let state = location.state as LocationState;
-    if (state?.from === 'finder' || !hasBeenModified) {
-      history.replaceState(
-        { from: '/cities' },
-        '',
-        location.pathname + location.search
-      );
-      // actualizo el state para que no se vuelva a llamar a fetchCities cuando se usa el buton de volver en city-detail
-      // ya que al volver queda el state de la busqueda anterior y se vuelve a llamar a fetchCities
-      dispatch(fetchCities(searchParam ? { search: searchParam } : {}));
-    }
+    // // Con esta version funciona el scroll restoration al volver a cities-list desde city-detail
+    // let state = location.state as LocationState;
+    // if (state?.from === 'finder' || !hasBeenModified) {
+    //   history.replaceState(
+    //     { from: '/cities' },
+    //     '',
+    //     location.pathname + location.search
+    //   );
+    //   // actualizo el state para que no se vuelva a llamar a fetchCities cuando se usa el buton de volver en city-detail
+    //   // ya que al volver queda el state de la busqueda anterior y se vuelve a llamar a fetchCities
+    //   dispatch(fetchCities(searchParam ? { search: searchParam } : {}));
+    // }
+    dispatch(fetchCities(searchParam ? { search: searchParam } : {}));
   }, [searchParam]);
 
   // const {
