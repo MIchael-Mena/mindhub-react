@@ -34,32 +34,18 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           borderRadius: 3,
         }}
       >
-        {matches ? (
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs
-              orientation="horizontal"
-              centered={true}
-              value={value}
-              onChange={handleChange}
-              aria-label="Itineraries"
-            >
-              {itineraries.map((itinerary, key) => (
-                <Tab
-                  label={itinerary.title}
-                  {...a11yProps(key)}
-                  key={itinerary._id}
-                />
-              ))}
-            </Tabs>
-          </Box>
-        ) : (
+        {
           <Tabs
-            orientation="vertical"
-            variant="scrollable"
+            orientation={matches ? 'horizontal' : 'vertical'}
+            variant={matches ? 'standard' : 'scrollable'}
             value={value}
             onChange={handleChange}
             aria-label="Itineraries"
-            sx={{ borderRight: 1, borderColor: 'divider' }}
+            sx={
+              matches
+                ? { borderBottom: 1, borderColor: 'divider' }
+                : { borderRight: 1, borderColor: 'divider' }
+            }
           >
             {itineraries.map((itinerary, key) => (
               <Tab
@@ -69,7 +55,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
               />
             ))}
           </Tabs>
-        )}
+        }
 
         {itineraries.map((itinerary, key) => (
           <TabPanel value={value} index={key} key={key}>

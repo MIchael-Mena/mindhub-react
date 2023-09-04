@@ -26,7 +26,7 @@ export const ItineraryDetail = ({
       justifyContent={{ xs: 'start', md: 'space-evenly' }}
       alignItems="baseline"
       height="100%"
-      p={2}
+      p={3}
     >
       <Box display="flex" alignItems="center" flexDirection="column">
         <Typography variant="subtitle1" gutterBottom>
