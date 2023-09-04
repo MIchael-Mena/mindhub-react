@@ -30,21 +30,21 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           bgcolor: 'background.paper',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          maxHeight: { xs: 'auto', md: itineraries.length > 2 ? 175 : 150 },
+          height: { xs: 'auto', md: itineraries.length > 2 ? 175 : 150 },
           borderRadius: 3,
         }}
       >
         {
           <Tabs
             orientation={matches ? 'horizontal' : 'vertical'}
-            variant={matches ? 'standard' : 'scrollable'}
+            variant="scrollable"
             value={value}
             onChange={handleChange}
             aria-label="Itineraries"
             sx={
               matches
-                ? { borderBottom: 1, borderColor: 'divider' }
-                : { borderRight: 1, borderColor: 'divider' }
+                ? { borderBottom: 1, borderColor: 'divider', mx: 'auto' }
+                : { borderRight: 1, borderColor: 'divider', my: 'auto' }
             }
           >
             {itineraries.map((itinerary, key) => (

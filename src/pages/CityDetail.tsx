@@ -47,7 +47,14 @@ const CityDetail = () => {
     <Container disableGutters maxWidth="lg" sx={{ alignSelf: 'center' }}>
       <Paper
         elevation={5}
-        sx={{ mt: 4, mb: 2, p: 4, position: 'relative', borderRadius: 5 }}
+        sx={{
+          mt: 4,
+          mb: 2,
+          py: 4,
+          px: { xs: 1, sm: 4 },
+          position: 'relative',
+          borderRadius: 5,
+        }}
       >
         <Fab
           variant="extended"

@@ -10,16 +10,14 @@ export const ItineraryLike = ({ likes }: { likes: number }) => {
 
   return (
     <>
-      <div>
-        <Tooltip title={liked ? 'Unlike' : 'Like'} placement="top" arrow>
-          <IconButton aria-label="likes" onClick={handleLike}>
-            {liked ? <FavoriteSharp /> : <FavoriteBorderSharp />}
-          </IconButton>
-        </Tooltip>
-        <Typography variant="body1" textAlign="center">
-          {liked ? likes + 1 : likes}
-        </Typography>
-      </div>
+      <Tooltip title={liked ? 'Unlike' : 'Like'} placement="top" arrow>
+        <IconButton aria-label="likes" onClick={handleLike}>
+          {liked ? <FavoriteSharp /> : <FavoriteBorderSharp />}
+        </IconButton>
+      </Tooltip>
+      <Typography variant="body1" textAlign="center">
+        {liked ? likes + 1 : likes}
+      </Typography>
     </>
   );
 };

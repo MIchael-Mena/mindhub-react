@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Typography } from '@mui/material';
 import { Itinerary } from '../../models/Itinerary';
 import { stringAvatar } from '../../utils/util';
 import {
@@ -18,63 +18,88 @@ export const ItineraryDetail = ({
   const userNames = `${user.name} ${user.surname}`;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      flexWrap={{ xs: 'wrap', md: 'nowrap' }}
-      gap={{ xs: 6, md: 2 }}
-      justifyContent={{ xs: 'start', md: 'space-evenly' }}
-      alignItems="baseline"
-      height="100%"
-      p={3}
-    >
-      <Box display="flex" alignItems="center" flexDirection="column">
-        <Typography variant="subtitle1" gutterBottom>
-          Published by:
-        </Typography>
-        {user.profilePic ? (
-          <Avatar alt={userNames} src={user.profilePic} />
-        ) : (
-          <Avatar {...stringAvatar(userNames)} />
-        )}
-      </Box>
+    <>
+      <Grid container height="100%" width="100%">
+        <Grid
+          item
+          xs={12}
+          md={3}
+          display="flex"
+          flexDirection={{ xs: 'row', md: 'column' }}
+          justifyContent="space-evenly"
+          alignItems="center"
+          borderRight={{ xs: 0, md: 1 }}
+          borderBottom={{ xs: 1, md: 0 }}
+          borderColor="divider"
+          py={2}
+          mb={0}
+        >
+          <Box display="flex" alignItems="center" flexDirection="row">
+            <Typography variant="subtitle1" gutterBottom mx={1}>
+              By:
+            </Typography>
+            {user.profilePic ? (
+              <Avatar alt={userNames} src={user.profilePic} />
+            ) : (
+              <Avatar {...stringAvatar(userNames)} />
+            )}
+          </Box>
 
-      <ItineraryLike likes={likes} />
+          <Box display="flex" alignItems="center" flexDirection="row">
+            <ItineraryLike likes={likes} />
+          </Box>
+        </Grid>
 
-      <div>
-        <Typography variant="subtitle1" gutterBottom>
-          Duration:
-        </Typography>
-        <Box display="flex" alignItems="center">
-          <TimerSharp />
-          <Typography variant="body1" mx={1}>
-            {duration / 60} hours
-          </Typography>
-        </Box>
-      </div>
+        <Grid
+          item
+          xs={12}
+          md={9}
+          display="flex"
+          flexDirection="row"
+          flexWrap={{ xs: 'wrap', md: 'nowrap' }}
+          gap={{ xs: 4, md: 2 }}
+          alignItems="center"
+          justifyContent="space-evenly"
+          height="100%"
+          p={2}
+          mb={{ xs: 1, md: 0 }}
+        >
+          <div>
+            <Typography variant="subtitle1" gutterBottom>
+              Duration:
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <TimerSharp />
+              <Typography variant="body1" mx={1}>
+                {duration / 60} hours
+              </Typography>
+            </Box>
+          </div>
 
-      <Box>
-        <Typography variant="subtitle1" gutterBottom>
-          Price:
-        </Typography>
-        {Array.from(Array(price), (_, i) => (
-          <AirplaneTicketRounded key={i} fontSize="small" />
-        ))}
-        {Array.from(Array(5 - price), (_, i) => (
-          <AirplaneTicketOutlined key={i} fontSize="small" />
-        ))}
-      </Box>
+          <div>
+            <Typography variant="subtitle1" gutterBottom>
+              Price:
+            </Typography>
+            {Array.from(Array(price), (_, i) => (
+              <AirplaneTicketRounded key={i} fontSize="small" />
+            ))}
+            {Array.from(Array(5 - price), (_, i) => (
+              <AirplaneTicketOutlined key={i} fontSize="small" />
+            ))}
+          </div>
 
-      <div>
-        <Typography variant="subtitle1" gutterBottom>
-          Tags:
-        </Typography>
-        {hashtags.map((hashtag, key) => (
-          <Typography variant="caption" key={key}>
-            {'#' + hashtag + ' '}
-          </Typography>
-        ))}
-      </div>
-    </Box>
+          <div>
+            <Typography variant="subtitle1" gutterBottom>
+              Tags:
+            </Typography>
+            {hashtags.map((hashtag, key) => (
+              <Typography variant="caption" key={key}>
+                {'#' + hashtag + ' '}
+              </Typography>
+            ))}
+          </div>
+        </Grid>
+      </Grid>
+    </>
   );
 };
