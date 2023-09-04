@@ -84,7 +84,8 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
             mx: 'auto',
             position: 'absolute',
             bottom: 10,
-            left: '45%',
+            left: '50%',
+            transform: 'translateX(-50%)',
             transition: 'opacity 0.4s ease-in-out',
           }}
           size="small"
