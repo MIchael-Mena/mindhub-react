@@ -59,6 +59,7 @@ export const CitiesList = () => {
         sx={{
           display: 'flex',
           alignContent: 'center',
+          justifyContent: 'center',
           flexWrap: 'wrap',
           gap: 3,
           marginTop: 4,

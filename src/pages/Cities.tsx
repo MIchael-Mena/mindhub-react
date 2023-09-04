@@ -19,7 +19,7 @@ const Cities = () => {
           pb: 3,
         }}
       >
-        <Hero imageHero={heroImage} sizeImage="74%">
+        <Hero imageHero={heroImage} size="74%">
           <Typography variant="h1">Cities</Typography>
           <Typography variant="h5" color="success.main">
             Collection of the most beautiful places and experiences in the world
@@ -27,7 +27,7 @@ const Cities = () => {
           </Typography>
         </Hero>
 
-        <Divider sx={{ width: '100%', mt: 3, mb: 3 }} />
+        <Divider sx={{ width: '90%', mt: 3, mb: 3 }} />
 
         <Finder />
 

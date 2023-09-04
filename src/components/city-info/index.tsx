@@ -1,6 +1,7 @@
 import { FlagCircleOutlined, PlaceTwoTone } from '@mui/icons-material';
 import { Box, Fab, Grid, Rating, Typography } from '@mui/material';
 import { City } from '../../models/City';
+import TitleUnderlined from '../styled/TitleUnderlined';
 
 export const CityInfo = (city: City) => {
   return (
@@ -17,20 +18,13 @@ export const CityInfo = (city: City) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Box
-          display="inline-flex"
-          gap={1}
-          sx={{
-            borderBottom: '3px solid #ccc',
-            borderRadius: 5,
-            px: 2,
-          }}
-        >
+        <TitleUnderlined display="inline-flex" gap={1} px={2}>
           <FlagCircleOutlined color="primary" fontSize="large" />
           <Typography variant="h4" gutterBottom>
             {city.country}
           </Typography>
-        </Box>
+        </TitleUnderlined>
+
         <Box display="inline-flex" gap={1} alignItems="center">
           <Fab variant="circular" color="primary" size="medium">
             <PlaceTwoTone color="secondary" fontSize="large" />
@@ -46,7 +40,7 @@ export const CityInfo = (city: City) => {
           Rating:
         </Typography>
         <Rating
-          name="customized-10"
+          name="city-rating"
           defaultValue={(city.rating / 10) * 5}
           max={5}
           precision={0.5}

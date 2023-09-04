@@ -1,7 +1,7 @@
 import { Itinerary } from './Itinerary';
 
 export interface City {
-  _id?: string;
+  _id: string;
   name: string;
   description: string;
   country: string;

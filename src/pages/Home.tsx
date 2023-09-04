@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <Container disableGutters maxWidth="lg">
-      <Hero imageHero={imageHero} sizeImage="65%">
+      <Hero imageHero={imageHero} size="65%">
         <Logo sizeXs={'medium'} sizeSm={'large'} />
         <Typography
           variant="h5"
@@ -73,7 +73,7 @@ const Home = () => {
         </Grid>
       </Grid>
 
-      <Divider />
+      <Divider variant="middle" />
 
       <CitysCarousel />
     </Container>

@@ -1,10 +1,10 @@
-export interface Itinerary extends Document {
-  _id?: string;
+export interface Itinerary {
+  _id: string;
   title: string;
   duration: number;
   price: number;
   _city: string;
-  user: string;
+  user: { name: string; surname: string; profilePic: string };
   likes: number;
   hashtags: string[];
   activities?: string[];

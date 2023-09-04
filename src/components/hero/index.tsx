@@ -4,13 +4,13 @@ import { ReactNode } from 'react';
 interface HeroProps {
   imageHero: string;
   children: ReactNode;
-  // sizeImage debe ser un porcetanje de 0 a 100 ajustar de acuerdo a la relacion aspecto de la imagen
-  sizeImage?: string;
+  // size debe ser un porcetanje de 0 a 100 ajustar de acuerdo a la relacion aspecto de la imagen
+  size: string;
 }
 
-const Hero = ({ imageHero, children, sizeImage = '75%' }: HeroProps) => {
-  const isValidSize = /^([0-9]{1,2}|100)%$/.test(sizeImage);
-  const imageSize = isValidSize ? sizeImage : '75%';
+const Hero = ({ imageHero, children, size = 'auto' }: HeroProps) => {
+  // const isValidSize = /^([0-9]{1,2}|100)%$/.test(size); // Verificar si es un % valido
+  // const imageSize = isValidSize ? size : 'auto';
 
   return (
     <>
@@ -19,8 +19,8 @@ const Hero = ({ imageHero, children, sizeImage = '75%' }: HeroProps) => {
         sx={{
           position: 'relative',
           width: '100%',
-          // height: '0', // Inicialmente, alto 0 para mostrar la imagen completa
-          paddingBottom: imageSize, // Ratio de aspecto de la imagen (4:3)
+          paddingBottom: size,
+          // minHeight: height,
           overflow: 'hidden',
           transition: 'all 0.3s ease-in-out',
         }}
@@ -32,11 +32,11 @@ const Hero = ({ imageHero, children, sizeImage = '75%' }: HeroProps) => {
             // filter: 'brightness(0.5)',
             filter: 'blur(2px)',
             position: 'absolute',
-            top: '0',
-            left: '0',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'contain',
           }}
         />
         <Box

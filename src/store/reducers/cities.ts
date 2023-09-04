@@ -30,7 +30,6 @@ const citiesState: {
     hasBeenModified: false,
   },
   citySelected: {
-    // data: {} as City,
     loading: true,
     error: null,
     data: {} as City,
