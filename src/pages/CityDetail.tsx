@@ -9,6 +9,7 @@ import {
   Fab,
   Grid,
   Paper,
+  Typography,
 } from '@mui/material';
 import { FailedRequest } from '../components/failed-request';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,7 @@ import { fetchCitySelectedById } from '../store/actions/cities';
 import { useEffect } from 'react';
 import { CardNotFound } from '../components/card-city/CardNotFound';
 import { Itineraries } from '../components/itineraries';
+import TitleUnderlined from '../components/styled/TitleUnderlined';
 
 const CityDetail = () => {
   const { id } = useParams();
@@ -32,6 +34,7 @@ const CityDetail = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // En caso de que el usuario ingrese a la url directamente
     if (id && city && city._id !== id) {
       dispatch(fetchCitySelectedById({ id }));
     }
@@ -103,11 +106,20 @@ const CityDetail = () => {
 
             <CityAttributes {...city} />
 
-            {city.itineraries!.length > 0 && (
-              <Grid item xs={12}>
+            <Grid item xs={12}>
+              <TitleUnderlined px={2} display="inline-flex" mb={2}>
+                <Typography variant="h4" gutterBottom>
+                  Itineraries
+                </Typography>
+              </TitleUnderlined>
+              {(city.itineraries! && city.itineraries.length) > 0 ? (
                 <Itineraries itineraries={city.itineraries!} />
-              </Grid>
-            )}
+              ) : (
+                <Box display="flex" justifyContent="center">
+                  <CardNotFound message="No itineraries found for this city." />
+                </Box>
+              )}
+            </Grid>
           </Grid>
         )}
       </Paper>

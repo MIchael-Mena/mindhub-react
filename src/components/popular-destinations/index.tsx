@@ -4,7 +4,14 @@ import { City } from '../../models/City';
 
 const PopularDestinations = ({ destinations }: { destinations: City[] }) => {
   return (
-    <Grid container rowGap={1} spacing={{ xs: 1, sm: 4 }} m="0" height={'100%'}>
+    <Grid
+      container
+      rowGap={{ xs: 0, sm: 1 }}
+      spacing={{ xs: 1, sm: 4 }}
+      m="0"
+      height={'100%'}
+      rowSpacing={{ xs: 4 }}
+    >
       {destinations.map((destination, i) => (
         <Grid item xs={6} key={i}>
           <CardPopularCity {...destination} />

@@ -1,41 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import { ChangeEvent, useState, FormEvent } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import './Finder.css';
 
 const Finder = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
-  const searchParam = queryParams.get('search') || '';
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParam = searchParams.get('search') || '';
   const [searchQuery, setSearchQuery] = useState(searchParam);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchQuery === searchParam) return; // si no hay cambios, no hago nada
     if (!searchQuery) {
-      queryParams.delete('search');
+      setSearchParams(
+        (params: URLSearchParams) => {
+          params.delete('search');
+          return params;
+        },
+        { preventScrollReset: true }
+      );
     } else {
-      queryParams.set('search', searchQuery);
+      setSearchParams(
+        (params: URLSearchParams) => {
+          params.set('search', searchQuery);
+          return params;
+        },
+        { preventScrollReset: true }
+      );
     }
-
-    navigate(
-      { search: queryParams.toString() }, // navigate por default a la misma ruta pero con los nuevos queryParams
-      {
-        preventScrollReset: true,
-        state: { from: 'finder' },
-      }
-    );
   };
-
-  useEffect(() => {
-    setSearchQuery(searchParam);
-  }, [searchParam]);
 
   return (
     <>

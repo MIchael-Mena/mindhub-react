@@ -2,6 +2,7 @@ import { Container, Divider, Typography } from '@mui/material';
 import Finder from '../components/finder';
 import Hero from '../components/hero';
 import { CitiesList } from '../components/cities-list';
+import { PaginationControls } from '../components/pagination-controls';
 
 const Cities = () => {
   const heroImage = 'src/assets/images/city-bg.png';
@@ -32,6 +33,8 @@ const Cities = () => {
         <Finder />
 
         <CitiesList />
+
+        <PaginationControls />
       </Container>
     </>
   );

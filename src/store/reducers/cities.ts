@@ -13,7 +13,7 @@ type GloblaState = {
 };
 
 const citiesState: {
-  cities: StatusResponse<City[]> & GloblaState;
+  cities: StatusResponse<City[]> & GloblaState & { totalPages: number };
   popularCities: StatusResponse<City[]> & GloblaState;
   citySelected: StatusResponse<City> & GloblaState;
 } = {
@@ -27,6 +27,7 @@ const citiesState: {
     loading: true,
     error: null,
     data: [],
+    totalPages: 0,
     hasBeenModified: false,
   },
   citySelected: {
@@ -62,9 +63,10 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       state.cities.loading = true;
     })
     .addCase(fetchCities.fulfilled, (state, action) => {
+      state.cities.hasBeenModified = true;
       state.cities.loading = false;
       state.cities.data = action.payload.cities;
-      state.cities.hasBeenModified = true;
+      state.cities.totalPages = action.payload.totalPages;
     })
     .addCase(fetchCities.rejected, (state, action) => {
       state.cities.loading = false;

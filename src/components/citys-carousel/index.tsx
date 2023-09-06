@@ -150,7 +150,7 @@ const CitysCarousel = () => {
           ) : (
             groupedCities.map((cities, i) => (
               <Paper
-                sx={{ p: { xs: 1, sm: 4 } }}
+                sx={{ p: { xs: 1 }, px: { sm: 4 }, py: { sm: 2 } }}
                 elevation={3}
                 key={i}
                 className="common-paper"

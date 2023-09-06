@@ -12,7 +12,7 @@ const CardPopularCity = (city: City) => {
   const currentPath = window.location.pathname;
 
   return (
-    <Box className="card-destination" mt={{ xs: 3, sm: 0 }}>
+    <Box className="card-destination">
       <Box
         position={'absolute'}
         borderRadius={'5px'}

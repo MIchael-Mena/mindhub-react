@@ -2,6 +2,11 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { City } from '../../models/City';
 import { ApiService } from '../../services/api.service';
 
+interface CityGetResponse {
+  cities: City[];
+  totalPages: number;
+}
+
 const updateCitySelected = createAction<City>('updateCitySelected'); // Devuelve un objeto con type y payload
 
 const fetchCitySelectedById = createAsyncThunk(
@@ -18,10 +23,20 @@ const fetchCitySelectedById = createAsyncThunk(
 
 const fetchCities = createAsyncThunk(
   'fetchCities',
-  async (payload: { search?: string }) => {
+  async (payload: { [key: string]: string | number | boolean } = {}, api) => {
     try {
-      const cities = await ApiService.getData<City[]>('/city', payload);
-      return { cities };
+      // console.log(
+      //   'state',
+      //   (api.getState() as RootState).citiesReducer.cities.hasBeenModified
+      // );
+      const cityGetResponse = await ApiService.getData<CityGetResponse>(
+        '/city',
+        {
+          popItineraries: true,
+          ...payload,
+        }
+      );
+      return cityGetResponse;
     } catch (error) {
       throw error;
     }
@@ -32,10 +47,11 @@ const fetchPopularCities = createAsyncThunk(
   'fetchPopularCities',
   async (payload: { limit: number }) => {
     try {
-      const cities = await ApiService.getData<City[]>('/city', {
+      const { cities } = await ApiService.getData<CityGetResponse>('/city', {
         limit: payload.limit,
         sort: 'rating',
         order: 'desc',
+        popItineraries: true,
       });
       return { cities };
     } catch (error) {

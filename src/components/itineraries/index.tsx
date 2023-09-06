@@ -1,15 +1,15 @@
-import { Box, Fab, Tab, Tabs, Typography, useMediaQuery } from '@mui/material';
+import { Box, Fab, Tab, Tabs, useMediaQuery } from '@mui/material';
 import { Itinerary } from '../../models/Itinerary';
 import { useState } from 'react';
 import { ItineraryDetail } from '../itinerary';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import TitleUnderlined from '../styled/TitleUnderlined';
 
 interface ItinerariesProps {
   itineraries: Itinerary[];
 }
 
-// Cantidad de elementos en itineraries en relacion con el maximo alto del contenedor 2 = 100px , 3 = 150px y mas de eso 175px
+// Calculo de la altura del contenedor cuando el Tabs es vertical (n cantidad de itinerarios)
+// n = pixeles:  2 = 100px , 3 = 150px y para mas itinerarios se usa 175px
 export const Itineraries = ({ itineraries }: ItinerariesProps) => {
   const [value, setValue] = useState(0);
   const matches = useMediaQuery('(max-width:900px)');
@@ -19,11 +19,6 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
   };
   return (
     <>
-      <TitleUnderlined px={2} display="inline-flex" mb={2}>
-        <Typography variant="h4" gutterBottom>
-          Itineraries
-        </Typography>
-      </TitleUnderlined>
       <Box
         sx={{
           flexGrow: 1,
@@ -58,11 +53,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           }
         >
           {itineraries.map((itinerary, key) => (
-            <Tab
-              label={itinerary.title}
-              {...a11yProps(key)}
-              key={itinerary._id}
-            />
+            <Tab label={itinerary.title} {...a11yProps(key)} key={key} />
           ))}
         </Tabs>
 
@@ -94,7 +85,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
 };
 
 interface TabPanelProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   index: number;
   value: number;
 }

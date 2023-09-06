@@ -12,7 +12,7 @@ export class ApiService {
 
   static async getData<T>(
     endPoint: string,
-    queryParams: { [key: string]: string | number } = {}
+    queryParams: { [key: string]: string | number | boolean } = {}
   ): Promise<T> {
     try {
       const response = await this.instanceAxios.get<ApiResponse<T>>(endPoint, {
