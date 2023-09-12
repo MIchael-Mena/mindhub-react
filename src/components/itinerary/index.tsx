@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Tooltip, Typography } from '@mui/material';
 import { Itinerary } from '../../models/Itinerary';
 import { stringAvatar } from '../../utils/util';
 import {
@@ -19,7 +19,7 @@ export const ItineraryDetail = ({
 
   return (
     <>
-      <Grid container height="100%" width="100%">
+      <Grid container height="100%" width="100%" component="section">
         <Grid
           item
           xs={12}
@@ -38,11 +38,13 @@ export const ItineraryDetail = ({
             <Typography variant="subtitle1" gutterBottom mx={1}>
               By:
             </Typography>
-            {user.profilePic ? (
-              <Avatar alt={userNames} src={user.profilePic} />
-            ) : (
-              <Avatar {...stringAvatar(userNames)} />
-            )}
+            <Tooltip title={userNames} placement="top" arrow>
+              {user.profilePic ? (
+                <Avatar alt={userNames} src={user.profilePic} />
+              ) : (
+                <Avatar {...stringAvatar(userNames)} />
+              )}
+            </Tooltip>
           </Box>
 
           <Box display="flex" alignItems="center" flexDirection="row">
@@ -60,7 +62,7 @@ export const ItineraryDetail = ({
           gap={{ xs: 4, md: 2 }}
           alignItems="center"
           justifyContent="space-evenly"
-          height="100%"
+          // height="100%"
           p={2}
           mb={{ xs: 1, md: 0 }}
         >

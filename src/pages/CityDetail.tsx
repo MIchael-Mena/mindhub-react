@@ -61,7 +61,7 @@ const CityDetail = () => {
       >
         <Fab
           variant="extended"
-          color="primary"
+          color="secondary"
           size="medium"
           onClick={() => {
             navigate(-1);
@@ -107,7 +107,7 @@ const CityDetail = () => {
             <CityAttributes {...city} />
 
             <Grid item xs={12}>
-              <TitleUnderlined px={2} display="inline-flex" mb={2}>
+              <TitleUnderlined pr={2} pl={1} display="inline-flex" mb={2}>
                 <Typography variant="h4" gutterBottom>
                   Itineraries
                 </Typography>

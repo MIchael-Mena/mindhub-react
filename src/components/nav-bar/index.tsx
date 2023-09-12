@@ -1,11 +1,12 @@
 import { AppBar, Toolbar, IconButton, Button, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import UserIcon from '@mui/icons-material/AccountCircle';
+
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../logo';
 import './NavBar.css';
 import useStyles from '../../hooks/useStyles';
 import { NavItem } from '../../models/NavItem';
+import UserAccesssModal from '../user-access-modal';
 
 interface NavBarProps {
   navItems: NavItem[];
@@ -44,7 +45,7 @@ const NavBar = ({ navItems, handleDrawerToggle, minHeight }: NavBarProps) => {
 
           <Logo isVisibleInXs={false} sizeSm="small" />
 
-          <Box>
+          <div>
             <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
               {navItems.map((item, key) => (
                 <NavLink
@@ -67,11 +68,9 @@ const NavBar = ({ navItems, handleDrawerToggle, minHeight }: NavBarProps) => {
                 </NavLink>
               ))}
             </Box>
-            <Button variant="contained" color="secondary" sx={{ ml: 1 }}>
-              <UserIcon sx={{ mr: 1 }} />
-              Login
-            </Button>
-          </Box>
+
+            <UserAccesssModal />
+          </div>
         </Toolbar>
       </AppBar>
       <Toolbar sx={{ minHeight: minHeight }} />

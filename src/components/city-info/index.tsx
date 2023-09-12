@@ -18,7 +18,7 @@ export const CityInfo = (city: City) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <TitleUnderlined display="inline-flex" gap={1} px={2}>
+        <TitleUnderlined display="inline-flex" gap={1} pr={2} pl={1}>
           <FlagCircleOutlined color="primary" fontSize="large" />
           <Typography variant="h4" gutterBottom>
             {city.country}

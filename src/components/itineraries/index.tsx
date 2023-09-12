@@ -1,6 +1,6 @@
-import { Box, Fab, Tab, Tabs, useMediaQuery } from '@mui/material';
+import { Box, Fab, Slide, Tab, Tabs, useMediaQuery } from '@mui/material';
 import { Itinerary } from '../../models/Itinerary';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ItineraryDetail } from '../itinerary';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 
@@ -11,11 +11,12 @@ interface ItinerariesProps {
 // Calculo de la altura del contenedor cuando el Tabs es vertical (n cantidad de itinerarios)
 // n = pixeles:  2 = 100px , 3 = 150px y para mas itinerarios se usa 175px
 export const Itineraries = ({ itineraries }: ItinerariesProps) => {
-  const [value, setValue] = useState(0);
+  const containerRef = useRef<HTMLElement>(null);
+  const [activeItinerary, setActiveItinerary] = useState(0);
   const matches = useMediaQuery('(max-width:900px)');
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setActiveItinerary(newValue);
   };
   return (
     <>
@@ -25,17 +26,18 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           bgcolor: 'background.paper',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          height: { xs: 'auto', md: itineraries.length > 2 ? 175 : 150 },
+          height: { xs: '250px', md: itineraries.length > 2 ? 175 : 150 },
           borderRadius: 3,
           overflow: 'hidden',
         }}
+        ref={containerRef}
       >
         <Tabs
           orientation={matches ? 'horizontal' : 'vertical'}
           variant="scrollable"
           // scrollButtons="auto"
           allowScrollButtonsMobile
-          value={value}
+          value={activeItinerary}
           onChange={handleChange}
           aria-label="Itineraries"
           sx={
@@ -49,6 +51,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
                   borderRight: 1,
                   borderColor: 'divider',
                   my: itineraries.length <= 2 ? 'auto' : 0,
+                  width: 300,
                 }
           }
         >
@@ -57,11 +60,30 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           ))}
         </Tabs>
 
-        {itineraries.map((itinerary, key) => (
-          <TabPanel value={value} index={key} key={key}>
+        {/* Agrege un div extra para que el componente Slide pueda tener la animacion correcta */}
+        <div style={{ height: '100%', width: '100%' }}>
+          {itineraries.map((itinerary, currentItinerary) => (
+            <Slide
+              key={currentItinerary}
+              direction={matches ? 'up' : 'left'}
+              in={activeItinerary === currentItinerary}
+              mountOnEnter
+              unmountOnExit
+              timeout={{ enter: 500, exit: 250 }}
+            >
+              {/* Slide requiere que el componente hijo tenga la propiedad ref */}
+              <div style={{ height: '100%', width: '100%' }}>
+                <ItineraryDetail {...itinerary} />
+              </div>
+            </Slide>
+          ))}
+        </div>
+
+        {/* {itineraries.map((itinerary, key) => (
+          <TabPanel value={activeItinerary} index={key} key={key}>
             <ItineraryDetail {...itinerary} />
           </TabPanel>
-        ))}
+        ))} */}
 
         <Fab
           color="primary"
@@ -84,28 +106,28 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
   );
 };
 
-interface TabPanelProps {
-  children: React.ReactNode;
-  index: number;
-  value: number;
-}
+// interface TabPanelProps {
+//   children: React.ReactNode;
+//   index: number;
+//   value: number;
+// }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+// function TabPanel(props: TabPanelProps) {
+//   const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      style={{ width: '100%', height: 'inherit' }}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-}
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`vertical-tabpanel-${index}`}
+//       aria-labelledby={`vertical-tab-${index}`}
+//       style={{ width: '100%', height: 'inherit' }}
+//       {...other}
+//     >
+//       {value === index && children}
+//     </div>
+//   );
+// }
 
 function a11yProps(index: number) {
   return {
