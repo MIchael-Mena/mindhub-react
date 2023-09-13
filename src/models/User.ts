@@ -4,9 +4,9 @@ export interface User {
   email: string;
   name: string;
   surname: string;
-  country: string;
-  age: number;
   profilePic: string;
+  country?: string;
+  birthDate?: string;
   favouritesCities?: string[];
   favouriteActivities?: string[];
   favouriteItineraries?: string[];

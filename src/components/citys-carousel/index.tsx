@@ -83,7 +83,6 @@ const CitysCarousel = () => {
       >
         <Carousel
           height={'700px'}
-          autoPlay={false}
           navButtonsAlwaysVisible
           duration={timeAnimation}
           animation="slide"

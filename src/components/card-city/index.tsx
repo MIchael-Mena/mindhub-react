@@ -42,6 +42,7 @@ const CardCity = ({ city }: CardCityProps) => {
       >
         <CardMedia
           component="img"
+          loading="lazy"
           height="140"
           sx={{ border: '1px solid #ccc', borderRadius: '15px 15px 0 0' }}
           image={city.images[0]}

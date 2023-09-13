@@ -4,30 +4,41 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import UserIcon from '@mui/icons-material/AccountCircle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignIn from '../sign-in';
+import { SignUp } from '../sign-up';
 
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  maxWidth: 400,
-  minWidth: 350,
+  maxWidth: 'auto',
   borderRadius: 5,
   bgcolor: 'background.paper',
   border: '2px solid',
-  // borderLeft: '2px solid',
-  // borderBottom: '2px solid',
   borderColor: 'secondary.main',
   boxShadow: 24,
-  p: 4,
 };
 
 export default function UserAccesssModal() {
+  const animationDuration = 500;
   const [open, setOpen] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(true);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const toggleComponent = () => {
+    setShowSignIn(!showSignIn);
+  };
+
+  useEffect(() => {
+    if (open) {
+      // Si el modal está abierto, establece showSignIn en true cada vez que se renderiza UserAccesssModal.
+      setShowSignIn(true);
+    }
+  }, [open]);
 
   return (
     <>
@@ -42,27 +53,25 @@ export default function UserAccesssModal() {
       </Button>
 
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby="user-access-modal"
+        aria-describedby="user-access-modal"
         open={open}
         onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {
-            timeout: 500,
+            timeout: animationDuration, // Duracion de la animacion del backdrop
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={open} timeout={animationDuration}>
           <Box sx={style}>
-            <SignIn />
-            {/* <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography> */}
+            {showSignIn ? (
+              <SignIn onSignUpClick={toggleComponent} />
+            ) : (
+              <SignUp onSignInClick={toggleComponent} />
+            )}
           </Box>
         </Fade>
       </Modal>

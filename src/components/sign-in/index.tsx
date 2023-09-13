@@ -1,32 +1,16 @@
-// import React, { useState } from 'react';
-import { TextField, Button, Typography, Link } from '@mui/material';
+import { Button, Typography, Link, Box, Grid } from '@mui/material';
 import { Email } from '@mui/icons-material';
 import { InputPassword } from '../input-password';
 import { Controller, useForm } from 'react-hook-form';
+import { FormInputText } from '../form-input-text';
+import { rules } from '../../models/rulesValidation';
 
 interface RegisterForm {
   email: string;
   password: string;
 }
 
-const rules = {
-  email: {
-    required: 'Email is required',
-    pattern: {
-      value: /\S+@\S+\.\S+/,
-      message: 'Entered value does not match email format',
-    },
-  },
-  password: {
-    required: 'Password is required',
-    minLength: {
-      value: 6,
-      message: 'Password must have at least 6 characters',
-    },
-  },
-};
-
-export const SignIn = () => {
+export const SignIn = ({ onSignUpClick }: { onSignUpClick: () => void }) => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       email: '',
@@ -41,70 +25,65 @@ export const SignIn = () => {
   const handleGoogleSignIn = () => {};
 
   return (
-    <form onSubmit={handleSubmit(handleRegister)}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Welcome!
-      </Typography>
+    <Grid
+      container
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit(handleRegister)}
+      sx={{ maxWidth: 400, minWidth: 350, p: { xs: 2, md: 4 } }}
+    >
+      <Grid item xs={12}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Welcome!
+        </Typography>
+      </Grid>
 
-      <Controller
-        name="email"
-        control={control}
-        rules={rules.email}
-        render={({
-          field: { onChange, value },
-          fieldState: { error },
-          formState,
-        }) => (
-          <TextField
-            error={!!error}
-            helperText={error ? error.message : null}
-            label="Email"
-            variant="outlined"
-            fullWidth
-            value={value}
-            onChange={onChange}
-            margin="normal"
-            InputProps={{
-              startAdornment: <Email color="action" sx={{ mr: 2 }} />,
-            }}
-          />
-        )}
-      />
-      <Controller
-        name="password"
-        control={control}
-        rules={rules.password}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <InputPassword value={value} onChange={onChange} error={error} />
-        )}
-      />
+      <Grid item xs={12}>
+        <FormInputText
+          name="email"
+          label="Email"
+          control={control}
+          rules={rules.email}
+          InputProps={{
+            startAdornment: <Email color="action" sx={{ mr: 2 }} />,
+          }}
+        />
+      </Grid>
 
-      <Button
-        sx={{ my: 3 }}
-        variant="contained"
-        color="primary"
-        fullWidth
-        onClick={handleSubmit(handleRegister)}
-      >
-        Sign In
-      </Button>
-      <Button
-        variant="outlined"
-        color="primary"
-        fullWidth
-        onClick={handleGoogleSignIn}
-        sx={{ mt: 3 }}
-      >
-        Sign In with Google
-      </Button>
-      <Typography align="center" style={{ marginTop: '1rem' }}>
-        You do not have an account? <Link href="#">Sign Up</Link>
-        {/* Do you already have an account? <Link href="#">Sign In</Link> */}
-      </Typography>
-      <Typography align="center" mt={1}>
-        <Link href="#">Forgot password?</Link>
-      </Typography>
-    </form>
+      <Grid item xs={12}>
+        <Controller
+          name="password"
+          control={control}
+          rules={rules.password}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <InputPassword value={value} onChange={onChange} error={error} />
+          )}
+        />
+      </Grid>
+
+      <Grid item xs={12} display="flex" flexDirection="column" gap={2} mt={2}>
+        <Button variant="contained" color="primary" type="submit">
+          Sign In
+        </Button>
+
+        <Button variant="outlined" color="primary" onClick={handleGoogleSignIn}>
+          Sign In with Google
+        </Button>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Typography align="center">
+          You do not have an account?
+          <Link onClick={onSignUpClick} sx={{ cursor: 'pointer', ml: 1 }}>
+            Sign Up
+          </Link>
+        </Typography>
+
+        <Typography align="center">
+          <Link href="#">Forgot password?</Link>
+        </Typography>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -14,12 +14,14 @@ interface InputPasswordProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error: FieldError | undefined;
+  useIcon?: boolean;
 }
 
 export const InputPassword = ({
   value,
   onChange,
   error,
+  useIcon = true,
 }: InputPasswordProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,9 +42,11 @@ export const InputPassword = ({
           value={value}
           type={showPassword ? 'text' : 'password'}
           startAdornment={
-            <InputAdornment position="start">
-              <Lock color="action" sx={{ mr: 1 }} />
-            </InputAdornment>
+            useIcon && (
+              <InputAdornment position="start">
+                <Lock color="action" sx={{ mr: 1 }} />
+              </InputAdornment>
+            )
           }
           endAdornment={
             <InputAdornment position="end">
@@ -61,5 +65,3 @@ export const InputPassword = ({
     </>
   );
 };
-
-// <FormHelperText error>{errors.password.required}</FormHelperText>
