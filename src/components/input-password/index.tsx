@@ -33,7 +33,7 @@ export const InputPassword = ({
 
   return (
     <>
-      <FormControl variant="outlined" margin="normal" fullWidth>
+      <FormControl variant="outlined" margin="normal" fullWidth required>
         <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
         <OutlinedInput
           label="Password"

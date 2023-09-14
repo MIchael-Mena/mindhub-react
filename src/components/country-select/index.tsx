@@ -4,6 +4,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { CountryType, countries } from '../../models/CountryType';
 import { FieldError } from 'react-hook-form';
 
+// TODO: Refactorizar para que se pueda usar en cualquier formulario
+
 interface CountrySelectProps {
   width?: string;
   value?: string;
@@ -17,7 +19,6 @@ export default function CountrySelect({
 }: CountrySelectProps) {
   return (
     <Autocomplete
-      id="country-select"
       sx={{ width: width }}
       // inputValue={value}
       onChange={(_event, newValue: CountryType | null) => {

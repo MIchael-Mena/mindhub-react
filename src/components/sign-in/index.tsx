@@ -1,25 +1,38 @@
-import { Button, Typography, Link, Box, Grid } from '@mui/material';
+import { Button, Typography, Link, Grid } from '@mui/material';
 import { Email } from '@mui/icons-material';
 import { InputPassword } from '../input-password';
 import { Controller, useForm } from 'react-hook-form';
 import { FormInputText } from '../form-input-text';
 import { rules } from '../../models/rulesValidation';
+import { login } from '../../store/actions/user';
+import { useAppDispatch } from '../../store/hooks';
+import { LoginForm } from '../../models/LoginForm';
+import { ApiResponse } from '../../models/ApiResponse';
+import { User } from '../../models/User';
 
-interface RegisterForm {
-  email: string;
-  password: string;
+interface SignInProps {
+  onSignUpClick: () => void;
+  onClose: () => void;
 }
 
-export const SignIn = ({ onSignUpClick }: { onSignUpClick: () => void }) => {
+export const SignIn = ({ onSignUpClick, onClose }: SignInProps) => {
+  const dispatch = useAppDispatch();
   const { control, handleSubmit } = useForm({
     defaultValues: {
       email: '',
       password: '',
-    } as RegisterForm,
+    } as LoginForm,
   });
 
-  const handleRegister = (data: RegisterForm) => {
-    console.log('Registrando usuario', data);
+  const handleLogin = (data: LoginForm) => {
+    dispatch(login(data)).then((res) => {
+      let resPayload = res.payload as ApiResponse<User>;
+      if (resPayload.success) {
+        onClose();
+      } else {
+        alert(resPayload.message);
+      }
+    });
   };
 
   const handleGoogleSignIn = () => {};
@@ -29,7 +42,7 @@ export const SignIn = ({ onSignUpClick }: { onSignUpClick: () => void }) => {
       container
       spacing={2}
       component="form"
-      onSubmit={handleSubmit(handleRegister)}
+      onSubmit={handleSubmit(handleLogin)}
       sx={{ maxWidth: 400, minWidth: 350, p: { xs: 2, md: 4 } }}
     >
       <Grid item xs={12}>
@@ -44,6 +57,7 @@ export const SignIn = ({ onSignUpClick }: { onSignUpClick: () => void }) => {
           label="Email"
           control={control}
           rules={rules.email}
+          required
           InputProps={{
             startAdornment: <Email color="action" sx={{ mr: 2 }} />,
           }}

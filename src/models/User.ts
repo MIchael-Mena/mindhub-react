@@ -5,8 +5,8 @@ export interface User {
   name: string;
   surname: string;
   profilePic: string;
-  country?: string;
-  birthDate?: string;
+  country?: string | null;
+  birthDate?: string | null;
   favouritesCities?: string[];
   favouriteActivities?: string[];
   favouriteItineraries?: string[];

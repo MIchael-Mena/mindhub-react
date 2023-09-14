@@ -25,6 +25,7 @@ const fetchCities = createAsyncThunk(
   'fetchCities',
   async (payload: { [key: string]: string | number | boolean } = {}, api) => {
     try {
+      // Opcion para poder acceder a un estado previo
       // console.log(
       //   'state',
       //   (api.getState() as RootState).citiesReducer.cities.hasBeenModified

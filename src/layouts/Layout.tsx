@@ -1,7 +1,10 @@
 import { Box } from '@mui/material';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
+import { useEffect } from 'react';
+import { authenticate } from '../store/actions/user';
 
 const Layout = () => {
   const componentSizes = {
@@ -9,6 +12,17 @@ const Layout = () => {
     main: 'calc(100vh - 140px)',
     footer: '70px',
   };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token)
+      dispatch(authenticate(token)).then((res) => {
+        // Si es undefined, falló la autenticación (token expirado, etc.)
+        if (res.payload === 'Unauthorized') navigate('/home');
+      });
+  }, []);
 
   return (
     <>

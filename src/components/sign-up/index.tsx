@@ -1,26 +1,46 @@
-import { Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import { DatePickerControlled } from '../date-picker-controlled';
 import CountrySelect from '../country-select';
 import { Controller, useForm } from 'react-hook-form';
 import { User } from '../../models/User';
 import { FormInputText } from '../form-input-text';
 import { rules } from '../../models/rulesValidation';
+import { useAppDispatch } from '../../store/hooks';
+import { register } from '../../store/actions/user';
+import { ApiResponse } from '../../models/ApiResponse';
 
-export const SignUp = ({ onSignInClick }: { onSignInClick: () => void }) => {
+interface SignUpProps {
+  onSignInClick: () => void;
+  onClose: () => void;
+}
+
+export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
   const { control, handleSubmit } = useForm<User>({
     defaultValues: {
       email: '',
       password: '',
       name: '',
       surname: '',
-      country: '', // TODO: falta implementar en CountrySelect para que funcione el valor por defecto
-      birthDate: '',
+      country: null, // TODO: falta implementar en CountrySelect para que funcione el valor por defecto
+      birthDate: null, // reconoze 'yyyy-mm-dd' (formato valido para el backend) y 'mm-dd-yyyy' entre otros
       profilePic: '',
     },
   });
+  const dispatch = useAppDispatch();
 
-  const handleRegister = (data: any) => {
-    console.log('Registrando usuario', data);
+  const handleRegister = (data: User) => {
+    // Saco los campos que no son obligatorios
+    if (!data.birthDate) delete data.birthDate;
+    if (!data.country) delete data.country;
+    dispatch(register(data)).then((res) => {
+      let resPayload = res.payload as ApiResponse<User>;
+      if (resPayload.success) {
+        onClose();
+        alert('User created successfully!');
+      } else {
+        alert((resPayload.message as string[]).map((m) => m).join('\n'));
+      }
+    });
   };
 
   const handleGoogleSignUp = () => {};
@@ -32,7 +52,7 @@ export const SignUp = ({ onSignInClick }: { onSignInClick: () => void }) => {
         spacing={2}
         component="form"
         onSubmit={handleSubmit(handleRegister)}
-        sx={{ maxWidth: 400, minWidth: 350, p: { xs: 2, md: 4 } }}
+        sx={{ maxWidth: 450, minWidth: 350, p: { xs: 2, md: 4 } }}
       >
         <Grid item xs={12}>
           <Typography variant="h4" align="center" gutterBottom>
@@ -79,7 +99,7 @@ export const SignUp = ({ onSignInClick }: { onSignInClick: () => void }) => {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
           <Controller
             name="country"
             control={control}
@@ -91,9 +111,8 @@ export const SignUp = ({ onSignInClick }: { onSignInClick: () => void }) => {
               />
             )}
           />
-          {/* // <CountrySelect /> */}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
           <Controller
             name="birthDate"
             control={control}
@@ -106,17 +125,15 @@ export const SignUp = ({ onSignInClick }: { onSignInClick: () => void }) => {
               />
             )}
           />
+        </Grid>
 
-          {/* <TextField
-              label="Birth Date"
-              variant="outlined"
-              fullWidth
-              type="date"
-              name="birthDate"
-              // value={formData.birthDate}
-              // onChange={handleChange}
-              required
-            /> */}
+        <Grid item xs={12}>
+          <FormInputText
+            name="profilePic"
+            label="Image URL"
+            control={control}
+            required
+          />
         </Grid>
         <Grid
           item

@@ -5,7 +5,7 @@ interface FormInputTextProps {
   name: string;
   label: string;
   control: any;
-  rules: RegisterOptions;
+  rules?: RegisterOptions;
   // defaultValue: string;
 }
 
@@ -21,7 +21,7 @@ export const FormInputText = ({
     <Controller
       name={name} // Lo utiliza para el control de errores
       control={control}
-      rules={rules}
+      rules={rules ? rules : {}}
       // defaultValue={defaultValue}
       render={({
         field: { onChange, value },

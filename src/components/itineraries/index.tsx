@@ -26,7 +26,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           bgcolor: 'background.paper',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          height: { xs: '250px', md: itineraries.length > 2 ? 175 : 150 },
+          height: { xs: '300px', md: itineraries.length > 2 ? 175 : 150 },
           borderRadius: 3,
           overflow: 'hidden',
         }}

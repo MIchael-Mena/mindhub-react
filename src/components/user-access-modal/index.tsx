@@ -2,11 +2,10 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import UserIcon from '@mui/icons-material/AccountCircle';
 import { useEffect, useState } from 'react';
 import SignIn from '../sign-in';
 import { SignUp } from '../sign-up';
+import { ControlAuth } from '../control-auth';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -42,15 +41,7 @@ export default function UserAccesssModal() {
 
   return (
     <>
-      <Button
-        variant="contained"
-        color="secondary"
-        sx={{ ml: 1 }}
-        onClick={handleOpen}
-      >
-        <UserIcon sx={{ mr: 1 }} />
-        Login
-      </Button>
+      <ControlAuth handleLoginOpen={handleOpen} />
 
       <Modal
         aria-labelledby="user-access-modal"
@@ -68,9 +59,9 @@ export default function UserAccesssModal() {
         <Fade in={open} timeout={animationDuration}>
           <Box sx={style}>
             {showSignIn ? (
-              <SignIn onSignUpClick={toggleComponent} />
+              <SignIn onSignUpClick={toggleComponent} onClose={handleClose} />
             ) : (
-              <SignUp onSignInClick={toggleComponent} />
+              <SignUp onSignInClick={toggleComponent} onClose={handleClose} />
             )}
           </Box>
         </Fade>

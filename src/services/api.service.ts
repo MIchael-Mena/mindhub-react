@@ -18,7 +18,25 @@ export class ApiService {
       const response = await this.instanceAxios.get<ApiResponse<T>>(endPoint, {
         params: queryParams,
       });
-      return response.data.data;
+      return response.data.data!;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Refactorizar y devolver Promise<T>, crear un auth service ahora se esta usando para el login y el register
+  static async postData<T>(
+    endPoint: string,
+    body: any = {},
+    options: any = {}
+  ): Promise<ApiResponse<T>> {
+    try {
+      const response = await this.instanceAxios.post<ApiResponse<T>>(
+        endPoint,
+        body,
+        options
+      );
+      return response.data;
     } catch (error) {
       throw error;
     }

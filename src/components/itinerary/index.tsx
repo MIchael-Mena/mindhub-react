@@ -33,6 +33,7 @@ export const ItineraryDetail = ({
           borderColor="divider"
           py={2}
           mb={0}
+          maxHeight={{ xs: '40%', md: '100%' }}
         >
           <Box display="flex" alignItems="center" flexDirection="row">
             <Typography variant="subtitle1" gutterBottom mx={1}>
@@ -59,11 +60,11 @@ export const ItineraryDetail = ({
           display="flex"
           flexDirection="row"
           flexWrap={{ xs: 'wrap', md: 'nowrap' }}
-          gap={{ xs: 4, md: 2 }}
+          gap={{ xs: 1, md: 2 }}
           alignItems="center"
           justifyContent="space-evenly"
           // height="100%"
-          p={2}
+          p={{ xs: 1, md: 2 }}
           mb={{ xs: 1, md: 0 }}
         >
           <div>

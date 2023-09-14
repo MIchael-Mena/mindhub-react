@@ -5,8 +5,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { FieldError } from 'react-hook-form';
 
+// TODO: Refactorizar para que se pueda usar en cualquier formulario
+
 interface DatePickerControlledProps {
-  value?: string;
+  value?: string | null;
   // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChange: (value: string | null) => void;
   error: FieldError | undefined;
@@ -22,11 +24,11 @@ export const DatePickerControlled = ({
   const yesterday = dayjs().subtract(1, 'day');
 
   const handleDataChange = (date: Dayjs | null) => {
-    const formattedDate = date
-      ? dayjs(date).format('MM-DD-YYYY') // Formatea la fecha
-      : null;
-    console.log('DatePickerControlled: ', formattedDate);
-    onChange(formattedDate); // Llama a onChange con la fecha formateada
+    const formattedDate =
+      dayjs(date).isValid() && yesterday.isAfter(date)
+        ? dayjs(date).format('YYYY-MM-DD')
+        : null;
+    onChange(formattedDate); // Llamo a onChange con la fecha formateada
   };
 
   return (
@@ -37,6 +39,8 @@ export const DatePickerControlled = ({
           sx={{ width: '100%' }}
           maxDate={yesterday}
           // disableFuture
+          // onError={}
+          // value={value}
           label={label}
           defaultValue={value ? dayjs(value) : null}
           onChange={handleDataChange}
@@ -45,6 +49,3 @@ export const DatePickerControlled = ({
     </>
   );
 };
-// onError={}
-// value={value}
-// onChange={(newValue) => setValue(newValue)}
