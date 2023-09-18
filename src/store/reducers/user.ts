@@ -1,11 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { User } from '../../models/User';
-import { authenticate, login, logout, register } from '../actions/user';
+import {
+  authenticate,
+  login,
+  logout,
+  register,
+  registerFromGoogle,
+} from '../actions/user';
 
 const defaultUser: User = {
   _id: '',
-  name: '',
-  surname: '',
+  firstName: '',
+  lastName: '',
   email: '',
   profilePic: '',
   country: '',
@@ -58,6 +64,14 @@ const userReducer = createReducer(userState, (builder) => {
       return {
         isLogged: false,
         user: defaultUser,
+      };
+    })
+
+    .addCase(registerFromGoogle.fulfilled, (_state, action) => {
+      const sucess = action.payload.success;
+      return {
+        isLogged: sucess,
+        user: sucess ? action.payload.data! : defaultUser,
       };
     });
 });

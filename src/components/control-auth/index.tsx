@@ -9,9 +9,7 @@ interface ControlAuthProps {
   handleLoginOpen: () => void;
 }
 
-export const ControlAuth = ({
-  handleLoginOpen: handleOpen,
-}: ControlAuthProps) => {
+export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
   const { isLogged, user } = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
 
@@ -47,10 +45,10 @@ export const ControlAuth = ({
         variant="contained"
         color="secondary"
         sx={{ ml: 1 }}
-        onClick={isLogged ? handleLogout : handleOpen}
+        onClick={isLogged ? handleLogout : handleLoginOpen}
       >
         {isLogged && user ? (
-          avatar(`${user.name} ${user.surname}`)
+          avatar(`${user.firstName} ${user.lastName}`)
         ) : (
           <UserIcon sx={{ mr: 1 }} />
         )}

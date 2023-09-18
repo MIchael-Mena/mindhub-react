@@ -5,9 +5,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { User } from '../../models/User';
 import { FormInputText } from '../form-input-text';
 import { rules } from '../../models/rulesValidation';
-import { useAppDispatch } from '../../store/hooks';
 import { register } from '../../store/actions/user';
 import { ApiResponse } from '../../models/ApiResponse';
+import { useAppDispatch } from '../../store/hooks';
+import { ButtonGoogleSingup } from '../button-google-singup';
+// import { useAppDispatch } from '../../store/hooks';
+// import { register } from '../../store/actions/user';
+// import { ApiResponse } from '../../models/ApiResponse';
 
 interface SignUpProps {
   onSignInClick: () => void;
@@ -19,13 +23,14 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
     defaultValues: {
       email: '',
       password: '',
-      name: '',
-      surname: '',
+      firstName: '',
+      lastName: '',
       country: null, // TODO: falta implementar en CountrySelect para que funcione el valor por defecto
       birthDate: null, // reconoze 'yyyy-mm-dd' (formato valido para el backend) y 'mm-dd-yyyy' entre otros
       profilePic: '',
     },
   });
+
   const dispatch = useAppDispatch();
 
   const handleRegister = (data: User) => {
@@ -38,12 +43,14 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
         onClose();
         alert('User created successfully!');
       } else {
-        alert((resPayload.message as string[]).map((m) => m).join('\n'));
+        alert(
+          Array.isArray(resPayload.message)
+            ? resPayload.message.map((m) => m).join('\n')
+            : resPayload.message
+        );
       }
     });
   };
-
-  const handleGoogleSignUp = () => {};
 
   return (
     <>
@@ -62,19 +69,19 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
 
         <Grid item xs={6}>
           <FormInputText
-            name="name"
-            label="Name"
+            name="firstName"
+            label="First Name"
             control={control}
-            rules={rules.name}
+            rules={rules.firstName}
             required
           />
         </Grid>
         <Grid item xs={6}>
           <FormInputText
-            name="surname"
-            label="Surname"
+            name="lastName"
+            label="Last Name"
             control={control}
-            rules={rules.surname}
+            rules={rules.lastName}
             required
           />
         </Grid>
@@ -147,13 +154,11 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
             Register
           </Button>
 
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleGoogleSignUp}
-          >
+          <ButtonGoogleSingup onClose={onClose} dispatch={dispatch} />
+
+          {/* <Button variant="outlined" color="primary" onClick={() => signUp()}>
             Sign Up with Google
-          </Button>
+          </Button> */}
         </Grid>
         <Grid item xs={12}>
           <Typography align="center">

@@ -26,7 +26,14 @@ export default function UserAccesssModal() {
   const [showSignIn, setShowSignIn] = useState(true);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleClose = () => setOpen(false);
+  const handleClose = (
+    _event?: {},
+    _reason?: 'backdropClick' | 'escapeKeyDown'
+  ) => {
+    // if (_reason && _reason == 'backdropClick') return; // Si se hace click en el backdrop, no se cierra el modal
+    setOpen(false);
+  };
 
   const toggleComponent = () => {
     setShowSignIn(!showSignIn);

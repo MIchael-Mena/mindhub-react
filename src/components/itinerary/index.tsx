@@ -15,7 +15,7 @@ export const ItineraryDetail = ({
   hashtags,
   user,
 }: Itinerary) => {
-  const userNames = `${user.name} ${user.surname}`;
+  const userNames = `${user.firstName} ${user.lastName}`;
 
   return (
     <>

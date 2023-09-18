@@ -34,4 +34,18 @@ function stringAvatar(name: string) {
   };
 }
 
-export { chunkArray, stringAvatar };
+// Decode JWT and return the payload and header as an object
+function jwtDecode(token: string) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace('-', '+').replace('_', '/');
+  const payload = JSON.parse(window.atob(base64));
+  const header = JSON.parse(window.atob(token.split('.')[0]));
+  console.log('payload', payload);
+  console.log('header', header);
+  return {
+    payload,
+    header,
+  };
+}
+
+export { chunkArray, stringAvatar, jwtDecode };

@@ -81,4 +81,21 @@ const logout = createAsyncThunk('logout', async () => {
   }
 });
 
-export { authenticate, login, register, logout };
+const registerFromGoogle = createAsyncThunk(
+  'registerFromGoogle',
+  async (payload: { code: string }) => {
+    try {
+      const response = await ApiService.postData<User>(
+        '/user/register-google',
+        payload
+      );
+      localStorage.setItem('token', response.token!);
+      return response;
+    } catch (error) {
+      return (error as AxiosError).response?.data as ApiResponse<User>;
+      // response.data es de Axios
+    }
+  }
+);
+
+export { authenticate, login, register, logout, registerFromGoogle };

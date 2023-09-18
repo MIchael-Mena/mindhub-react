@@ -36,14 +36,14 @@ export const rules: Rules = {
         'Password must have at least one lowercase letter, one uppercase letter and one number',
     },
   },
-  name: {
+  firstName: {
     required: 'Name is required',
     maxLength: {
       value: 20,
       message: 'Name must have less than 20 characters',
     },
   },
-  surname: {
+  lastName: {
     required: 'Surname is required',
     maxLength: {
       value: 20,
