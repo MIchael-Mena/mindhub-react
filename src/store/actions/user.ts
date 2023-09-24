@@ -26,12 +26,14 @@ const authenticate = createAsyncThunk(
 
       return response;
     } catch (error) {
-      if ((error as AxiosError).response?.status === 401) {
-        localStorage.removeItem('token');
-      }
-      // response contendra 'Unauthorized' para cualquier error del token
-      // Refactorizar el backend para que devuelva un objeto como ApiResponse
-      return (error as AxiosError).response?.data as string;
+      const res = (error as AxiosError).response!;
+      // res.data contendra 'Unauthorized' para cualquier error del token y res.status sera 401
+      // TODO: Refactorizar el backend para que res.data devuelva un objeto del tipo ApiResponse
+      localStorage.removeItem('token'); // Para cualquier error, se elimina el token
+      return {
+        success: false,
+        message: res.data,
+      } as ApiResponse<User>;
     }
   }
 );
@@ -44,7 +46,7 @@ const login = createAsyncThunk('login', async (payload: LoginForm) => {
 
     return response;
   } catch (error) {
-    // Si se devuelve un string, el estado de la promesa pasa a ser 'fulfilled'
+    // Si se devuelve un string o cualquier otro objeto, el estado de la promesa pasa a ser 'fulfilled'
     // y se puede obtener en el reducer con action.payload
     // Si se devuelve throw(error), el estado de la promesa pasa a ser 'rejected'
     // Pero si se hace en un componente dispatch(login()) y se hace un .then((res)=>)
@@ -64,20 +66,25 @@ const register = createAsyncThunk('register', async (payload: User) => {
 });
 
 const logout = createAsyncThunk('logout', async () => {
+  const errorResponse = {
+    success: false,
+    message: 'Error al cerrar sesión',
+  } as ApiResponse<User>;
   try {
     const token = localStorage.getItem('token');
-    if (!token) return Promise.resolve('Unauthorized');
+    if (!token) return Promise.resolve(errorResponse);
+
     const response = await ApiService.postData<User>(
       '/user/logout',
       {},
       options(token)
     );
-    localStorage.removeItem('token');
     return response;
   } catch (error) {
-    // response contendra 'Unauthorized' para cualquier error del token
+    return errorResponse;
+  } finally {
+    // Se ejecuta siempre, tanto si hay error como si no
     localStorage.removeItem('token');
-    return (error as AxiosError).response?.data as string;
   }
 });
 

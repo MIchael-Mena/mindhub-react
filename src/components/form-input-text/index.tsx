@@ -29,7 +29,7 @@ export const FormInputText = ({
         // formState,
       }) => (
         <TextField
-          error={!!error}
+          error={!!error} // !!error es para convertir el error en booleano
           helperText={error ? error.message : null}
           label={label}
           variant="outlined"

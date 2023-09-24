@@ -1,17 +1,15 @@
-import { Button, Grid, Link, Typography } from '@mui/material';
+import { Grid, Link, Typography } from '@mui/material';
 import { DatePickerControlled } from '../date-picker-controlled';
 import CountrySelect from '../country-select';
 import { Controller, useForm } from 'react-hook-form';
 import { User } from '../../models/User';
 import { FormInputText } from '../form-input-text';
 import { rules } from '../../models/rulesValidation';
-import { register } from '../../store/actions/user';
-import { ApiResponse } from '../../models/ApiResponse';
 import { useAppDispatch } from '../../store/hooks';
 import { ButtonGoogleSingup } from '../button-google-singup';
-// import { useAppDispatch } from '../../store/hooks';
-// import { register } from '../../store/actions/user';
-// import { ApiResponse } from '../../models/ApiResponse';
+import { useState } from 'react';
+import { ButtonFormSingup } from '../button-form-singup';
+import { Dayjs } from 'dayjs';
 
 interface SignUpProps {
   onSignInClick: () => void;
@@ -19,7 +17,9 @@ interface SignUpProps {
 }
 
 export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
-  const { control, handleSubmit } = useForm<User>({
+  const { control, handleSubmit, setError, clearErrors } = useForm<
+    User & { birthDate: Dayjs | null }
+  >({
     defaultValues: {
       email: '',
       password: '',
@@ -31,26 +31,10 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
     },
   });
 
-  const dispatch = useAppDispatch();
+  console.log('form', control._formState.isValid);
 
-  const handleRegister = (data: User) => {
-    // Saco los campos que no son obligatorios
-    if (!data.birthDate) delete data.birthDate;
-    if (!data.country) delete data.country;
-    dispatch(register(data)).then((res) => {
-      let resPayload = res.payload as ApiResponse<User>;
-      if (resPayload.success) {
-        onClose();
-        alert('User created successfully!');
-      } else {
-        alert(
-          Array.isArray(resPayload.message)
-            ? resPayload.message.map((m) => m).join('\n')
-            : resPayload.message
-        );
-      }
-    });
-  };
+  const [onSubmit, setOnSubmit] = useState<{ user: User } | null>(null);
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -58,7 +42,11 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
         container
         spacing={2}
         component="form"
-        onSubmit={handleSubmit(handleRegister)}
+        onSubmit={handleSubmit((data) =>
+          setOnSubmit({
+            user: { ...data, birthDate: data.birthDate?.format('YYYY-MM-DD') },
+          })
+        )}
         sx={{ maxWidth: 450, minWidth: 350, p: { xs: 2, md: 4 } }}
       >
         <Grid item xs={12}>
@@ -95,6 +83,7 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
             required
           />
         </Grid>
+
         <Grid item xs={12}>
           <FormInputText
             name="password"
@@ -110,8 +99,9 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
           <Controller
             name="country"
             control={control}
-            render={({ field: { onChange }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <CountrySelect
+                value={value!}
                 onChange={onChange}
                 // onChange={(e) => onChange(e.target.textContent)}
                 error={error}
@@ -119,16 +109,20 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
             )}
           />
         </Grid>
+
         <Grid item xs={12} md={6}>
           <Controller
             name="birthDate"
             control={control}
+            rules={rules.birthDate}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePickerControlled
                 label="Birth Date"
                 onChange={onChange}
                 error={error}
                 value={value}
+                setError={setError}
+                clearErrors={clearErrors}
               />
             )}
           />
@@ -142,6 +136,7 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
             required
           />
         </Grid>
+
         <Grid
           item
           xs={12}
@@ -150,15 +145,13 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
           gap={2}
           mt={2}
         >
-          <Button type="submit" variant="contained" color="primary">
-            Register
-          </Button>
+          <ButtonFormSingup
+            onSubmit={onSubmit}
+            onClose={onClose}
+            dispatch={dispatch}
+          />
 
           <ButtonGoogleSingup onClose={onClose} dispatch={dispatch} />
-
-          {/* <Button variant="outlined" color="primary" onClick={() => signUp()}>
-            Sign Up with Google
-          </Button> */}
         </Grid>
         <Grid item xs={12}>
           <Typography align="center">
