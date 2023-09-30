@@ -10,37 +10,40 @@ import { enqueueSnackbar } from 'notistack';
 interface ButtonFormSingupProps {
   onClose: () => void;
   dispatch: ThunkDispatch<RootState, undefined, AnyAction>;
-  onSubmit: { user: User } | null;
+  payloadOfSubmit: { form: User } | null;
 }
 
 export const ButtonFormSingup = ({
-  onSubmit,
+  payloadOfSubmit: payload,
   onClose,
   dispatch,
 }: ButtonFormSingupProps) => {
-  const { loading } = useApiService<ApiResponse<User>>(() => {
-    return onSubmit
-      ? dispatch(register(onSubmit.user)).then((res) => {
-          return handleRegister(res.payload as ApiResponse<User>);
-        })
-      : Promise.resolve({} as ApiResponse<User>);
-  }, [onSubmit]);
+  const { loading } = useApiService<ApiResponse<User>>(
+    () => {
+      return payload
+        ? dispatch(register(payload.form)).then((res) => {
+            return handleRegister(res.payload as ApiResponse<User>);
+          })
+        : Promise.resolve({} as ApiResponse<User>);
+    },
+    [payload],
+    true
+  );
 
   const handleRegister = (resPayload: ApiResponse<User>) => {
     if (resPayload.success) {
       enqueueSnackbar('User created successfully!', {
         variant: 'success',
-        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        // anchorOrigin: { vertical: 'top', horizontal: 'center' }, Esta puesto en el config de forma global
       });
       onClose();
     } else {
       enqueueSnackbar(
         Array.isArray(resPayload.message)
-          ? resPayload.message.map((m) => m).join('\n')
+          ? resPayload.message.map((m) => m).join('.\n')
           : resPayload.message,
         {
           variant: 'error',
-          anchorOrigin: { vertical: 'top', horizontal: 'center' },
         }
       );
     }
@@ -61,7 +64,7 @@ export const ButtonFormSingup = ({
             ...Loading
           </>
         ) : (
-          'Register'
+          'Sing up'
         )}
       </Button>
     </>

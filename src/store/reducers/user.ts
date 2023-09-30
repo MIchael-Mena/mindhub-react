@@ -5,7 +5,7 @@ import {
   login,
   logout,
   register,
-  registerFromGoogle,
+  registerWithGoogle,
 } from '../actions/user';
 
 const defaultUser: User = {
@@ -63,7 +63,7 @@ const userReducer = createReducer(userState, (builder) => {
       };
     })
 
-    .addCase(registerFromGoogle.fulfilled, (_state, action) => {
+    .addCase(registerWithGoogle.fulfilled, (_state, action) => {
       return action.payload.success
         ? {
             isLogged: true,

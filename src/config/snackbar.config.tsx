@@ -26,6 +26,7 @@ export const SnackbarConfig: React.FC<SnackbarConfigProps> = ({ children }) => {
           warning: StyledMaterialDesignContent,
           info: StyledMaterialDesignContent,
         }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         action={(snackbarId) => (
           <>
             <IconButton

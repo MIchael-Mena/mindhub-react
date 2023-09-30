@@ -1,6 +1,6 @@
 import { Button, CircularProgress } from '@mui/material';
 import { useGoogleLogin } from '@react-oauth/google';
-import { registerFromGoogle } from '../../store/actions/user';
+import { registerWithGoogle } from '../../store/actions/user';
 import { ApiResponse } from '../../models/ApiResponse';
 import { User } from '../../models/User';
 import { RootState } from '../../store/store';
@@ -23,7 +23,7 @@ export const ButtonGoogleSingup = ({
 
   const { loading } = useApiService<ApiResponse<User>>(() => {
     return googleCode
-      ? dispatch(registerFromGoogle({ code: googleCode })).then((res) =>
+      ? dispatch(registerWithGoogle({ code: googleCode })).then((res) =>
           handleGoogleSingUp(res.payload as ApiResponse<User>)
         )
       : Promise.resolve({} as ApiResponse<User>);
@@ -33,7 +33,6 @@ export const ButtonGoogleSingup = ({
     if (apiRes.success) {
       enqueueSnackbar('User created successfully!', {
         variant: 'success',
-        anchorOrigin: { vertical: 'top', horizontal: 'center' },
       });
       onClose();
     } else {
@@ -43,7 +42,6 @@ export const ButtonGoogleSingup = ({
           : apiRes.message,
         {
           variant: 'error',
-          anchorOrigin: { vertical: 'top', horizontal: 'center' },
         }
       );
     }

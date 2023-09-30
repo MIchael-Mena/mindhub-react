@@ -65,7 +65,7 @@ export default function CountrySelect({
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill (ver limitations en https://mui.com/material-ui/react-autocomplete/)
           }}
-          margin="normal"
+          margin="dense"
         />
       )}
     />

@@ -8,14 +8,14 @@ interface Rules {
 // Los campos required se validan en el formulario con el atributo required
 export const rules: Rules = {
   email: {
-    // required: 'Email is required',
+    required: 'Email is required',
     pattern: {
       value: /\S+@\S+\.\S+/,
       message: 'Email is invalid',
     },
     minLength: {
       value: 4,
-      message: 'Email must have at least 4 characters',
+      message: 'Email is invalid',
     },
     maxLength: {
       value: 50,
@@ -23,7 +23,7 @@ export const rules: Rules = {
     },
   },
   password: {
-    // required: 'Password is required',
+    required: 'Password is required',
     minLength: {
       value: 6,
       message: 'Password must have at least 6 characters',
@@ -32,32 +32,63 @@ export const rules: Rules = {
       value: 20,
       message: 'Password must have less than 20 characters',
     },
-    pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-      message:
-        'Password must have at least one lowercase letter, one uppercase letter and one number',
+    // pattern: {
+    //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+    //   message:
+    //     'Password must have at least one lowercase letter, one uppercase letter and one number',
+    // },
+    validate: {
+      hasLowerCase: (value: string) =>
+        /[a-z]/.test(value) ||
+        'Password must have at least one lowercase letter',
+      hasUpperCase: (value: string) =>
+        /[A-Z]/.test(value) ||
+        'Password must have at least one uppercase letter',
+      hasNumber: (value: string) =>
+        /\d/.test(value) || 'Password must have at least one number',
+      // hasSpecialCharacter: (value: string) =>
+      //   /[^A-Za-z0-9]/.test(value) ||
+      //   'Password must have at least one special character',
+    },
+    deps: ['confirmPassword'], // Ejecuta la validación de confirmar contraseña cuando cambia la contraseña
+  },
+  confirmPassword: {
+    required: 'Confirm password is required',
+    validate: {
+      matchesPreviousPassword: (
+        value: string,
+        fieldValues: Record<string, any>
+      ) => value === fieldValues.password || 'Passwords do not match',
     },
   },
   firstName: {
-    // required: 'First name is required',
+    required: 'First name is required',
     maxLength: {
       value: 20,
       message: 'First name must have less than 20 characters',
     },
     minLength: {
-      value: 4,
-      message: 'First name must have at least 4 characters',
+      value: 2,
+      message: 'Enter a valid first name',
+    },
+    pattern: {
+      value: /^[a-zA-Z]+$/,
+      message: 'Enter a valid first name',
     },
   },
   lastName: {
-    // required: 'Last name is required',
+    required: 'Last name is required',
     maxLength: {
       value: 20,
       message: 'Last name must have less than 20 characters',
     },
     minLength: {
-      value: 4,
-      message: 'Last name must have at least 4 characters',
+      value: 2,
+      message: 'Enter a valid last name',
+    },
+    pattern: {
+      value: /^[a-zA-Z]+$/,
+      message: 'Enter a valid last name',
     },
   },
   birthDate: {
@@ -67,14 +98,11 @@ export const rules: Rules = {
     validate: {
       isValidDate: (value: Dayjs) => {
         const isValid = value.isValid() && value.isAfter(dayjs('1900-01-01'));
-        return isValid || 'Birth date is invalid.';
+        return isValid || 'Enter a valid date';
       },
-      isAdult: (value: Dayjs) => {
-        return (
-          value.isBefore(dayjs().subtract(18, 'year')) ||
-          'You must be at least 18 years old'
-        );
-      },
+      isAdult: (value: Dayjs) =>
+        value.isBefore(dayjs().subtract(18, 'year')) ||
+        'You must be at least 18 years old',
     },
   },
 };

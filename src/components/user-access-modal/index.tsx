@@ -2,7 +2,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SignIn from '../sign-in';
 import { SignUp } from '../sign-up';
 import { ControlAuth } from '../control-auth';
@@ -18,6 +18,7 @@ const style = {
   border: '2px solid',
   borderColor: 'secondary.main',
   boxShadow: 24,
+  overflow: 'hidden',
 };
 
 export default function UserAccesssModal() {
@@ -33,18 +34,22 @@ export default function UserAccesssModal() {
   ) => {
     // if (_reason && _reason == 'backdropClick') return; // Si se hace click en el backdrop, no se cierra el modal
     setOpen(false);
+    setTimeout(() => {
+      // Si el modal está abierto, establece showSignIn en true cada vez que se renderiza UserAccesssModal.
+      setShowSignIn(true);
+    }, animationDuration);
   };
 
   const toggleComponent = () => {
     setShowSignIn(!showSignIn);
   };
 
-  useEffect(() => {
-    if (open) {
-      // Si el modal está abierto, establece showSignIn en true cada vez que se renderiza UserAccesssModal.
-      setShowSignIn(true);
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (open) {
+  //     // Si el modal está abierto, establece showSignIn en true cada vez que se renderiza UserAccesssModal.
+  //     setShowSignIn(true);
+  //   }
+  // }, [open]);
 
   return (
     <>

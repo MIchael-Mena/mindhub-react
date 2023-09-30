@@ -1,22 +1,20 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import { Controller, RegisterOptions } from 'react-hook-form';
+import { InputErrorAlert } from '../input-error-alert';
 
-interface FormInputTextProps {
+interface InputTextControlProps {
   name: string;
-  label: string;
   control: any;
   rules?: RegisterOptions;
-  // defaultValue: string;
 }
 
-export const FormInputText = ({
+export const InputTextControl = ({
   name,
-  label,
   control,
   rules,
   defaultValue,
   ...rest
-}: FormInputTextProps & TextFieldProps) => {
+}: InputTextControlProps & TextFieldProps) => {
   return (
     <Controller
       name={name} // Lo utiliza para el control de errores
@@ -29,14 +27,16 @@ export const FormInputText = ({
         // formState,
       }) => (
         <TextField
+          FormHelperTextProps={{ component: 'div' }} // Para que el helperText sea un div y no un p, y evitar un warning
           error={!!error} // !!error es para convertir el error en booleano
-          helperText={error ? error.message : null}
-          label={label}
+          helperText={
+            error ? <InputErrorAlert message={error.message!} /> : null
+          }
           variant="outlined"
           fullWidth
           value={value}
           onChange={onChange}
-          margin="normal"
+          margin="dense"
           {...rest}
         />
       )}

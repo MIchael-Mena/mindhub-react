@@ -88,7 +88,7 @@ const logout = createAsyncThunk('logout', async () => {
   }
 });
 
-const registerFromGoogle = createAsyncThunk(
+const registerWithGoogle = createAsyncThunk(
   'registerFromGoogle',
   async (payload: { code: string }) => {
     try {
@@ -105,4 +105,4 @@ const registerFromGoogle = createAsyncThunk(
   }
 );
 
-export { authenticate, login, register, logout, registerFromGoogle };
+export { authenticate, login, register, logout, registerWithGoogle };
