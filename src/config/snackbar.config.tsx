@@ -42,7 +42,6 @@ export const SnackbarConfig: React.FC<SnackbarConfigProps> = ({ children }) => {
       >
         {children}
       </SnackbarProvider>
-      ;
     </>
   );
 };

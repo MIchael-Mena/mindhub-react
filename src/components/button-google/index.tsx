@@ -1,44 +1,41 @@
 import { Button, CircularProgress } from '@mui/material';
 import { useGoogleLogin } from '@react-oauth/google';
-import { registerWithGoogle } from '../../store/actions/user';
 import { ApiResponse } from '../../models/ApiResponse';
 import { User } from '../../models/User';
-import { RootState } from '../../store/store';
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { useApiService } from '../../hooks/useApiService';
 import { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import GoogleIcon from '@mui/icons-material/Google';
 
-interface ButtonGoogleSingupProps {
+interface ButtonGoogleProps {
   onClose: () => void;
-  dispatch: ThunkDispatch<RootState, undefined, AnyAction>;
+  dispatchGoogle: (code: string) => Promise<ApiResponse<User>>;
+  buttonText: string;
 }
 
-export const ButtonGoogleSingup = ({
+export const ButtonGoogle = ({
   onClose,
-  dispatch,
-}: ButtonGoogleSingupProps) => {
+  dispatchGoogle,
+  buttonText,
+}: ButtonGoogleProps) => {
   const [googleCode, setGoogleCode] = useState<string | null>(null);
 
   const { loading } = useApiService<ApiResponse<User>>(() => {
     return googleCode
-      ? dispatch(registerWithGoogle({ code: googleCode })).then((res) =>
-          handleGoogleSingUp(res.payload as ApiResponse<User>)
-        )
+      ? dispatchGoogle(googleCode).then((res) => handleGoogleAction(res))
       : Promise.resolve({} as ApiResponse<User>);
   }, [googleCode]);
 
-  const handleGoogleSingUp = (apiRes: ApiResponse<User>) => {
+  const handleGoogleAction = (apiRes: ApiResponse<User>) => {
     if (apiRes.success) {
-      enqueueSnackbar('User created successfully!', {
+      enqueueSnackbar(apiRes.message, {
         variant: 'success',
       });
       onClose();
     } else {
       enqueueSnackbar(
         Array.isArray(apiRes.message)
-          ? apiRes.message.map((m) => m).join('\n')
+          ? apiRes.message.map((m) => m).join('.\n')
           : apiRes.message,
         {
           variant: 'error',
@@ -64,7 +61,8 @@ export const ButtonGoogleSingup = ({
       <Button
         variant="outlined"
         color="primary"
-        onClick={() => loading || signUp()}
+        onClick={() => signUp()}
+        disabled={loading}
       >
         {loading ? (
           <>
@@ -74,7 +72,7 @@ export const ButtonGoogleSingup = ({
         ) : (
           <>
             <GoogleIcon sx={{ mr: 1 }} />
-            Sign up with Google
+            {buttonText}
           </>
         )}
       </Button>

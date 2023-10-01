@@ -68,7 +68,7 @@ const register = createAsyncThunk('register', async (payload: User) => {
 const logout = createAsyncThunk('logout', async () => {
   const errorResponse = {
     success: false,
-    message: 'Error al cerrar sesión',
+    message: 'Could not logout',
   } as ApiResponse<User>;
   try {
     const token = localStorage.getItem('token');
@@ -105,4 +105,27 @@ const registerWithGoogle = createAsyncThunk(
   }
 );
 
-export { authenticate, login, register, logout, registerWithGoogle };
+const loginWithGoogle = createAsyncThunk(
+  'signInWithGoogle',
+  async (payload: { code: string }) => {
+    try {
+      const response = await ApiService.postData<User>(
+        '/user/login-google',
+        payload
+      );
+      localStorage.setItem('token', response.token!);
+      return response;
+    } catch (error) {
+      return (error as AxiosError).response?.data as ApiResponse<User>;
+    }
+  }
+);
+
+export {
+  authenticate,
+  login,
+  register,
+  logout,
+  registerWithGoogle,
+  loginWithGoogle,
+};

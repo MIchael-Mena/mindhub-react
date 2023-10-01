@@ -6,11 +6,13 @@ import { User } from '../../models/User';
 import { InputTextControl } from '../input-text-control';
 import { rules } from '../../models/rulesValidation';
 import { useAppDispatch } from '../../store/hooks';
-import { ButtonGoogleSingup } from '../button-google-singup';
 import { useState } from 'react';
-import { ButtonFormSingup } from '../button-form-singup';
 import { Dayjs } from 'dayjs';
 import { InputPasswordControl } from '../input-password-control';
+import { ButtonForm } from '../button-form';
+import { ApiResponse } from '../../models/ApiResponse';
+import { register, registerWithGoogle } from '../../store/actions/user';
+import { ButtonGoogle } from '../button-google';
 
 interface SignUpProps {
   onSignInClick: () => void;
@@ -46,16 +48,18 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
   );
   const dispatch = useAppDispatch();
 
+  const onSubmit = handleSubmit((data) => {
+    const { confirmPassword, ...user } = data;
+    setPayloadOfSubmit({
+      form: { ...user, birthDate: user.birthDate?.format('YYYY-MM-DD') },
+    });
+  });
+
   return (
     <>
       <Box
         component="form"
-        onSubmit={handleSubmit((data) => {
-          const { confirmPassword, ...user } = data;
-          setPayloadOfSubmit({
-            form: { ...user, birthDate: user.birthDate?.format('YYYY-MM-DD') },
-          });
-        })}
+        onSubmit={onSubmit}
         sx={{
           maxWidth: 450,
           minWidth: 350,
@@ -170,13 +174,26 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
             gap={2}
             mt={2}
           >
-            <ButtonFormSingup
+            <ButtonForm
+              onSubmit={(form: User) =>
+                dispatch(register(form)).then(
+                  (res) => res.payload as ApiResponse<User>
+                )
+              }
               payloadOfSubmit={payloadOfSubmit}
               onClose={onClose}
-              dispatch={dispatch}
+              buttonText="Sign up"
             />
 
-            <ButtonGoogleSingup onClose={onClose} dispatch={dispatch} />
+            <ButtonGoogle
+              onClose={onClose}
+              buttonText="Sign up with Google"
+              dispatchGoogle={(googleCode: string) =>
+                dispatch(registerWithGoogle({ code: googleCode })).then(
+                  (res) => res.payload as ApiResponse<User>
+                )
+              }
+            />
           </Grid>
           <Grid item xs={12}>
             <Typography align="center">

@@ -1,25 +1,25 @@
-// import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
+// import { RootState } from '../../store/store';
+// import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { ApiResponse } from '../../models/ApiResponse';
 import { User } from '../../models/User';
 import { enqueueSnackbar } from 'notistack';
 import { Button, CircularProgress } from '@mui/material';
-import { LoginForm } from '../../models/LoginForm';
 import { useApiService } from '../../hooks/useApiService';
 
-interface ButtonFormProps {
+interface ButtonFormProps<T> {
   // dispatch: ThunkDispatch<RootState, undefined, AnyAction>;
-  onSubmit: (form: LoginForm) => Promise<ApiResponse<User>>;
-  payloadOfSubmit: { form: LoginForm } | null;
+  onSubmit: (form: T) => Promise<ApiResponse<User>>;
+  payloadOfSubmit: { form: T } | null;
   onClose: () => void;
   buttonText: string;
 }
 
-export const ButtonForm = ({
+export const ButtonForm = <T extends Object>({
   onSubmit,
   onClose,
   buttonText,
   payloadOfSubmit: payload,
-}: ButtonFormProps) => {
+}: ButtonFormProps<T>) => {
   const { loading } = useApiService<ApiResponse<User>>(
     () =>
       payload
@@ -51,7 +51,7 @@ export const ButtonForm = ({
 
   return (
     <Button
-      type="submit"
+      type="submit" // Al hacer click en el boton se ejecuta el onSubmit del form
       variant="contained"
       color="primary"
       disabled={loading}

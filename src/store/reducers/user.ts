@@ -3,10 +3,12 @@ import { User } from '../../models/User';
 import {
   authenticate,
   login,
+  loginWithGoogle,
   logout,
   register,
   registerWithGoogle,
 } from '../actions/user';
+import { ApiResponse } from '../../models/ApiResponse';
 
 const defaultUser: User = {
   _id: '',
@@ -21,56 +23,47 @@ const defaultUser: User = {
   favouriteItineraries: [],
 };
 
-const userState: { user: User; isLogged: boolean } = {
+const initialState: { user: User; isLogged: boolean } = {
   isLogged: false,
   user: defaultUser,
 };
 
-const userReducer = createReducer(userState, (builder) => {
+const handleSuccessfulAction = (
+  state: {
+    user: User;
+    isLogged: boolean;
+  },
+  payload: ApiResponse<User>
+) => {
+  // // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
+  if (payload.success) {
+    return {
+      isLogged: true,
+      user: payload.data ?? defaultUser,
+    };
+  }
+  return state;
+};
+
+const userReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(login.fulfilled, (_state, action) => {
-      // // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
-      return action.payload.success
-        ? {
-            isLogged: true,
-            user: action.payload.data ?? defaultUser,
-          }
-        : _state;
-    })
+    .addCase(login.fulfilled, (_state, action) =>
+      handleSuccessfulAction(_state, action.payload)
+    )
+    .addCase(register.fulfilled, (_state, action) =>
+      handleSuccessfulAction(_state, action.payload)
+    )
+    .addCase(authenticate.fulfilled, (_state, action) =>
+      handleSuccessfulAction(_state, action.payload)
+    )
+    .addCase(logout.fulfilled, (_state, _action) => initialState)
 
-    .addCase(register.fulfilled, (_state, action) => {
-      return action.payload.success
-        ? {
-            isLogged: false,
-            user: action.payload.data ?? defaultUser,
-          }
-        : _state;
-    })
-
-    .addCase(authenticate.fulfilled, (_state, action) => {
-      return action.payload.success
-        ? {
-            isLogged: true,
-            user: action.payload.data ?? defaultUser,
-          }
-        : _state;
-    })
-
-    .addCase(logout.fulfilled, (_state, _action) => {
-      return {
-        isLogged: false,
-        user: defaultUser,
-      };
-    })
-
-    .addCase(registerWithGoogle.fulfilled, (_state, action) => {
-      return action.payload.success
-        ? {
-            isLogged: true,
-            user: action.payload.data ?? defaultUser,
-          }
-        : _state;
-    });
+    .addCase(registerWithGoogle.fulfilled, (_state, action) =>
+      handleSuccessfulAction(_state, action.payload)
+    )
+    .addCase(loginWithGoogle.fulfilled, (_state, action) =>
+      handleSuccessfulAction(_state, action.payload)
+    );
 });
 
 export default userReducer;

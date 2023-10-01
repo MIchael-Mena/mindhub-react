@@ -4,13 +4,14 @@ import { InputPasswordControl } from '../input-password-control';
 import { useForm } from 'react-hook-form';
 import { InputTextControl } from '../input-text-control';
 import { rules } from '../../models/rulesValidation';
-import { login } from '../../store/actions/user';
+import { login, loginWithGoogle } from '../../store/actions/user';
 import { useAppDispatch } from '../../store/hooks';
 import { LoginForm } from '../../models/LoginForm';
 import { ApiResponse } from '../../models/ApiResponse';
 import { User } from '../../models/User';
 import { ButtonForm } from '../button-form';
 import { useState } from 'react';
+import { ButtonGoogle } from '../button-google';
 
 interface SignInProps {
   onSignUpClick: () => void;
@@ -31,28 +32,10 @@ export const SignIn = ({ onSignUpClick, onClose }: SignInProps) => {
     },
   });
 
-  // const handleLogin = (data: LoginForm) => {
-  //   dispatch(login(data)).then((res) => {
-  //     let resPayload = res.payload as ApiResponse<User>;
-  //     if (resPayload.success) {
-  //       onClose();
-  //     } else {
-  //       alert(resPayload.message);
-  //     }
-  //   });
-  // };
-
-  const handleGoogleSignIn = () => {};
-
   return (
     <Box
       component="form"
       onSubmit={handleSubmit((data) => setPayloadOfSubmit({ form: data }))}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          handleSubmit((data) => setPayloadOfSubmit({ form: data }))();
-        }
-      }}
       sx={{ maxWidth: 400, minWidth: 350, p: { xs: 2, md: 4 } }}
     >
       <Grid container spacing={2}>
@@ -99,17 +82,16 @@ export const SignIn = ({ onSignUpClick, onClose }: SignInProps) => {
             onClose={onClose}
             buttonText="Sign in"
           />
-          {/* <Button variant="contained" color="primary" type="submit">
-            Sign In
-          </Button> */}
 
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleGoogleSignIn}
-          >
-            Sign In with Google
-          </Button>
+          <ButtonGoogle
+            onClose={onClose}
+            dispatchGoogle={(googleCode: string) =>
+              dispatch(loginWithGoogle({ code: googleCode })).then(
+                (res) => res.payload as ApiResponse<User>
+              )
+            }
+            buttonText="Sign in with Google"
+          />
         </Grid>
 
         <Grid item xs={12}>
