@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { City } from '../../models/City';
+import { CityBasic } from '../../models/CityBasic';
 import {
   fetchCities,
   fetchCitySelectedById,
@@ -7,14 +7,15 @@ import {
   updateCitySelected,
 } from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
+import { City } from '../../models/City';
 
 type GloblaState = {
   hasBeenModified: boolean; // Si la data ha sido modificada al menos una vez
 };
 
 const citiesState: {
-  cities: StatusResponse<City[]> & GloblaState & { totalPages: number };
-  popularCities: StatusResponse<City[]> & GloblaState;
+  cities: StatusResponse<CityBasic[]> & GloblaState & { totalPages: number };
+  popularCities: StatusResponse<CityBasic[]> & GloblaState;
   citySelected: StatusResponse<City> & GloblaState;
 } = {
   popularCities: {

@@ -1,13 +1,10 @@
-import { City } from '../../models/City';
+import { CityBasic } from '../../models/CityBasic';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { Link as Anchor } from 'react-router-dom';
-import { useAppDispatch } from '../../store/hooks';
-import { updateCitySelected } from '../../store/actions/cities';
 import './CardPopularCity.css';
 
-const CardPopularCity = (city: City) => {
-  const dispatch = useAppDispatch();
+const CardPopularCity = (city: CityBasic) => {
   const pathCityDetail = `/city-detail/${city['_id']}`;
   const currentPath = window.location.pathname;
 
@@ -54,11 +51,7 @@ const CardPopularCity = (city: City) => {
         <img src={city.images[0]} alt="Imagen" className="image-container" />
         <Box className="description-container" p={{ xs: 2, sm: 4 }}>
           <Typography variant="body1">{city.description}</Typography>
-          <Anchor
-            to={pathCityDetail}
-            state={{ from: currentPath }}
-            onClick={() => dispatch(updateCitySelected(city))}
-          >
+          <Anchor to={pathCityDetail} state={{ from: currentPath }}>
             <Button
               variant="outlined"
               color="success"

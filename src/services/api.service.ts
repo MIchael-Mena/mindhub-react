@@ -24,7 +24,6 @@ export class ApiService {
     }
   }
 
-  // Refactorizar y devolver Promise<T>, crear un auth service ahora se esta usando para el login y el register
   static async postData<T>(
     endPoint: string,
     body: Object = {},

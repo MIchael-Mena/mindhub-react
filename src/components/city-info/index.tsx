@@ -1,9 +1,9 @@
 import { FlagCircleOutlined, PlaceTwoTone } from '@mui/icons-material';
 import { Box, Fab, Grid, Rating, Typography } from '@mui/material';
-import { City } from '../../models/City';
+import { CityBasic } from '../../models/CityBasic';
 import TitleUnderlined from '../styled/TitleUnderlined';
 
-export const CityInfo = (city: City) => {
+export const CityInfo = (city: CityBasic) => {
   return (
     <Grid
       item

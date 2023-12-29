@@ -1,8 +1,12 @@
 import { Grid } from '@mui/material';
 import CardPopularCity from '../card-popular-city';
-import { City } from '../../models/City';
+import { CityBasic } from '../../models/CityBasic';
 
-const PopularDestinations = ({ destinations }: { destinations: City[] }) => {
+const PopularDestinations = ({
+  destinations,
+}: {
+  destinations: CityBasic[];
+}) => {
   return (
     <Grid
       container

@@ -1,11 +1,7 @@
+import { CityBasic } from './CityBasic';
 import { Itinerary } from './Itinerary';
 
-export interface City {
-  _id: string;
-  name: string;
-  description: string;
-  country: string;
-  images: string[];
+export interface City extends CityBasic {
   capital: boolean;
   population: number;
   area: number;

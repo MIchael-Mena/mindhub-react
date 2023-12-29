@@ -10,19 +10,16 @@ import {
   Typography,
 } from '@mui/material';
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
-import { City } from '../../models/City';
+import { CityBasic } from '../../models/CityBasic';
 import { Link as Anchor } from 'react-router-dom';
-import { useAppDispatch } from '../../store/hooks';
-import { updateCitySelected } from '../../store/actions/cities';
 
 interface CardCityProps {
-  city: City;
+  city: CityBasic;
 }
 
 const CardCity = ({ city }: CardCityProps) => {
   const pathCityDetail = `/city-detail/${city['_id']}`;
   const currentPath = window.location.pathname;
-  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -85,7 +82,6 @@ const CardCity = ({ city }: CardCityProps) => {
             to={pathCityDetail}
             preventScrollReset={false}
             state={{ from: currentPath }}
-            onClick={() => dispatch(updateCitySelected(city))}
           >
             <Button variant="outlined" color="success">
               Explore

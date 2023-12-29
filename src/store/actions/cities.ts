@@ -1,9 +1,10 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { City } from '../../models/City';
+import { CityBasic } from '../../models/CityBasic';
 import { ApiService } from '../../services/api.service';
+import { City } from '../../models/City';
 
 interface CityGetResponse {
-  cities: City[];
+  cities: CityBasic[];
   totalPages: number;
 }
 
@@ -33,7 +34,8 @@ const fetchCities = createAsyncThunk(
       const cityGetResponse = await ApiService.getData<CityGetResponse>(
         '/city',
         {
-          popItineraries: true,
+          // populate_itineraries: true,
+          basic_info: true,
           ...payload,
         }
       );
@@ -52,7 +54,8 @@ const fetchPopularCities = createAsyncThunk(
         limit: payload.limit,
         sort: 'rating',
         order: 'desc',
-        popItineraries: true,
+        // populate_itineraries: true,
+        basic_info: true,
       });
       return { cities };
     } catch (error) {
