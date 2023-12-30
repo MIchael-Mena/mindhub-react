@@ -39,7 +39,10 @@ const fetchCities = createAsyncThunk(
           ...payload,
         }
       );
-      return cityGetResponse;
+      const currentSearch = payload['search']
+        ? (payload['search'] as string)
+        : '';
+      return { currentSearch: currentSearch, ...cityGetResponse };
     } catch (error) {
       throw error;
     }

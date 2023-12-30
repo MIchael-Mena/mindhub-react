@@ -9,7 +9,7 @@ export const PaginationControls = () => {
   const totalPages = useAppSelector(
     // Redux me asegura que el store no va a cambiar mientras se esta renderizando
     // y no va a ver renders extras si otra propiedad distinta a la que se esta usando cambia
-    (store) => store.citiesReducer.cities.totalPages
+    (store) => store.citiesReducer.citiesFiltered.totalPages
   );
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();

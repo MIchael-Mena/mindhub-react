@@ -18,14 +18,26 @@ export const CitiesList = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const {
+    currentSearch,
     data: cities,
     loading,
     error,
-  } = useAppSelector((store) => store.citiesReducer.cities);
+  } = useAppSelector((store) => store.citiesReducer.citiesFiltered);
   const searchParam = new URLSearchParams(location.search).get('search') || '';
   const pageParam = new URLSearchParams(location.search).get('page') || 1;
 
   useEffect(() => {
+    console.log(
+      'SearchParam , cities.length y currentSearch: ',
+      searchParam,
+      cities.length,
+      currentSearch
+    );
+    // En el caso que no tenga parametro y ya tenga ciudades, no hago nada. Ya que estoy seguro que son todas las ciudades
+    // if (!searchParam && cities.length > 0) return;
+    // Falta el caso en que tenga parametro y ya tenga ciudades que coincidan con el parametro entonces no deberia hacer nada
+    if (currentSearch === searchParam && cities.length > 0) return;
+    console.log('Se ejecuta el dispatch');
     dispatch(
       fetchCities(
         searchParam

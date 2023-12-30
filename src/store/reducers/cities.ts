@@ -14,7 +14,8 @@ type GloblaState = {
 };
 
 const citiesState: {
-  cities: StatusResponse<CityBasic[]> & GloblaState & { totalPages: number };
+  citiesFiltered: StatusResponse<CityBasic[]> &
+    GloblaState & { totalPages: number; currentSearch: string };
   popularCities: StatusResponse<CityBasic[]> & GloblaState;
   citySelected: StatusResponse<City> & GloblaState;
 } = {
@@ -24,7 +25,8 @@ const citiesState: {
     data: [],
     hasBeenModified: false,
   },
-  cities: {
+  citiesFiltered: {
+    currentSearch: '',
     loading: true,
     error: null,
     data: [],
@@ -61,17 +63,22 @@ const citiesReducer = createReducer(citiesState, (builder) => {
     })
 
     .addCase(fetchCities.pending, (state) => {
-      state.cities.loading = true;
+      state.citiesFiltered.loading = true;
     })
     .addCase(fetchCities.fulfilled, (state, action) => {
-      state.cities.hasBeenModified = true;
-      state.cities.loading = false;
-      state.cities.data = action.payload.cities;
-      state.cities.totalPages = action.payload.totalPages;
+      console.log('action.payload', action.payload);
+      state.citiesFiltered.currentSearch = action.payload.currentSearch;
+
+      state.citiesFiltered.hasBeenModified = true;
+      state.citiesFiltered.loading = false;
+      state.citiesFiltered.data = action.payload.cities;
+      state.citiesFiltered.totalPages = action.payload.totalPages;
     })
     .addCase(fetchCities.rejected, (state, action) => {
-      state.cities.loading = false;
-      state.cities.error = action.error;
+      state.citiesFiltered.currentSearch = '';
+
+      state.citiesFiltered.loading = false;
+      state.citiesFiltered.error = action.error;
     })
 
     .addCase(fetchPopularCities.pending, (state) => {

@@ -1,17 +1,51 @@
-import { ChangeEvent, useState, FormEvent } from 'react';
+import { ChangeEvent, useState, FormEvent, useEffect } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSearchParams } from 'react-router-dom';
 import './Finder.css';
+// import { useAppDispatch } from '../../../../store/hooks';
+// import { fetchCities } from '../../../../store/actions/cities';
 
 const Finder = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get('search') || '';
   const [searchQuery, setSearchQuery] = useState(searchParam);
 
+  // const pageParam = new URLSearchParams(location.search).get('page') || 1;
+  // const dispatch = useAppDispatch();
+
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Vuelve a renderizar el componente, y me garantiza que el valor de searchQuery sea el ultimo
     setSearchQuery(event.target.value);
   };
+
+  // const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   if (searchQuery === searchParam) return; // si no hay cambios, no hago nada
+  //   if (!searchQuery) {
+  //     setSearchParams(
+  //       (params: URLSearchParams) => {
+  //         params.delete('search');
+  //         return params;
+  //       },
+  //       { preventScrollReset: true }
+  //     );
+  //     dispatch(fetchCities({ page: pageParam }));
+  //   } else {
+  //     setSearchParams(
+  //       (params: URLSearchParams) => {
+  //         params.set('search', searchQuery);
+  //         return params;
+  //       },
+  //       { preventScrollReset: true }
+  //     );
+  //     dispatch(fetchCities({ search: searchQuery, page: pageParam }));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   dispatch(fetchCities({ search: searchParam, page: pageParam }));
+  // }, []);
 
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
