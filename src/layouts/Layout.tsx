@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import Header from '../components/header';
-import Footer from '../components/footer';
+import Header from '../modules/core/components/header';
+import Footer from '../modules/core/components/footer';
 import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { useEffect } from 'react';

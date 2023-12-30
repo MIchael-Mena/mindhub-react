@@ -1,8 +1,8 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
-import Home from '../pages/Home';
-import Cities from '../pages/Cities';
-import CityDetail from '../pages/CityDetail';
+import Home from '../modules/home/pages/Home';
+import Cities from '../modules/cities/pages/Cities';
+import CityDetail from '../modules/cityDetail/pages/CityDetail';
 
 const router = createBrowserRouter([
   {
