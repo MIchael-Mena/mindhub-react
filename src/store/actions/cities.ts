@@ -24,7 +24,7 @@ const fetchCitySelectedById = createAsyncThunk(
 
 const fetchCities = createAsyncThunk(
   'fetchCities',
-  async (payload: { [key: string]: string | number | boolean } = {}, api) => {
+  async (payload: { search?: string; page: number }, api) => {
     try {
       // Opcion para poder acceder a un estado previo
       // console.log(
@@ -39,9 +39,8 @@ const fetchCities = createAsyncThunk(
           ...payload,
         }
       );
-      const currentSearch = payload['search']
-        ? (payload['search'] as string)
-        : '';
+      const currentSearch = payload.search ? payload.search : '';
+
       return { currentSearch: currentSearch, ...cityGetResponse };
     } catch (error) {
       throw error;

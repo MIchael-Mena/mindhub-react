@@ -66,9 +66,7 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       state.citiesFiltered.loading = true;
     })
     .addCase(fetchCities.fulfilled, (state, action) => {
-      console.log('action.payload', action.payload);
       state.citiesFiltered.currentSearch = action.payload.currentSearch;
-
       state.citiesFiltered.hasBeenModified = true;
       state.citiesFiltered.loading = false;
       state.citiesFiltered.data = action.payload.cities;
