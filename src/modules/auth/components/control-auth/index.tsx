@@ -4,6 +4,7 @@ import { Avatar, Button, Tooltip } from '@mui/material';
 import { logout } from '../../../../store/actions/user';
 import { ApiResponse } from '../../../../models/ApiResponse';
 import { stringAvatar } from '../../../../utils/util';
+import { enqueueSnackbar } from 'notistack';
 
 interface ControlAuthProps {
   handleLoginOpen: () => void;
@@ -17,7 +18,9 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
     dispatch(logout()).then((res) => {
       let resPayload = res.payload as ApiResponse<string>;
       if (resPayload.success) {
-        alert(resPayload.message);
+        enqueueSnackbar(resPayload.message, {
+          variant: 'success',
+        });
       }
     });
   };

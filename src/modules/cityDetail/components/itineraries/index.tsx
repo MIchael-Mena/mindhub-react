@@ -1,7 +1,7 @@
 import { Box, Fab, Slide, Tab, Tabs, useMediaQuery } from '@mui/material';
 import { Itinerary } from '../../../../models/Itinerary';
 import { useRef, useState } from 'react';
-import { ItineraryDetail } from '../itinerary';
+import { ItineraryDetail } from '../itinerary-detail';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 
 interface ItinerariesProps {

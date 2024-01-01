@@ -121,6 +121,53 @@ const loginWithGoogle = createAsyncThunk(
   }
 );
 
+const addFavouriteItinerary = createAsyncThunk(
+  'addFavouriteItinerary',
+  async (payload: { postId: string }) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await ApiService.postData(
+        '/itinerary/like/' + payload.postId,
+        {},
+        options(token!)
+      );
+      return response;
+    } catch (error) {
+      return (error as AxiosError).response?.data as ApiResponse<{}>;
+    }
+  }
+);
+
+const removeFavouriteItinerary = createAsyncThunk(
+  'removeFavouriteItinerary',
+  async (payload: { postId: string }) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await ApiService.postData<User>(
+        '/itinerary/dislike/' + payload.postId,
+        {},
+        options(token!)
+      );
+      return response;
+    } catch (error) {
+      return (error as AxiosError).response?.data as ApiResponse<{}>;
+    }
+  }
+);
+
+/* const userActions = {
+  authenticate,
+  login,
+  register,
+  logout,
+  registerWithGoogle,
+  loginWithGoogle,
+  addFavouriteItinerary,
+  removeFavouriteItinerary,
+};
+
+export default userActions; */
+
 export {
   authenticate,
   login,
@@ -128,4 +175,6 @@ export {
   logout,
   registerWithGoogle,
   loginWithGoogle,
+  addFavouriteItinerary,
+  removeFavouriteItinerary,
 };

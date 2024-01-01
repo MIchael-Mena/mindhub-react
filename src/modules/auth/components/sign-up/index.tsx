@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../../store/hooks';
 import { useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { InputPasswordControl } from '../../../shared/components/input-password-control';
-import { ButtonForm } from '../../../shared/components/button-form';
+import { ButtonForm } from '../button-form';
 import { ApiResponse } from '../../../../models/ApiResponse';
 import { register, registerWithGoogle } from '../../../../store/actions/user';
 import { ButtonGoogle } from '../button-google';

@@ -9,6 +9,7 @@ import {
 import { ItineraryLike } from '../itinerary-like';
 
 export const ItineraryDetail = ({
+  _id,
   duration,
   likes,
   price,
@@ -49,7 +50,7 @@ export const ItineraryDetail = ({
           </Box>
 
           <Box display="flex" alignItems="center" flexDirection="row">
-            <ItineraryLike likes={likes} />
+            <ItineraryLike likes={likes} idItinerary={_id} />
           </Box>
         </Grid>
 

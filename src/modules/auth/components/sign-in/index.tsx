@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../../store/hooks';
 import { LoginForm } from '../../../../models/LoginForm';
 import { ApiResponse } from '../../../../models/ApiResponse';
 import { User } from '../../../../models/User';
-import { ButtonForm } from '../../../shared/components/button-form';
+import { ButtonForm } from '../button-form';
 import { useState } from 'react';
 import { ButtonGoogle } from '../button-google';
 

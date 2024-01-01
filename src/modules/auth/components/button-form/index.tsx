@@ -1,5 +1,3 @@
-// import { RootState } from '../../store/store';
-// import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { ApiResponse } from '../../../../models/ApiResponse';
 import { User } from '../../../../models/User';
 import { enqueueSnackbar } from 'notistack';
@@ -7,7 +5,6 @@ import { Button, CircularProgress } from '@mui/material';
 import { useApiService } from '../../../../hooks/useApiService';
 
 interface ButtonFormProps<T> {
-  // dispatch: ThunkDispatch<RootState, undefined, AnyAction>;
   onSubmit: (form: T) => Promise<ApiResponse<User>>;
   payloadOfSubmit: { form: T } | null;
   onClose: () => void;

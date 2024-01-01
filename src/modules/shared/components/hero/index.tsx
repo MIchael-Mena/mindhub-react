@@ -9,9 +9,6 @@ interface HeroProps {
 }
 
 const Hero = ({ imageHero, children, size = 'auto' }: HeroProps) => {
-  // const isValidSize = /^([0-9]{1,2}|100)%$/.test(size); // Verificar si es un % valido
-  // const imageSize = isValidSize ? size : 'auto';
-
   return (
     <>
       <Box

@@ -1,12 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { User } from '../../models/User';
 import {
+  addFavouriteItinerary,
   authenticate,
   login,
   loginWithGoogle,
   logout,
   register,
   registerWithGoogle,
+  removeFavouriteItinerary,
 } from '../actions/user';
 import { ApiResponse } from '../../models/ApiResponse';
 
@@ -63,7 +65,38 @@ const userReducer = createReducer(initialState, (builder) => {
     )
     .addCase(loginWithGoogle.fulfilled, (_state, action) =>
       handleSuccessfulAction(_state, action.payload)
-    );
+    )
+
+    .addCase(addFavouriteItinerary.fulfilled, (state, action) => {
+      if (action.payload.success) {
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            favouriteItineraries: [
+              ...state.user.favouriteItineraries!,
+              action.payload.data as string,
+            ],
+          },
+        };
+      }
+      return state;
+    })
+
+    .addCase(removeFavouriteItinerary.fulfilled, (state, action) => {
+      if (action.payload.success) {
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            favouriteItineraries: state.user.favouriteItineraries!.filter(
+              (itineraryId) => itineraryId !== action.payload.data
+            ),
+          },
+        };
+      }
+      return state;
+    });
 });
 
 export default userReducer;
