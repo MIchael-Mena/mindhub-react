@@ -34,19 +34,6 @@ export const CitiesList = () => {
     );
   }, [searchParam]);
 
-  // Desventaja: la restauracion de scroll no funciona al volver a la pagina
-  // const {
-  //   data: cities,
-  //   loading,
-  //   error,
-  // } = useApiService<City[]>(
-  //   () =>
-  //     !searchParam
-  //       ? ApiService.getData('/city')
-  //       : ApiService.getData('/city', { search: searchParam }),
-  //   [searchParam]
-  // );
-
   return (
     <>
       <Box
