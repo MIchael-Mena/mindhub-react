@@ -1,26 +1,11 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
 import { ApiService } from '../../services/api.service';
-import { City } from '../../models/City';
 
 interface CityGetResponse {
   cities: CityBasic[];
   totalPages: number;
 }
-
-const updateCitySelected = createAction<City>('updateCitySelected'); // Devuelve un objeto con type y payload
-
-const fetchCitySelectedById = createAsyncThunk(
-  'fetchCitySelectedById',
-  async (payload: { id: string }) => {
-    try {
-      const city = await ApiService.getData<City>(`/city/${payload.id}`);
-      return { city };
-    } catch (error) {
-      throw error;
-    }
-  }
-);
 
 const fetchCities = createAsyncThunk(
   'fetchCities',
@@ -66,9 +51,4 @@ const fetchPopularCities = createAsyncThunk(
   }
 );
 
-export {
-  fetchCities,
-  fetchPopularCities,
-  updateCitySelected,
-  fetchCitySelectedById,
-};
+export { fetchCities, fetchPopularCities };

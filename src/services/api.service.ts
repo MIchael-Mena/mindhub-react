@@ -40,4 +40,19 @@ export class ApiService {
       throw error;
     }
   }
+
+  static async deleteData<T>(
+    endPoint: string,
+    options: Object = {}
+  ): Promise<ApiResponse<T>> {
+    try {
+      const response = await this.instanceAxios.delete<ApiResponse<T>>(
+        endPoint,
+        options
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

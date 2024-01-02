@@ -75,7 +75,7 @@ export const SignIn = ({ onSignUpClick, onClose }: SignInProps) => {
           <ButtonForm
             onSubmit={(form: LoginForm) =>
               dispatch(login(form)).then(
-                (res) => res.payload as ApiResponse<User>
+                (res) => res.payload as ApiResponse<User> // res es el resultado de la promesa de axios
               )
             }
             payloadOfSubmit={payloadOfSubmit}

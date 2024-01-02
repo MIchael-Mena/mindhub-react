@@ -1,6 +1,5 @@
 import { FavoriteBorderSharp, FavoriteSharp } from '@mui/icons-material';
 import { IconButton, Tooltip, Typography } from '@mui/material';
-// import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import {
   addFavouriteItinerary,
@@ -17,19 +16,16 @@ export const ItineraryLike = ({
   const dispatch = useAppDispatch();
   const { isLogged, user } = useAppSelector((state) => state.userReducer);
 
-  const liked = isLogged
+  console.log('Like', user.favouriteItineraries);
+
+  const liked = isLogged // Me dice si debo marcar el corazón como lleno o vacío
     ? user.favouriteItineraries!.includes(idItinerary)
     : false;
 
-  // const [liked, setLiked] = useState(
-  //   isLogged ? user.favouriteItineraries!.includes(idItinerary) : false
-  // );
-  // const handleLike = () => {
-  //   setLiked(!liked);
-  // };
-
   const handleLike = () => {
-    if (liked) {
+    // El botón de like se puede clickear si el usuario está logueado
+    if (!liked) {
+      // !liked es el valor anterior
       dispatch(addFavouriteItinerary({ postId: idItinerary }));
     } else {
       dispatch(removeFavouriteItinerary({ postId: idItinerary }));
@@ -57,7 +53,7 @@ export const ItineraryLike = ({
         </span>
       </Tooltip>
       <Typography variant="body1" textAlign="center">
-        {liked ? likes + 1 : likes}
+        {likes}
       </Typography>
     </>
   );

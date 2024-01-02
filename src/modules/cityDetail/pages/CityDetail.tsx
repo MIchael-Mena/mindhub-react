@@ -17,11 +17,12 @@ import { DoubleArrow } from '@mui/icons-material';
 import { CityAttributes } from '../components/city-attributes';
 import { CityInfo } from '../components/city-info';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { fetchCitySelectedById } from '../../../store/actions/cities';
+// import { fetchCitySelectedById } from '../../../store/actions/cities';
 import { useEffect } from 'react';
 import { CardNotFound } from '../../shared/components/card-not-found/CardNotFound';
 import { Itineraries } from '../components/itineraries';
 import TitleUnderlined from '../../shared/components/styled/TitleUnderlined';
+import { fetchCitySelectedById } from '../../../store/actions/city-selected';
 
 const CityDetail = () => {
   const { id } = useParams();
@@ -30,7 +31,8 @@ const CityDetail = () => {
     data: city,
     loading,
     error,
-  } = useAppSelector((store) => store.citiesReducer.citySelected);
+  } = useAppSelector((store) => store.citySelectedReducer);
+  console.log('city');
   const dispatch = useAppDispatch();
 
   useEffect(() => {

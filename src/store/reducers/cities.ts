@@ -1,13 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
-import {
-  fetchCities,
-  fetchCitySelectedById,
-  fetchPopularCities,
-  updateCitySelected,
-} from '../actions/cities';
+import { fetchCities, fetchPopularCities } from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
-import { City } from '../../models/City';
 
 type GloblaState = {
   hasBeenModified: boolean; // Si la data ha sido modificada al menos una vez
@@ -17,7 +11,6 @@ const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[]> &
     GloblaState & { totalPages: number; currentSearch: string };
   popularCities: StatusResponse<CityBasic[]> & GloblaState;
-  citySelected: StatusResponse<City> & GloblaState;
 } = {
   popularCities: {
     loading: true,
@@ -33,35 +26,10 @@ const citiesState: {
     totalPages: 0,
     hasBeenModified: false,
   },
-  citySelected: {
-    loading: true,
-    error: null,
-    data: {} as City,
-    hasBeenModified: false,
-  },
 };
 
 const citiesReducer = createReducer(citiesState, (builder) => {
   builder
-    .addCase(updateCitySelected, (state, action) => {
-      state.citySelected.data = action.payload;
-      state.citySelected.loading = false;
-      state.citySelected.hasBeenModified = true;
-    })
-
-    .addCase(fetchCitySelectedById.pending, (state) => {
-      state.citySelected.loading = true;
-    })
-    .addCase(fetchCitySelectedById.fulfilled, (state, action) => {
-      state.citySelected.loading = false;
-      state.citySelected.data = action.payload.city;
-      state.citySelected.hasBeenModified = true;
-    })
-    .addCase(fetchCitySelectedById.rejected, (state, action) => {
-      state.citySelected.loading = false;
-      state.citySelected.error = action.error;
-    })
-
     .addCase(fetchCities.pending, (state) => {
       state.citiesFiltered.loading = true;
     })

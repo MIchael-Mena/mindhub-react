@@ -75,7 +75,7 @@ const userReducer = createReducer(initialState, (builder) => {
             ...state.user,
             favouriteItineraries: [
               ...state.user.favouriteItineraries!,
-              action.payload.data as string,
+              action.payload.data?.itineraryId!,
             ],
           },
         };
@@ -89,8 +89,8 @@ const userReducer = createReducer(initialState, (builder) => {
           ...state,
           user: {
             ...state.user,
-            favouriteItineraries: state.user.favouriteItineraries!.filter(
-              (itineraryId) => itineraryId !== action.payload.data
+            favouriteItineraries: state.user.favouriteItineraries?.filter(
+              (id) => id !== action.payload.data?.itineraryId
             ),
           },
         };

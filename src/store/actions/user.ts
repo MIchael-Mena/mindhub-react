@@ -13,6 +13,11 @@ const options = (token: string) => {
   };
 };
 
+interface LikeResponse {
+  totalLikes: number;
+  itineraryId: string;
+}
+
 const authenticate = createAsyncThunk(
   'authenticate',
   async (payload: string) => {
@@ -33,7 +38,7 @@ const authenticate = createAsyncThunk(
       return {
         success: false,
         message: res.data,
-      } as ApiResponse<User>;
+      } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data)
     }
   }
 );
@@ -126,14 +131,15 @@ const addFavouriteItinerary = createAsyncThunk(
   async (payload: { postId: string }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await ApiService.postData(
+      const response = await ApiService.postData<LikeResponse>(
         '/itinerary/like/' + payload.postId,
         {},
         options(token!)
       );
+      console.log(response);
       return response;
     } catch (error) {
-      return (error as AxiosError).response?.data as ApiResponse<{}>;
+      return (error as AxiosError).response?.data as ApiResponse<LikeResponse>;
     }
   }
 );
@@ -143,14 +149,14 @@ const removeFavouriteItinerary = createAsyncThunk(
   async (payload: { postId: string }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await ApiService.postData<User>(
+      const response = await ApiService.deleteData<LikeResponse>(
         '/itinerary/dislike/' + payload.postId,
-        {},
         options(token!)
       );
+      console.log(response);
       return response;
     } catch (error) {
-      return (error as AxiosError).response?.data as ApiResponse<{}>;
+      return (error as AxiosError).response?.data as ApiResponse<LikeResponse>;
     }
   }
 );
