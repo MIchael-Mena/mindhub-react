@@ -136,7 +136,6 @@ const addFavouriteItinerary = createAsyncThunk(
         {},
         options(token!)
       );
-      console.log(response);
       return response;
     } catch (error) {
       return (error as AxiosError).response?.data as ApiResponse<LikeResponse>;
@@ -153,7 +152,6 @@ const removeFavouriteItinerary = createAsyncThunk(
         '/itinerary/dislike/' + payload.postId,
         options(token!)
       );
-      console.log(response);
       return response;
     } catch (error) {
       return (error as AxiosError).response?.data as ApiResponse<LikeResponse>;

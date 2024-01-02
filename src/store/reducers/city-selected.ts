@@ -30,6 +30,7 @@ const citySelectedReducer = createReducer(citySelectedState, (builder) => {
       });
 
       state.data.itineraries = itineraries;
+      // state.data = { ...state.data, itineraries: itineraries };
     })
     .addCase(removeFavouriteItinerary.fulfilled, (state, action) => {
       if (!action.payload.success) return;
@@ -40,6 +41,7 @@ const citySelectedReducer = createReducer(citySelectedState, (builder) => {
         }
       });
 
+      // state.data = { ...state.data, itineraries: itineraries };
       state.data.itineraries = itineraries;
     })
     .addCase(updateCitySelected, (state, action) => {
