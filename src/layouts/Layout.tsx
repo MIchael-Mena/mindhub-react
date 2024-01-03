@@ -16,12 +16,10 @@ const Layout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token)
-      dispatch(authenticate(token)).then((res) => {
-        // Si es undefined, falló la autenticación (token expirado, etc.)
-        if (res.payload === 'Unauthorized') navigate('/home');
-      });
+    dispatch(authenticate()).then((res) => {
+      // Si es undefined, falló la autenticación (token expirado, etc.), res es de axios
+      if (res.payload === 'Unauthorized') navigate('/home');
+    });
   }, []);
 
   return (

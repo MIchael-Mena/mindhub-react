@@ -30,7 +30,7 @@ const initialState: { user: User; isLogged: boolean } = {
   user: defaultUser,
 };
 
-const handleSuccessfulAction = (
+const handleSuccessfullAction = (
   state: {
     user: User;
     isLogged: boolean;
@@ -50,21 +50,21 @@ const handleSuccessfulAction = (
 const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(login.fulfilled, (_state, action) =>
-      handleSuccessfulAction(_state, action.payload)
+      handleSuccessfullAction(_state, action.payload)
     )
     .addCase(register.fulfilled, (_state, action) =>
-      handleSuccessfulAction(_state, action.payload)
+      handleSuccessfullAction(_state, action.payload)
     )
     .addCase(authenticate.fulfilled, (_state, action) =>
-      handleSuccessfulAction(_state, action.payload)
+      handleSuccessfullAction(_state, action.payload)
     )
     .addCase(logout.fulfilled, (_state, _action) => initialState)
 
     .addCase(registerWithGoogle.fulfilled, (_state, action) =>
-      handleSuccessfulAction(_state, action.payload)
+      handleSuccessfullAction(_state, action.payload)
     )
     .addCase(loginWithGoogle.fulfilled, (_state, action) =>
-      handleSuccessfulAction(_state, action.payload)
+      handleSuccessfullAction(_state, action.payload)
     )
 
     .addCase(addFavouriteItinerary.fulfilled, (state, action) => {

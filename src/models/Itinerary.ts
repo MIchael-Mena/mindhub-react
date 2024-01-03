@@ -7,7 +7,7 @@ export interface Itinerary {
   price: number;
   _city: string;
   user: User;
-  likes: number;
+  likes?: number;
   hashtags: string[];
   activities?: string[];
   comments?: string[];

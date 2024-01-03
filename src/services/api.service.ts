@@ -7,6 +7,13 @@ export class ApiService {
     baseURL: this.baseUrl,
     timeout: 2000,
   });
+  private static auth = (token: string) => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  };
 
   constructor() {}
 
@@ -15,8 +22,10 @@ export class ApiService {
     queryParams: { [key: string]: string | number | boolean } = {}
   ): Promise<T> {
     try {
+      const token = localStorage.getItem('token'); // si hay token esta logueado
       const response = await this.instanceAxios.get<ApiResponse<T>>(endPoint, {
         params: queryParams,
+        ...(token ? this.auth(token) : {}),
       });
       return response.data.data!;
     } catch (error) {
@@ -26,14 +35,14 @@ export class ApiService {
 
   static async postData<T>(
     endPoint: string,
-    body: Object = {},
-    options: Object = {}
+    body: Object = {}
   ): Promise<ApiResponse<T>> {
     try {
+      const token = localStorage.getItem('token');
       const response = await this.instanceAxios.post<ApiResponse<T>>(
         endPoint,
         body,
-        options
+        token ? this.auth(token) : {}
       );
       return response.data;
     } catch (error) {
@@ -41,14 +50,12 @@ export class ApiService {
     }
   }
 
-  static async deleteData<T>(
-    endPoint: string,
-    options: Object = {}
-  ): Promise<ApiResponse<T>> {
+  static async deleteData<T>(endPoint: string): Promise<ApiResponse<T>> {
     try {
+      const token = localStorage.getItem('token');
       const response = await this.instanceAxios.delete<ApiResponse<T>>(
         endPoint,
-        options
+        token ? this.auth(token) : {}
       );
       return response.data;
     } catch (error) {

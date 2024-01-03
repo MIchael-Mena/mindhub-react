@@ -31,8 +31,7 @@ const CityDetail = () => {
     data: city,
     loading,
     error,
-  } = useAppSelector((store) => store.citySelectedReducer, shallowEqual);
-  console.log('city');
+  } = useAppSelector((store) => store.citySelectedReducer.city, shallowEqual);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -114,7 +113,7 @@ const CityDetail = () => {
                   Itineraries
                 </Typography>
               </TitleUnderlined>
-              {(city.itineraries! && city.itineraries.length) > 0 ? (
+              {city.itineraries! && city.itineraries.length > 0 ? (
                 <Itineraries itineraries={city.itineraries!} />
               ) : (
                 <Box display="flex" justifyContent="center">

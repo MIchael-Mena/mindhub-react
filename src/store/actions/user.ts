@@ -5,43 +5,28 @@ import { User } from '../../models/User';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '../../models/ApiResponse';
 
-const options = (token: string) => {
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
-
 interface LikeResponse {
   totalLikes: number;
   itineraryId: string;
 }
 
-const authenticate = createAsyncThunk(
-  'authenticate',
-  async (payload: string) => {
-    try {
-      const response = await ApiService.postData<User>(
-        '/user/authenticate',
-        {},
-        options(payload)
-      );
-      localStorage.setItem('token', response.token!);
+const authenticate = createAsyncThunk('authenticate', async () => {
+  try {
+    const response = await ApiService.postData<User>('/user/authenticate');
+    localStorage.setItem('token', response.token!);
 
-      return response;
-    } catch (error) {
-      const res = (error as AxiosError).response!;
-      // res.data contendra 'Unauthorized' para cualquier error del token y res.status sera 401
-      // TODO: Refactorizar el backend para que res.data devuelva un objeto del tipo ApiResponse
-      localStorage.removeItem('token'); // Para cualquier error, se elimina el token
-      return {
-        success: false,
-        message: res.data,
-      } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data)
-    }
+    return response;
+  } catch (error) {
+    const res = (error as AxiosError).response!;
+    // res.data contendra 'Unauthorized' para cualquier error del token y res.status sera 401
+    // TODO: Refactorizar el backend para que res.data devuelva un objeto del tipo ApiResponse
+    localStorage.removeItem('token'); // Para cualquier error, se elimina el token
+    return {
+      success: false,
+      message: res.data,
+    } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data)
   }
-);
+});
 
 const login = createAsyncThunk('login', async (payload: LoginForm) => {
   try {
@@ -76,14 +61,10 @@ const logout = createAsyncThunk('logout', async () => {
     message: 'Could not logout',
   } as ApiResponse<User>;
   try {
-    const token = localStorage.getItem('token');
-    if (!token) return Promise.resolve(errorResponse);
+    // const token = localStorage.getItem('token');
+    // if (!token) return Promise.resolve(errorResponse);
 
-    const response = await ApiService.postData<User>(
-      '/user/logout',
-      {},
-      options(token)
-    );
+    const response = await ApiService.postData<User>('/user/logout');
     return response;
   } catch (error) {
     return errorResponse;
@@ -130,11 +111,8 @@ const addFavouriteItinerary = createAsyncThunk(
   'addFavouriteItinerary',
   async (payload: { postId: string }) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await ApiService.postData<LikeResponse>(
-        '/itinerary/like/' + payload.postId,
-        {},
-        options(token!)
+        '/itinerary/like/' + payload.postId
       );
       return response;
     } catch (error) {
@@ -147,10 +125,8 @@ const removeFavouriteItinerary = createAsyncThunk(
   'removeFavouriteItinerary',
   async (payload: { postId: string }) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await ApiService.deleteData<LikeResponse>(
-        '/itinerary/dislike/' + payload.postId,
-        options(token!)
+        '/itinerary/dislike/' + payload.postId
       );
       return response;
     } catch (error) {
@@ -158,19 +134,6 @@ const removeFavouriteItinerary = createAsyncThunk(
     }
   }
 );
-
-/* const userActions = {
-  authenticate,
-  login,
-  register,
-  logout,
-  registerWithGoogle,
-  loginWithGoogle,
-  addFavouriteItinerary,
-  removeFavouriteItinerary,
-};
-
-export default userActions; */
 
 export {
   authenticate,

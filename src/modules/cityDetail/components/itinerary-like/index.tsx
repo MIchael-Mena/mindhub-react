@@ -5,18 +5,15 @@ import {
   addFavouriteItinerary,
   removeFavouriteItinerary,
 } from '../../../../store/actions/user';
+import { selectItemById } from './select-item-by-id';
 
-export const ItineraryLike = ({
-  likes,
-  idItinerary,
-}: {
-  likes: number;
-  idItinerary: string;
-}) => {
+export const ItineraryLike = ({ idItinerary }: { idItinerary: string }) => {
   const dispatch = useAppDispatch();
   const { isLogged, user } = useAppSelector((state) => state.userReducer);
 
-  console.log('Like', user.favouriteItineraries);
+  const { likes } = useAppSelector((state) =>
+    selectItemById(state, idItinerary)
+  );
 
   const liked = isLogged // Me dice si debo marcar el corazón como lleno o vacío
     ? user.favouriteItineraries!.includes(idItinerary)
