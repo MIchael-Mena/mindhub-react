@@ -1,8 +1,8 @@
-import { Box, Fab, Slide, Tab, Tabs, useMediaQuery } from '@mui/material';
+import { Box, Slide, Tab, Tabs, useMediaQuery } from '@mui/material';
 import { Itinerary } from '../../../../models/Itinerary';
 import { useRef, useState } from 'react';
 import { ItineraryDetail } from '../itinerary-detail';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import { ItineraryExtra } from '../itinerary-extra';
 
 interface ItinerariesProps {
   itineraries: Itinerary[];
@@ -78,30 +78,8 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
             </Slide>
           ))}
         </div>
-
-        {/* {itineraries.map((itinerary, key) => (
-          <TabPanel value={activeItinerary} index={key} key={key}>
-            <ItineraryDetail {...itinerary} />
-          </TabPanel>
-        ))} */}
-
-        <Fab
-          color="primary"
-          variant="extended"
-          sx={{
-            mx: 'auto',
-            position: 'absolute',
-            bottom: 10,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            transition: 'opacity 0.4s ease-in-out',
-          }}
-          size="small"
-        >
-          <ExpandCircleDownIcon fontSize="medium" />
-          View more
-        </Fab>
       </Box>
+      <ItineraryExtra />
     </>
   );
 };
