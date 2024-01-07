@@ -28,6 +28,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           flexDirection: { xs: 'column', md: 'row' },
           height: { xs: '300px', md: itineraries.length > 2 ? 175 : 150 },
           borderRadius: 3,
+          boxShadow: 1,
           overflow: 'hidden',
         }}
         ref={containerRef}

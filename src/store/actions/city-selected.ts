@@ -8,7 +8,9 @@ const fetchCitySelectedById = createAsyncThunk(
   'fetchCitySelectedById',
   async (payload: { id: string }) => {
     try {
-      const city = await ApiService.getData<City>(`/city/${payload.id}`);
+      const city = await ApiService.getData<City>(`/city/${payload.id}`, {
+        populate_itineraries: true,
+      });
       return city;
     } catch (error) {
       throw error;

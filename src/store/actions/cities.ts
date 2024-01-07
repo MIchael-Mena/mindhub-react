@@ -20,7 +20,7 @@ const fetchCities = createAsyncThunk(
         '/city',
         {
           // populate_itineraries: true,
-          basic_info: true,
+          basic_info: true, // Evito traer algunos campos que no necesito como la fecha de creacion, etc
           ...payload,
         }
       );

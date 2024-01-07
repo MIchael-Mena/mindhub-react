@@ -7,14 +7,14 @@ import {
   // LuggageOutlined,
 } from '@mui/icons-material';
 import { Chip, Grid, Paper, Stack } from '@mui/material';
-import { CityBasic } from '../../../../models/CityBasic';
+import { City } from '../../../../models/City';
 
 export const CityAttributes = ({
   bestTime,
   currency,
   language,
   timezone,
-}: CityBasic) => {
+}: City) => {
   const informationAttributes = [
     {
       icon: <LabelImportantTwoTone color="secondary" />,
