@@ -80,7 +80,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           ))}
         </div>
       </Box>
-      <ItineraryExtra />
+      <ItineraryExtra activeItineraryId={itineraries[activeItinerary]._id} />
     </>
   );
 };

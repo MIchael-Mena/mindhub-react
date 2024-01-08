@@ -4,10 +4,6 @@ import { Activity } from '../../../../models/Acitivity';
 export const ActivityCard = (activity: Activity) => {
   return (
     <Card sx={{ borderRadius: 0, bgcolor: 'rgba(255, 255, 255, 0.0)' }}>
-      {/*       <CardMedia
-        image="../src/assets/images/no-img-up.png"
-        // sx={{ height: 25 }}
-      /> */}
       <CardContent>
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h6" component="div">

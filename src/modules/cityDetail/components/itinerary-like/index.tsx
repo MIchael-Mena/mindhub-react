@@ -22,7 +22,7 @@ export const ItineraryLike = ({ idItinerary }: { idItinerary: string }) => {
   const handleLike = () => {
     // El botón de like se puede clickear si el usuario está logueado
     if (!liked) {
-      // !liked es el valor anterior
+      // !liked es el estado actual del corazón
       dispatch(addFavouriteItinerary({ postId: idItinerary }));
     } else {
       dispatch(removeFavouriteItinerary({ postId: idItinerary }));

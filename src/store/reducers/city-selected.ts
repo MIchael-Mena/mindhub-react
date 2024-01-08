@@ -12,7 +12,9 @@ import { StatusResponse } from '../../models/StatusResponse';
 import { Itinerary } from '../../models/Itinerary';
 import { Like } from '../../models/Like';
 
-const cityState: StatusResponse<City> & { hasBeenModified: boolean } = {
+const cityState: StatusResponse<City> & {
+  hasBeenModified: boolean;
+} = {
   loading: true,
   error: null,
   data: {} as City,
