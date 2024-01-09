@@ -25,24 +25,9 @@ export const ItineraryExtra = ({
     if (activitiesRef.current) {
       const activitiesHeight = activitiesRef.current.clientHeight;
       const commentsHeight = commentsRef.current!.clientHeight;
-      console.log(activitiesHeight, commentsHeight);
-      /*       if (commentsHeight > activitiesHeight) {
-        activitiesRef.current!.style.height = commentsHeight + 'px';
-      } else {
-        commentsRef.current!.style.height = activitiesHeight + 'px';
-      } */
-      if (activitiesHeight < 250) {
-        console.log('entro');
-        commentsRef.current!.style.height = '250px';
-        activitiesRef.current!.style.height = '250px';
-      } else {
+      if (activitiesHeight > 250 && commentsHeight > 250) {
         commentsRef.current!.style.maxHeight = activitiesHeight + 'px';
       }
-      /*       console.log(
-        'height before',
-        activitiesRef.current!.style.height,
-        commentsRef.current!.style.height
-      ); */
     }
   };
 
@@ -62,11 +47,11 @@ export const ItineraryExtra = ({
   useEffect(() => {
     if (!show) return;
     setShow(false);
+    // El timeout es para que se vea la animacion de salida
     setTimeout(() => {
       dispatch(fetchCommentsAndActivitiesByItineraryId(activeItineraryId)).then(
         (_e) => {
           setShow(true);
-          // setShow(true);
           // updateHeightContainer();
         }
       );
