@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   List,
@@ -10,32 +9,28 @@ import {
   Typography,
 } from '@mui/material';
 import { Comment } from '../../../../models/Comment';
-import { stringAvatar } from '../../../../utils/util';
 import React from 'react';
+import { useAppSelector } from '../../../../store/hooks';
+import { UserAvatar } from '../../../shared/components/user-avatar';
 
 type CommentsProps = {
-  // ref: React.RefObject<HTMLDivElement>;
-  props?: any;
+  comments: Comment[];
 };
 
 export const Comments = React.forwardRef<HTMLDivElement, CommentsProps>(
-  ({ props }, refForward) => {
+  ({ comments }, refForward) => {
+    const isLogged = useAppSelector((store) => store.userReducer.isLogged);
+
     return (
       <Box sx={{ overflowY: 'auto' }} ref={refForward}>
-        <List>
-          {messages.map(({ _id, text, _user, updatedAt }) => (
+        <List disablePadding>
+          {comments.map(({ _id, text, _user, updatedAt }) => (
             <ListItem key={_id}>
               <ListItemAvatar>
-                {!_user.profilePic ? (
-                  <Avatar
-                    alt={_user.firstName + ' ' + _user.lastName}
-                    src={_user.profilePic}
-                  />
-                ) : (
-                  <Avatar
-                    {...stringAvatar(_user.firstName + ' ' + _user.lastName)}
-                  />
-                )}
+                <UserAvatar
+                  imageUrl={_user.profilePic}
+                  username={_user.firstName + ' ' + _user.lastName}
+                />
               </ListItemAvatar>
               <ListItemText
                 primary={text}
@@ -75,6 +70,7 @@ export const Comments = React.forwardRef<HTMLDivElement, CommentsProps>(
                 fullWidth
               />
               <Button
+                disabled={isLogged}
                 type="submit"
                 variant="contained"
                 color="primary"

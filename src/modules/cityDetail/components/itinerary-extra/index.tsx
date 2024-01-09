@@ -1,12 +1,11 @@
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import { Box, Collapse, Fab, Grid, Typography } from '@mui/material';
+import { Box, Collapse, Grid, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityCard } from '../activity-card';
 import { Activity } from '../../../../models/Acitivity';
 import { Comments } from '../comments';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/slices/comments';
-import './style.css';
+import { ButtonViewMore } from '../button-view-more';
 
 export const ItineraryExtra = ({
   activeItineraryId,
@@ -16,71 +15,74 @@ export const ItineraryExtra = ({
   const { loading, data } = useAppSelector(
     (store) => store.itinerarySelectedReducer
   );
-  console.log('ItineraryExtra', loading, data);
   const dispatch = useAppDispatch();
   const activitiesRef = useRef<HTMLDivElement>(null);
   const commentsRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
   const animationDuration = 500;
 
+  const updateHeightContainer = () => {
+    if (activitiesRef.current) {
+      const activitiesHeight = activitiesRef.current.clientHeight;
+      const commentsHeight = commentsRef.current!.clientHeight;
+      console.log(activitiesHeight, commentsHeight);
+      /*       if (commentsHeight > activitiesHeight) {
+        activitiesRef.current!.style.height = commentsHeight + 'px';
+      } else {
+        commentsRef.current!.style.height = activitiesHeight + 'px';
+      } */
+      if (activitiesHeight < 250) {
+        console.log('entro');
+        commentsRef.current!.style.height = '250px';
+        activitiesRef.current!.style.height = '250px';
+      } else {
+        commentsRef.current!.style.maxHeight = activitiesHeight + 'px';
+      }
+      /*       console.log(
+        'height before',
+        activitiesRef.current!.style.height,
+        commentsRef.current!.style.height
+      ); */
+    }
+  };
+
+  // Accion lanzada por el usuario cuando hace click en el boton de ver mas
   const handleShow = () => {
     dispatch(fetchCommentsAndActivitiesByItineraryId(activeItineraryId)).then(
-      ({ meta }) => {
-        // Si hay un error, va a exister un objeto error pero no lo desestructuro porque typescript me da error de que no existe
-        const hasError = meta.requestStatus === 'rejected' ? true : false; // fullfilled, pending, rejected
-        if (hasError) console.log('ItineraryExtra dispatch error');
-        else setShow(!show);
+      (_e) => {
+        // Si hay un error, va a exister un objeto error pero no lo desestructuro porque typescript me dice que no existe
+        // const hasError = meta.requestStatus === 'rejected' ? true : false; // fullfilled, pending, rejected
+        // Halla o no un error debo mostrar el contenido aunque este vacio, se que el error no va a ser por conexion
+        // ya que el componente padre se encarga de eso
+        setShow(!show);
       }
     );
   };
 
   useEffect(() => {
-    const updateHeightContainer = () => {
-      if (activitiesRef.current) {
-        // Le asigno la altura del contenedor de actividades al contenedor de comentarios
-        const activitiesHeight = activitiesRef.current.clientHeight;
-        commentsRef.current!.style.maxHeight =
-          activitiesHeight < 300 ? '300px' : activitiesHeight + 'px';
-      }
-    };
-    updateHeightContainer();
-  }, [show]);
+    if (!show) return;
+    setShow(false);
+    setTimeout(() => {
+      dispatch(fetchCommentsAndActivitiesByItineraryId(activeItineraryId)).then(
+        (_e) => {
+          setShow(true);
+          // setShow(true);
+          // updateHeightContainer();
+        }
+      );
+    }, animationDuration);
+  }, [activeItineraryId]);
+
+  useEffect(updateHeightContainer, [show]);
 
   return (
     <>
-      <Fab
-        color="primary"
-        variant="extended"
-        sx={{
-          mx: 'auto',
-          position: 'absolute',
-          bottom: 10,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          transition: 'opacity 0.4s ease-in-out',
-        }}
-        size="small"
-        onClick={handleShow}
-      >
-        <ExpandCircleDownIcon
-          fontSize="medium"
-          sx={{
-            transform: show ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: `transform ${animationDuration}ms ease-in-out`,
-          }}
-        />
-        {loading ? (
-          <div
-            style={{ width: '50px', display: 'flex', justifyContent: 'center' }}
-          >
-            <div className="dot-elastic"></div>
-          </div>
-        ) : !show ? (
-          'View more'
-        ) : (
-          'View less'
-        )}
-      </Fab>
+      <ButtonViewMore
+        show={show}
+        handleShow={handleShow}
+        loading={loading}
+        animationDuration={animationDuration}
+      />
 
       <Collapse
         in={show}
@@ -109,7 +111,7 @@ export const ItineraryExtra = ({
               Activities
             </Typography>
             <Box ref={activitiesRef}>
-              {activities.map((activity) => (
+              {data.activities.map((activity) => (
                 <ActivityCard key={activity._id} {...activity} />
               ))}
             </Box>
@@ -118,7 +120,7 @@ export const ItineraryExtra = ({
             <Typography variant="h5" p={2} bgcolor="secondary.main">
               Comments
             </Typography>
-            <Comments ref={commentsRef} />
+            <Comments ref={commentsRef} comments={data.comments} />
           </Grid>
         </Grid>
       </Collapse>

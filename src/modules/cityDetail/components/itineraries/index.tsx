@@ -15,9 +15,33 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
   const [activeItinerary, setActiveItinerary] = useState(0);
   const matches = useMediaQuery('(max-width:900px)');
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+  /*   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setActiveItinerary(newValue);
+  }; */
+  const handleChange = (args: any[]) => {
+    const [_event, newValue] = args;
     setActiveItinerary(newValue);
   };
+
+  let lastExecution = Date.now();
+
+  const throttledHandleChange = (...args: any[]) => {
+    if (Date.now() - lastExecution >= 500) {
+      handleChange(args);
+      lastExecution = Date.now();
+    }
+  };
+
+  /*   let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  const debouncedHandleChange = (...args: any[]) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      handleChange(args);
+    }, 500);
+  }; */
   return (
     <>
       <Box
@@ -39,7 +63,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           // scrollButtons="auto"
           allowScrollButtonsMobile
           value={activeItinerary}
-          onChange={handleChange}
+          onChange={throttledHandleChange}
           aria-label="Itineraries"
           sx={
             matches

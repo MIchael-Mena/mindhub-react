@@ -25,7 +25,7 @@ const itinerarySelectedState: StatusResponse<{
   comments: Comment[];
   activities: Activity[];
 }> = {
-  loading: true,
+  loading: false,
   error: null,
   data: { comments: [] as Comment[], activities: [] as Activity[] },
 };
@@ -50,6 +50,9 @@ const itinerarySelectedSlice = createSlice({
       .addCase(
         fetchCommentsAndActivitiesByItineraryId.rejected,
         (state, action) => {
+          // es el error que devuelve el servidor 404 si no encuentra comentarios o actividades para ese itinerario
+          // action.error.code === 'ERR_BAD_REQUEST'
+          state.data = { comments: [], activities: [] };
           state.loading = false;
           state.error = action.error;
         }
