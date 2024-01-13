@@ -1,54 +1,37 @@
-import {
-  Box,
-  Button,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, List, ListItem, TextField, Tooltip } from '@mui/material';
 import { Comment } from '../../../../models/Comment';
-import React from 'react';
+import { useRef, forwardRef } from 'react';
 import { useAppSelector } from '../../../../store/hooks';
-import { UserAvatar } from '../../../shared/components/user-avatar';
+
+import { CardComment } from '../card-comment';
 
 type CommentsProps = {
   comments: Comment[];
 };
 
-export const Comments = React.forwardRef<HTMLDivElement, CommentsProps>(
+export const Comments = forwardRef<HTMLDivElement, CommentsProps>(
   ({ comments }, refForward) => {
     const isLogged = useAppSelector((store) => store.userReducer.isLogged);
+    const userId = useAppSelector((store) => store.userReducer.user._id);
+    console.log('Comments');
+
+    const textFieldRef = useRef<HTMLInputElement>(null);
+
+    const handleSubmit = () => {
+      if (!textFieldRef.current?.value) return;
+      // console.log(textFieldRef.current?.value);
+    };
 
     return (
       <Box sx={{ overflowY: 'auto' }} ref={refForward}>
         <List disablePadding>
-          {comments.map(({ _id, text, _user, updatedAt }) => (
-            <ListItem key={_id}>
-              <ListItemAvatar>
-                <UserAvatar
-                  imageUrl={_user.profilePic}
-                  username={_user.firstName + ' ' + _user.lastName}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={text}
-                secondary={
-                  <Typography variant="body2" color="GrayText">
-                    {new Date(updatedAt).toLocaleString('en-US', {
-                      year: 'numeric',
-                      month: '2-digit',
-                      day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                      hour12: true,
-                    })}
-                  </Typography>
-                }
-              />
-            </ListItem>
+          {comments.map((comment) => (
+            <CardComment
+              isLogged={isLogged}
+              key={comment._id}
+              {...comment}
+              userId={userId!}
+            />
           ))}
           <ListItem>
             <Box
@@ -60,24 +43,40 @@ export const Comments = React.forwardRef<HTMLDivElement, CommentsProps>(
                 width: '100%',
               }}
             >
-              <TextField
+              <Box display="flex" width="100%" gap={1}>
+                <TextField
+                  fullWidth
+                  placeholder="Write a comment..."
+                  variant="filled"
+                  multiline
+                  inputProps={{ maxLength: 500 }}
+                />
+                {/*               <TextField
                 // label="Comment"
+                inputRef={textFieldRef}
                 multiline
                 rows={4}
                 placeholder="Write a comment..."
                 variant="outlined"
                 inputProps={{ maxLength: 500 }}
                 fullWidth
-              />
-              <Button
-                disabled={isLogged}
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ mt: 1, alignSelf: 'flex-end' }}
-              >
-                Send
-              </Button>
+              /> */}
+                <Tooltip
+                  title={isLogged ? '' : 'You must be logged in to comment'}
+                  placement="top"
+                >
+                  <Box sx={{ mt: 1, alignSelf: 'flex-end' }}>
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={!isLogged}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Post
+                    </Button>
+                  </Box>
+                </Tooltip>
+              </Box>
             </Box>
           </ListItem>
         </List>

@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { Activity } from '../../../../models/Acitivity';
 
-export const ActivityCard = (activity: Activity) => {
+export const CardActivity = (activity: Activity) => {
   return (
     <Card sx={{ borderRadius: 0, bgcolor: 'rgba(255, 255, 255, 0.0)' }}>
       <CardContent>

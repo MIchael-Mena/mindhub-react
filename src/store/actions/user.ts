@@ -18,12 +18,12 @@ const authenticate = createAsyncThunk('authenticate', async () => {
     return response;
   } catch (error) {
     const res = (error as AxiosError).response!;
-    // res.data contendra 'Unauthorized' para cualquier error del token y res.status sera 401
+    // Si tengo un token invalido, el backend devuelve un error 401 en res.status y res.data sera 'Unauthorized'
     // TODO: Refactorizar el backend para que res.data devuelva un objeto del tipo ApiResponse
     localStorage.removeItem('token'); // Para cualquier error, se elimina el token
     return {
       success: false,
-      message: res.data,
+      message: res.data ?? 'Unauthorized',
     } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data)
   }
 });

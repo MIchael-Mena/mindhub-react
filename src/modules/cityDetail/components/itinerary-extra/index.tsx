@@ -1,10 +1,9 @@
 import { Box, Collapse, Grid, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityCard } from '../activity-card';
-import { Activity } from '../../../../models/Acitivity';
+import { CardActivity } from '../card-activity';
 import { Comments } from '../comments';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/slices/comments';
+import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/slices/itinerary-extra';
 import { ButtonViewMore } from '../button-view-more';
 
 export const ItineraryExtra = ({
@@ -13,7 +12,7 @@ export const ItineraryExtra = ({
   activeItineraryId: string;
 }) => {
   const { loading, data } = useAppSelector(
-    (store) => store.itinerarySelectedReducer
+    (store) => store.itineraryExtraReducer
   );
   const dispatch = useAppDispatch();
   const activitiesRef = useRef<HTMLDivElement>(null);
@@ -33,6 +32,11 @@ export const ItineraryExtra = ({
 
   // Accion lanzada por el usuario cuando hace click en el boton de ver mas
   const handleShow = () => {
+    if (show) {
+      // Evito hacer la peticion caundo el usuario toca el boton de ver mas y ya esta abierto
+      setShow(false);
+      return;
+    }
     dispatch(fetchCommentsAndActivitiesByItineraryId(activeItineraryId)).then(
       (_e) => {
         // Si hay un error, va a exister un objeto error pero no lo desestructuro porque typescript me dice que no existe
@@ -97,7 +101,7 @@ export const ItineraryExtra = ({
             </Typography>
             <Box ref={activitiesRef}>
               {data.activities.map((activity) => (
-                <ActivityCard key={activity._id} {...activity} />
+                <CardActivity key={activity._id} {...activity} />
               ))}
             </Box>
           </Grid>
@@ -112,86 +116,3 @@ export const ItineraryExtra = ({
     </>
   );
 };
-
-const activities: Activity[] = [
-  {
-    _id: '1',
-    _itinerary: '1',
-    title: 'Activity 1',
-    duration: 60,
-    description: 'Description of Activity 1',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '2',
-    _itinerary: '1',
-    title: 'Activity 2',
-    duration: 60,
-    description: 'Description of Activity 2',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '3',
-    _itinerary: '1',
-    title: 'Activity 3',
-    duration: 60,
-    description: 'Description of Activity 3',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '4',
-    _itinerary: '1',
-    title: 'Activity 4',
-    duration: 60,
-    description: 'Description of Activity 4',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '5',
-    _itinerary: '1',
-    title: 'Activity 5',
-    duration: 60,
-    description: 'Description of Activity 5',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  /*   {
-    _id: '6',
-    _itinerary: '1',
-    title: 'Activity 6',
-    duration: 60,
-    description: 'Description of Activity 6',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '7',
-    _itinerary: '1',
-    title: 'Activity 7',
-    duration: 60,
-    description: 'Description of Activity 7',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '8',
-    _itinerary: '1',
-    title: 'Activity 8',
-    duration: 60,
-    description: 'Description of Activity 8',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '9',
-    _itinerary: '1',
-    title: 'Activity 9',
-    duration: 60,
-    description: 'Description of Activity 9',
-    images: ['image1.jpg', 'image2.jpg'],
-  },
-  {
-    _id: '10',
-    _itinerary: '1',
-    title: 'Activity 10',
-    duration: 60,
-    description: 'Description of Activity 10',
-    images: ['image1.jpg', 'image2.jpg'],
-  }, */
-];

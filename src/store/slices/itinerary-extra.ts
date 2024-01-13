@@ -8,12 +8,13 @@ export const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk(
   'fetchCommentsAndActivitiesByItineraryId',
   async (itineraryId: string) => {
     try {
-      const comments = await ApiService.getData<Comment[]>(
+      let comments = await ApiService.getData<Comment[]>(
         `/comment/for-itinerary/${itineraryId}`
       );
       const activities = await ApiService.getData<Activity[]>(
         `/activity/for-itinerary/${itineraryId}`
       );
+
       return { comments, activities };
     } catch (error) {
       throw error;
@@ -21,19 +22,19 @@ export const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk(
   }
 );
 
-const itinerarySelectedState: StatusResponse<{
+const itineraryExtraState: StatusResponse<{
   comments: Comment[];
   activities: Activity[];
-}> = {
+}> & { userComment: null | Comment } = {
   loading: false,
   error: null,
   data: { comments: [] as Comment[], activities: [] as Activity[] },
+  userComment: null,
 };
 
-// Crear el slice del estado
-const itinerarySelectedSlice = createSlice({
+const itineraryExtraSlice = createSlice({
   name: 'comments',
-  initialState: itinerarySelectedState,
+  initialState: itineraryExtraState,
   reducers: {}, // Las acciones sincronicas van aca
   extraReducers: (builder) => {
     builder
@@ -60,4 +61,4 @@ const itinerarySelectedSlice = createSlice({
   },
 });
 
-export default itinerarySelectedSlice.reducer;
+export default itineraryExtraSlice.reducer;

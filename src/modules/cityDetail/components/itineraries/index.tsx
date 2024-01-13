@@ -25,6 +25,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
 
   let lastExecution = Date.now();
 
+  // Throttling garantiza que una función no se ejecute más de una vez cada cierto tiempo.
   const throttledHandleChange = (...args: any[]) => {
     if (Date.now() - lastExecution >= 500) {
       handleChange(args);

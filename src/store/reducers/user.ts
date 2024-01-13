@@ -11,6 +11,7 @@ import {
   removeFavouriteItinerary,
 } from '../actions/user';
 import { ApiResponse } from '../../models/ApiResponse';
+import { Comment } from '../../models/Comment';
 
 const defaultUser: User = {
   _id: '',
@@ -20,6 +21,7 @@ const defaultUser: User = {
   profilePic: '',
   country: '',
   birthDate: '',
+  comments: [] as Comment[],
   favouritesCities: [],
   favouriteActivities: [],
   favouriteItineraries: [],
@@ -37,7 +39,7 @@ const handleSuccessfullAction = (
   },
   payload: ApiResponse<User>
 ) => {
-  // // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
+  // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
   if (payload.success) {
     return {
       isLogged: true,
@@ -55,9 +57,12 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(register.fulfilled, (_state, action) =>
       handleSuccessfullAction(_state, action.payload)
     )
+
     .addCase(authenticate.fulfilled, (_state, action) =>
       handleSuccessfullAction(_state, action.payload)
     )
+    .addCase(authenticate.rejected, (_state, _action) => initialState)
+
     .addCase(logout.fulfilled, (_state, _action) => initialState)
 
     .addCase(registerWithGoogle.fulfilled, (_state, action) =>

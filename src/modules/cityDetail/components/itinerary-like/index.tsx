@@ -9,14 +9,18 @@ import { selectItemById } from './select-item-by-id';
 
 export const ItineraryLike = ({ idItinerary }: { idItinerary: string }) => {
   const dispatch = useAppDispatch();
-  const { isLogged, user } = useAppSelector((state) => state.userReducer);
-
-  const { likes } = useAppSelector((state) =>
-    selectItemById(state, idItinerary)
+  const isLogged = useAppSelector((state) => state.userReducer.isLogged);
+  const favouriteItineraries = useAppSelector(
+    (state) => state.userReducer.user.favouriteItineraries
+  );
+  const { likes } = useAppSelector(
+    (state) => selectItemById(state, idItinerary) // Me va a devolver un nuevo valor cada vez que se ejecute handleLike
   );
 
+  // El siguiente codigo es valido por que en los datos de user tengo un array de itinerarios favoritos
+  // si no lo tuviera deberia hacer una peticion a la base de datos para saber si el itinerario esta en favoritos
   const liked = isLogged // Me dice si debo marcar el corazón como lleno o vacío
-    ? user.favouriteItineraries!.includes(idItinerary)
+    ? favouriteItineraries!.includes(idItinerary)
     : false;
 
   const handleLike = () => {

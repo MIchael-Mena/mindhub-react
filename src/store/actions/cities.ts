@@ -11,7 +11,7 @@ const fetchCities = createAsyncThunk(
   'fetchCities',
   async (payload: { search?: string; page: number }, api) => {
     try {
-      // Opcion para poder acceder a un estado previo
+      // Opcion para poder acceder a un estado desde un action, tambien se puede desestructurar el objeto api
       // console.log(
       //   'state',
       //   (api.getState() as RootState).citiesReducer.cities.hasBeenModified

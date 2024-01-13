@@ -16,8 +16,10 @@ const Layout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Si no tengo token, no hago nada
+    if (localStorage.getItem('token') === null) return;
+
     dispatch(authenticate()).then((res) => {
-      // Si es undefined, falló la autenticación (token expirado, etc.), res es de axios
       if (res.payload === 'Unauthorized') navigate('/home');
     });
   }, []);
