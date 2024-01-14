@@ -1,29 +1,38 @@
 import { Box, Button, List, ListItem, TextField, Tooltip } from '@mui/material';
 import { Comment } from '../../../../models/Comment';
 import { useRef, forwardRef } from 'react';
-import { useAppSelector } from '../../../../store/hooks';
-
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { CardComment } from '../card-comment';
+import { createComment } from '../../../../store/actions/itinerary-extra';
 
 type CommentsProps = {
   comments: Comment[];
+  itineraryId: string;
 };
 
 export const Comments = forwardRef<HTMLDivElement, CommentsProps>(
-  ({ comments }, refForward) => {
+  ({ comments, itineraryId }, refForward) => {
     const isLogged = useAppSelector((store) => store.userReducer.isLogged);
     const userId = useAppSelector((store) => store.userReducer.user._id);
+    const dispatch = useAppDispatch();
     console.log('Comments');
 
     const textFieldRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = () => {
-      if (!textFieldRef.current?.value) return;
+      const commentToPost = {
+        text: textFieldRef.current!.value,
+        onModel: 'Itinerary',
+        _reference: itineraryId,
+        _user: userId!,
+      };
+      dispatch(createComment(commentToPost));
+      // if (!textFieldRef.current?.value) return;
       // console.log(textFieldRef.current?.value);
     };
 
     return (
-      <Box sx={{ overflowY: 'auto' }} ref={refForward}>
+      <Box sx={{ overflowY: 'auto' }} py={2} ref={refForward}>
         <List disablePadding>
           {comments.map((comment) => (
             <CardComment
@@ -46,6 +55,7 @@ export const Comments = forwardRef<HTMLDivElement, CommentsProps>(
               <Box display="flex" width="100%" gap={1}>
                 <TextField
                   fullWidth
+                  inputRef={textFieldRef}
                   placeholder="Write a comment..."
                   variant="filled"
                   multiline

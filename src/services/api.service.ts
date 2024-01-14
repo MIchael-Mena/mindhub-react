@@ -50,6 +50,18 @@ export class ApiService {
     }
   }
 
+  static patchData<T>(
+    endPoint: string,
+    body: Object = {}
+  ): Promise<ApiResponse<T>> {
+    const token = localStorage.getItem('token');
+    return this.instanceAxios
+      .patch<ApiResponse<T>>(endPoint, body, token ? this.auth(token) : {})
+      .then((r) => {
+        return r.data;
+      });
+  }
+
   static async deleteData<T>(endPoint: string): Promise<ApiResponse<T>> {
     try {
       const token = localStorage.getItem('token');

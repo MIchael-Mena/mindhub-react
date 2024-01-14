@@ -1,43 +1,84 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { StatusResponse } from '../../models/StatusResponse';
 import { Comment } from '../../models/Comment';
-import { ApiService } from '../../services/api.service';
 import { Activity } from '../../models/Acitivity';
-
-export const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk(
-  'fetchCommentsAndActivitiesByItineraryId',
-  async (itineraryId: string) => {
-    try {
-      let comments = await ApiService.getData<Comment[]>(
-        `/comment/for-itinerary/${itineraryId}`
-      );
-      const activities = await ApiService.getData<Activity[]>(
-        `/activity/for-itinerary/${itineraryId}`
-      );
-
-      return { comments, activities };
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+import {
+  createComment,
+  deleteComment,
+  fetchCommentsAndActivitiesByItineraryId,
+  updateComment,
+} from '../actions/itinerary-extra';
 
 const itineraryExtraState: StatusResponse<{
   comments: Comment[];
   activities: Activity[];
-}> & { userComment: null | Comment } = {
+  itineraryId: string;
+}> = {
   loading: false,
   error: null,
-  data: { comments: [] as Comment[], activities: [] as Activity[] },
-  userComment: null,
+  data: {
+    comments: [] as Comment[],
+    activities: [] as Activity[],
+    itineraryId: '',
+  },
 };
 
 const itineraryExtraSlice = createSlice({
   name: 'comments',
   initialState: itineraryExtraState,
-  reducers: {}, // Las acciones sincronicas van aca
+  reducers: {
+    // Las acciones sincronicas van aca
+    resetState: (state) => {
+      state.data = { comments: [], activities: [], itineraryId: '' };
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(createComment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createComment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data.comments.push(action.payload);
+      })
+      .addCase(createComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+
+      .addCase(deleteComment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.loading = false;
+        const commentId = action.payload.data!._id;
+        state.data.comments = state.data.comments.filter(
+          (c) => c._id !== commentId
+        );
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+
+      .addCase(updateComment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateComment.fulfilled, (state, action) => {
+        state.loading = false;
+        const comment = action.payload.data!;
+        const index = state.data.comments.findIndex(
+          (c) => c._id === comment._id
+        );
+        state.data.comments[index] = comment;
+      })
+      .addCase(updateComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+
       .addCase(fetchCommentsAndActivitiesByItineraryId.pending, (state) => {
         state.loading = true;
       })
@@ -53,7 +94,7 @@ const itineraryExtraSlice = createSlice({
         (state, action) => {
           // es el error que devuelve el servidor 404 si no encuentra comentarios o actividades para ese itinerario
           // action.error.code === 'ERR_BAD_REQUEST'
-          state.data = { comments: [], activities: [] };
+          state.data = { comments: [], activities: [], itineraryId: '' };
           state.loading = false;
           state.error = action.error;
         }

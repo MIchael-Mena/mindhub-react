@@ -15,7 +15,10 @@ import {
   Typography,
 } from '@mui/material';
 import { Comment } from '../../../../models/Comment';
-import React from 'react';
+import React, { useRef } from 'react';
+import { useAppDispatch } from '../../../../store/hooks';
+import { enqueueSnackbar } from 'notistack';
+import { updateComment } from '../../../../store/actions/itinerary-extra';
 
 type CardCommentProps = {
   userId: string;
@@ -23,18 +26,22 @@ type CardCommentProps = {
 };
 
 export const CardComment = ({
+  _id,
   text,
   _user,
   updatedAt,
   userId,
   isLogged,
 }: CardCommentProps & Comment) => {
+  const dispatch = useAppDispatch();
   const [state, setState] = React.useState({
     isEditing: false,
     anchorEl: null as null | HTMLElement,
     // anchorEl es una propiedad de Menu que indica donde se va a mostrar el menu en este caso se
     // cuando se le pase la referencia del boton de mas se va a mostrar en el boton de mas
   });
+
+  const textFieldRef = useRef<HTMLInputElement>(null);
 
   const handleEdit = () => {
     setState((prevState) => ({
@@ -46,7 +53,19 @@ export const CardComment = ({
 
   const handleUpdate = () => {
     // Hacer dispatch de la accion de update
-    setState((prevState) => ({ ...prevState, isEditing: false }));
+    dispatch(
+      updateComment({
+        _id: _id!,
+        text: textFieldRef.current!.value,
+      })
+    ).then((e) => {
+      if (e.meta.requestStatus === 'fulfilled')
+        setState((prevState) => ({ ...prevState, isEditing: false }));
+      else
+        enqueueSnackbar('Error updating comment', {
+          variant: 'error',
+        });
+    });
   };
 
   const handleDelete = () => {
@@ -76,6 +95,7 @@ export const CardComment = ({
       {state.isEditing ? (
         <>
           <TextField
+            inputRef={textFieldRef}
             fullWidth
             defaultValue={text}
             variant="filled"
@@ -92,7 +112,7 @@ export const CardComment = ({
           primary={text}
           secondary={
             <Typography variant="body2" color="GrayText">
-              {new Date(updatedAt).toLocaleString('en-US', {
+              {new Date(updatedAt!).toLocaleString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -107,15 +127,16 @@ export const CardComment = ({
       )}
       {isLogged && _user._id === userId && (
         <>
-          <IconButton
-            aria-label="more"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            onClick={handleViewOptions}
-            style={{ display: state.isEditing ? 'none' : 'inline-flex' }}
-          >
-            <MoreVertIcon />
-          </IconButton>
+          {!state.isEditing && (
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={handleViewOptions}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          )}
           <Menu
             id="long-menu"
             anchorEl={state.anchorEl}

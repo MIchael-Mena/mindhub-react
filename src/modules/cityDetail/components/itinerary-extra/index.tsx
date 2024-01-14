@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { CardActivity } from '../card-activity';
 import { Comments } from '../comments';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/slices/itinerary-extra';
 import { ButtonViewMore } from '../button-view-more';
+import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/actions/itinerary-extra';
 
 export const ItineraryExtra = ({
   activeItineraryId,
@@ -43,11 +43,12 @@ export const ItineraryExtra = ({
         // const hasError = meta.requestStatus === 'rejected' ? true : false; // fullfilled, pending, rejected
         // Halla o no un error debo mostrar el contenido aunque este vacio, se que el error no va a ser por conexion
         // ya que el componente padre se encarga de eso
-        setShow(!show);
+        setShow(true);
       }
     );
   };
 
+  // Accion lanzada cuando el usuario cambia el tab de itinerarios
   useEffect(() => {
     if (!show) return;
     setShow(false);
@@ -95,7 +96,7 @@ export const ItineraryExtra = ({
               variant="h5"
               p={2}
               bgcolor="secondary.main"
-              color="white"
+              // color="white"
             >
               Activities
             </Typography>
@@ -109,7 +110,11 @@ export const ItineraryExtra = ({
             <Typography variant="h5" p={2} bgcolor="secondary.main">
               Comments
             </Typography>
-            <Comments ref={commentsRef} comments={data.comments} />
+            <Comments
+              ref={commentsRef}
+              comments={data.comments}
+              itineraryId={activeItineraryId}
+            />
           </Grid>
         </Grid>
       </Collapse>
