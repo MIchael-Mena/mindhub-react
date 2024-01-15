@@ -1,20 +1,22 @@
 import { Fab } from '@mui/material';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import './style.css';
+import { useAppSelector } from '../../../../store/hooks';
 
 interface ButtonViewMoreProps {
   show: boolean;
   handleShow: () => void;
-  loading: boolean;
   animationDuration: number;
 }
 
 export const ButtonViewMore = ({
   show,
   handleShow,
-  loading,
   animationDuration,
 }: ButtonViewMoreProps) => {
+  const loading = useAppSelector(
+    (store) => store.itineraryExtraReducer.loading
+  );
   return (
     <Fab
       color="primary"

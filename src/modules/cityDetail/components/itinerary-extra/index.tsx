@@ -1,19 +1,16 @@
-import { Box, Collapse, Grid, Typography } from '@mui/material';
+import { Collapse, Grid } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { CardActivity } from '../card-activity';
 import { Comments } from '../comments';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch } from '../../../../store/hooks';
 import { ButtonViewMore } from '../button-view-more';
 import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/actions/itinerary-extra';
+import { Activities } from '../../activities';
 
 export const ItineraryExtra = ({
   activeItineraryId,
 }: {
   activeItineraryId: string;
 }) => {
-  const { loading, data } = useAppSelector(
-    (store) => store.itineraryExtraReducer
-  );
   const dispatch = useAppDispatch();
   const activitiesRef = useRef<HTMLDivElement>(null);
   const commentsRef = useRef<HTMLDivElement>(null);
@@ -30,13 +27,7 @@ export const ItineraryExtra = ({
     }
   };
 
-  // Accion lanzada por el usuario cuando hace click en el boton de ver mas
-  const handleShow = () => {
-    if (show) {
-      // Evito hacer la peticion caundo el usuario toca el boton de ver mas y ya esta abierto
-      setShow(false);
-      return;
-    }
+  const fetchData = () => {
     dispatch(fetchCommentsAndActivitiesByItineraryId(activeItineraryId)).then(
       (_e) => {
         // Si hay un error, va a exister un objeto error pero no lo desestructuro porque typescript me dice que no existe
@@ -48,18 +39,23 @@ export const ItineraryExtra = ({
     );
   };
 
+  // Accion lanzada por el usuario cuando hace click en el boton de ver mas
+  const handleShow = () => {
+    if (show) {
+      // Evito hacer la peticion cuando el usuario toca el boton de ver mas y ya esta abierto, solo lo cierro
+      setShow(false);
+      return;
+    }
+    fetchData();
+  };
+
   // Accion lanzada cuando el usuario cambia el tab de itinerarios
   useEffect(() => {
     if (!show) return;
     setShow(false);
     // El timeout es para que se vea la animacion de salida
     setTimeout(() => {
-      dispatch(fetchCommentsAndActivitiesByItineraryId(activeItineraryId)).then(
-        (_e) => {
-          setShow(true);
-          // updateHeightContainer();
-        }
-      );
+      fetchData();
     }, animationDuration);
   }, [activeItineraryId]);
 
@@ -70,7 +66,6 @@ export const ItineraryExtra = ({
       <ButtonViewMore
         show={show}
         handleShow={handleShow}
-        loading={loading}
         animationDuration={animationDuration}
       />
 
@@ -92,27 +87,12 @@ export const ItineraryExtra = ({
           }}
         >
           <Grid item xs={12} md={6}>
-            <Typography
-              variant="h5"
-              p={2}
-              bgcolor="secondary.main"
-              // color="white"
-            >
-              Activities
-            </Typography>
-            <Box ref={activitiesRef}>
-              {data.activities.map((activity) => (
-                <CardActivity key={activity._id} {...activity} />
-              ))}
-            </Box>
+            <Activities ref={activitiesRef} />
           </Grid>
           <Grid item xs={12} md={6} boxShadow={2}>
-            <Typography variant="h5" p={2} bgcolor="secondary.main">
-              Comments
-            </Typography>
             <Comments
               ref={commentsRef}
-              comments={data.comments}
+              // comments={data.comments}
               itineraryId={activeItineraryId}
             />
           </Grid>

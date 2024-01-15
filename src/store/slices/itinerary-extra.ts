@@ -53,7 +53,7 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
         state.loading = false;
-        const commentId = action.payload.data!._id;
+        const commentId = action.payload.data._id;
         state.data.comments = state.data.comments.filter(
           (c) => c._id !== commentId
         );

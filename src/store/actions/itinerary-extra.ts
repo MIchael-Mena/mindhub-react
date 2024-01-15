@@ -8,7 +8,6 @@ const updateComment = createAsyncThunk(
   'updateComment',
   async (comment: { _id: string; text: string }) => {
     try {
-      console.log('comment', comment);
       const response = await ApiService.patchData<Comment>(
         `/comment/update/${comment._id}`,
         comment
@@ -24,10 +23,11 @@ const deleteComment = createAsyncThunk(
   'deleteComment',
   async (commentId: string) => {
     try {
-      const response = await ApiService.deleteData<Comment>(
+      const response = await ApiService.deleteData<string>(
         `/comment/delete/${commentId}`
       );
-      return response;
+      // el backend en data responde con un mensaje de exito, en su lugar se devuelve el id del comentario eliminado
+      return { ...response, data: { _id: commentId } };
     } catch (error) {
       throw error;
     }

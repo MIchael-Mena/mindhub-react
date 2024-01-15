@@ -18,7 +18,10 @@ import { Comment } from '../../../../models/Comment';
 import React, { useRef } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { enqueueSnackbar } from 'notistack';
-import { updateComment } from '../../../../store/actions/itinerary-extra';
+import {
+  deleteComment,
+  updateComment,
+} from '../../../../store/actions/itinerary-extra';
 
 type CardCommentProps = {
   userId: string;
@@ -70,7 +73,14 @@ export const CardComment = ({
 
   const handleDelete = () => {
     // Hacer dispatch de la accion de delete
-    setState((prevState) => ({ ...prevState, anchorEl: null }));
+    dispatch(deleteComment(_id!)).then((e) => {
+      if (e.meta.requestStatus === 'fulfilled')
+        setState((prevState) => ({ ...prevState, anchorEl: null }));
+      else
+        enqueueSnackbar('Error deleting comment', {
+          variant: 'error',
+        });
+    });
   };
 
   const handleViewOptions = (event: React.MouseEvent<HTMLElement>) => {
