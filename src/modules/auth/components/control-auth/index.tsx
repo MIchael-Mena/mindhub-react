@@ -1,10 +1,10 @@
 import UserIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { Avatar, Button, Tooltip } from '@mui/material';
+import { Button } from '@mui/material';
 import { logout } from '../../../../store/actions/user';
 import { ApiResponse } from '../../../../models/ApiResponse';
-import { stringAvatar } from '../../../../utils/util';
 import { enqueueSnackbar } from 'notistack';
+import { UserAvatar } from '../../../shared/components/user-avatar';
 
 interface ControlAuthProps {
   handleLoginOpen: () => void;
@@ -25,23 +25,6 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
     });
   };
 
-  const avatar = (userNames: string) => (
-    <Tooltip title={userNames} placement="bottom" arrow>
-      {user.profilePic ? (
-        <Avatar
-          alt={userNames}
-          src={user.profilePic}
-          sx={{ width: 25, height: 25, mr: 1 }}
-        />
-      ) : (
-        <Avatar
-          {...stringAvatar(userNames)}
-          sx={{ width: 25, height: 25, mr: 1 }}
-        />
-      )}
-    </Tooltip>
-  );
-
   return (
     <>
       <Button
@@ -51,7 +34,16 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
         onClick={isLogged ? handleLogout : handleLoginOpen}
       >
         {isLogged && user ? (
-          avatar(`${user.firstName} ${user.lastName}`)
+          <UserAvatar
+            imageUrl={user.profilePic}
+            username={`${user.firstName} ${user.lastName}`}
+            sx={{
+              mr: 1,
+              width: '25px',
+              height: '25px',
+              fontSize: '0.7rem',
+            }}
+          />
         ) : (
           <UserIcon sx={{ mr: 1 }} />
         )}

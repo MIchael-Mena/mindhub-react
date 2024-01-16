@@ -41,7 +41,7 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.comments.push(action.payload);
+        state.data.comments.push(action.payload); // Debo asegurarme de ordenarlos segun el criterio que quiera
       })
       .addCase(createComment.rejected, (state, action) => {
         state.loading = false;

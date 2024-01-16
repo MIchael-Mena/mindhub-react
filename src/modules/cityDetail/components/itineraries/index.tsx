@@ -14,6 +14,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
   const containerRef = useRef<HTMLElement>(null);
   const [activeItinerary, setActiveItinerary] = useState(0);
   const matches = useMediaQuery('(max-width:900px)');
+  const animationDuration = 500;
 
   /*   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setActiveItinerary(newValue);
@@ -27,7 +28,7 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
 
   // Throttling garantiza que una función no se ejecute más de una vez cada cierto tiempo.
   const throttledHandleChange = (...args: any[]) => {
-    if (Date.now() - lastExecution >= 500) {
+    if (Date.now() - lastExecution >= animationDuration) {
       handleChange(args);
       lastExecution = Date.now();
     }
@@ -95,7 +96,10 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
               in={activeItinerary === currentItinerary}
               mountOnEnter
               unmountOnExit
-              timeout={{ enter: 500, exit: 250 }}
+              timeout={{
+                enter: animationDuration,
+                exit: animationDuration / 2,
+              }}
             >
               {/* Slide requiere que el componente hijo tenga la propiedad ref */}
               <div style={{ height: '100%', width: '100%' }}>
@@ -105,7 +109,10 @@ export const Itineraries = ({ itineraries }: ItinerariesProps) => {
           ))}
         </div>
       </Box>
-      <ItineraryExtra activeItineraryId={itineraries[activeItinerary]._id} />
+      <ItineraryExtra
+        activeItineraryId={itineraries[activeItinerary]._id}
+        animationDuration={animationDuration}
+      />
     </>
   );
 };

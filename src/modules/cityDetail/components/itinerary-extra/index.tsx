@@ -8,14 +8,15 @@ import { Activities } from '../../activities';
 
 export const ItineraryExtra = ({
   activeItineraryId,
+  animationDuration = 500,
 }: {
   activeItineraryId: string;
+  animationDuration?: number;
 }) => {
   const dispatch = useAppDispatch();
   const activitiesRef = useRef<HTMLDivElement>(null);
   const commentsRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
-  const animationDuration = 500;
 
   const updateHeightContainer = () => {
     if (activitiesRef.current) {
@@ -90,11 +91,7 @@ export const ItineraryExtra = ({
             <Activities ref={activitiesRef} />
           </Grid>
           <Grid item xs={12} md={6} boxShadow={2}>
-            <Comments
-              ref={commentsRef}
-              // comments={data.comments}
-              itineraryId={activeItineraryId}
-            />
+            <Comments ref={commentsRef} itineraryId={activeItineraryId} />
           </Grid>
         </Grid>
       </Collapse>

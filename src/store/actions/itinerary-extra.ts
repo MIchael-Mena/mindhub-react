@@ -10,7 +10,7 @@ const updateComment = createAsyncThunk(
     try {
       const response = await ApiService.patchData<Comment>(
         `/comment/update/${comment._id}`,
-        comment
+        { text: comment.text }
       );
       return response;
     } catch (error) {

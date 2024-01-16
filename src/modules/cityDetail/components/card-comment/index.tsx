@@ -55,7 +55,14 @@ export const CardComment = ({
   };
 
   const handleUpdate = () => {
-    // Hacer dispatch de la accion de update
+    if (textFieldRef.current && !textFieldRef.current.value) {
+      enqueueSnackbar('Comment can not be empty', {
+        variant: 'warning',
+      });
+      return;
+    } else if (textFieldRef.current && textFieldRef.current.value === text) {
+      return;
+    }
     dispatch(
       updateComment({
         _id: _id!,
@@ -72,7 +79,6 @@ export const CardComment = ({
   };
 
   const handleDelete = () => {
-    // Hacer dispatch de la accion de delete
     dispatch(deleteComment(_id!)).then((e) => {
       if (e.meta.requestStatus === 'fulfilled')
         setState((prevState) => ({ ...prevState, anchorEl: null }));
@@ -113,12 +119,27 @@ export const CardComment = ({
             inputProps={{ maxLength: 500 }}
           />
           <Box display="flex" flexDirection="column">
-            <Button onClick={handleUpdate}>Update</Button>
-            <Button onClick={handleCancel}>Cancel</Button>
+            <Button
+              onClick={handleUpdate}
+              variant="outlined"
+              color="primary"
+              sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
+            >
+              Update
+            </Button>
+            <Button
+              onClick={handleCancel}
+              variant="outlined"
+              color="secondary"
+              sx={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+            >
+              Cancel
+            </Button>
           </Box>
         </>
       ) : (
         <ListItemText
+          sx={{ wordBreak: 'break-word' }}
           primary={text}
           secondary={
             <Typography variant="body2" color="GrayText">

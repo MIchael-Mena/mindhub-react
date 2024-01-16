@@ -1,15 +1,18 @@
-import { Avatar } from '@mui/material';
+import { Avatar, AvatarProps, Tooltip } from '@mui/material';
 import { stringAvatar } from '../../../../utils/util';
 
 interface UserAvatarProps {
   imageUrl: string;
   username: string;
+  tooltipPlacement?: 'bottom' | 'top' | 'left' | 'right';
 }
 
 export const UserAvatar = ({
   imageUrl,
   username,
-}: UserAvatarProps): JSX.Element => {
+  tooltipPlacement = 'bottom',
+  ...rest
+}: UserAvatarProps & AvatarProps): JSX.Element => {
   const isValidUrl = (string: string) => {
     try {
       new URL(string);
@@ -22,11 +25,13 @@ export const UserAvatar = ({
 
   return (
     <>
-      {isValidUrl(imageUrl) ? (
-        <Avatar alt={username} src={imageUrl} />
-      ) : (
-        <Avatar {...stringAvatar(username)} />
-      )}
+      <Tooltip title={username} placement={tooltipPlacement} arrow>
+        {isValidUrl(imageUrl) ? (
+          <Avatar alt={username} src={imageUrl} />
+        ) : (
+          <Avatar {...stringAvatar(username)} {...rest} />
+        )}
+      </Tooltip>
     </>
   );
 };

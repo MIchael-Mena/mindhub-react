@@ -1,12 +1,12 @@
-import { Avatar, Box, Grid, Tooltip, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { Itinerary } from '../../../../models/Itinerary';
-import { stringAvatar } from '../../../../utils/util';
 import {
   TimerSharp,
   AirplaneTicketOutlined,
   AirplaneTicketRounded,
 } from '@mui/icons-material';
 import { ItineraryLike } from '../itinerary-like';
+import { UserAvatar } from '../../../shared/components/user-avatar';
 
 export const ItineraryDetail = ({
   _id,
@@ -16,7 +16,7 @@ export const ItineraryDetail = ({
   hashtags,
   user,
 }: Itinerary) => {
-  const userNames = `${user.firstName} ${user.lastName}`;
+  const userName = `${user.firstName} ${user.lastName}`;
 
   return (
     <>
@@ -40,13 +40,11 @@ export const ItineraryDetail = ({
             <Typography variant="subtitle1" gutterBottom mx={1}>
               By:
             </Typography>
-            <Tooltip title={userNames} placement="top" arrow>
-              {user.profilePic ? (
-                <Avatar alt={userNames} src={user.profilePic} />
-              ) : (
-                <Avatar {...stringAvatar(userNames)} />
-              )}
-            </Tooltip>
+            <UserAvatar
+              imageUrl={user.profilePic}
+              username={userName}
+              tooltipPlacement="top"
+            />
           </Box>
 
           <Box display="flex" alignItems="center" flexDirection="row">

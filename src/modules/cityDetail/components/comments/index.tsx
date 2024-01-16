@@ -11,6 +11,7 @@ import { useRef, forwardRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { CardComment } from '../card-comment';
 import { createComment } from '../../../../store/actions/itinerary-extra';
+import { enqueueSnackbar } from 'notistack';
 
 type CommentsProps = {
   itineraryId: string;
@@ -24,11 +25,16 @@ export const Comments = forwardRef<HTMLDivElement, CommentsProps>(
     const isLogged = useAppSelector((store) => store.userReducer.isLogged);
     const userId = useAppSelector((store) => store.userReducer.user._id);
     const dispatch = useAppDispatch();
-    console.log('Comments');
 
     const textFieldRef = useRef<HTMLInputElement>(null);
 
     const handleCommentPost = () => {
+      if (textFieldRef.current && !textFieldRef.current.value) {
+        enqueueSnackbar('Comment can not be empty', {
+          variant: 'warning',
+        });
+        return;
+      }
       const commentToPost = {
         text: textFieldRef.current!.value,
         onModel: 'Itinerary',
@@ -80,7 +86,7 @@ export const Comments = forwardRef<HTMLDivElement, CommentsProps>(
                     title={isLogged ? '' : 'You must be logged in to comment'}
                     placement="top"
                   >
-                    <Box sx={{ mt: 1, alignSelf: 'flex-end' }}>
+                    <Box sx={{ alignSelf: 'center' }}>
                       <Button
                         onClick={handleCommentPost}
                         disabled={!isLogged}

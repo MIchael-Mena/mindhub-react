@@ -5,6 +5,7 @@ import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { useEffect } from 'react';
 import { authenticate } from '../store/actions/user';
+import { enqueueSnackbar } from 'notistack';
 
 const Layout = () => {
   const componentSizes = {
@@ -13,14 +14,19 @@ const Layout = () => {
     footer: '70px',
   };
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     // Si no tengo token, no hago nada
     if (localStorage.getItem('token') === null) return;
 
     dispatch(authenticate()).then((res) => {
-      if (res.payload === 'Unauthorized') navigate('/home');
+      if (res.payload === 'Unauthorized') {
+        enqueueSnackbar('The session has expired, please log in again', {
+          variant: 'warning',
+        });
+        // navigate('/home');
+      }
     });
   }, []);
 
