@@ -1,8 +1,10 @@
-import { Container, Divider, Typography } from '@mui/material';
+import { Container, Divider, Grid, Typography } from '@mui/material';
 import Finder from '../components/finder';
 import Hero from '../../shared/components/hero';
 import { CitiesList } from '../components/cities-list';
 import { PaginationControls } from '../components/pagination-controls';
+
+import { SortButton } from '../components/sort-button';
 
 const Cities = () => {
   const heroImage = 'src/assets/images/city-bg.png';
@@ -30,7 +32,30 @@ const Cities = () => {
 
         <Divider sx={{ width: '90%', mt: 3, mb: 3 }} />
 
-        <Finder />
+        <Grid container alignItems="center" rowGap={2}>
+          <Grid item xs={0} md={4} />
+          <Grid
+            item
+            xs={12}
+            md={4}
+            display="inline-flex"
+            justifyContent="center"
+          >
+            <Finder />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            display="inline-flex"
+            gap={1}
+            justifyContent={{ xs: 'center', md: 'flex-end' }}
+            alignItems="center"
+            pr={{ xs: 0, md: 6 }}
+          >
+            <SortButton />
+          </Grid>
+        </Grid>
 
         <CitiesList />
 
