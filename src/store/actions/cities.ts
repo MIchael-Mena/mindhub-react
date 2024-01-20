@@ -1,21 +1,24 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
 import { ApiService } from '../../services/api.service';
+import { CityPaginationData } from '../../modules/cities/models/CityPaginationData';
+import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
 
-interface CityGetResponse {
+interface CityGetResponse extends CityPaginationData {
   cities: CityBasic[];
-  totalPages: number;
 }
 
 const fetchCities = createAsyncThunk(
   'fetchCities',
-  async (payload: { search?: string; page: number }, api) => {
+  async (payload: CitySearchParams, api) => {
     try {
       // Opcion para poder acceder a un estado desde un action, tambien se puede desestructurar el objeto api
       // console.log(
       //   'state',
       //   (api.getState() as RootState).citiesReducer.cities.hasBeenModified
       // );
+      const { search, page, sort } = payload;
+      // console.log('payload', payload);
       const cityGetResponse = await ApiService.getData<CityGetResponse>(
         '/city',
         {
@@ -24,9 +27,10 @@ const fetchCities = createAsyncThunk(
           ...payload,
         }
       );
-      const currentSearch = payload.search ? payload.search : '';
+      const { cities, ...paramsRes } = cityGetResponse;
+      const params = { search, page, sort, ...paramsRes };
 
-      return { currentSearch: currentSearch, ...cityGetResponse };
+      return { cities, params };
     } catch (error) {
       throw error;
     }

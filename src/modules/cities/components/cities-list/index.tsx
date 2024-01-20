@@ -1,38 +1,39 @@
 import { Box, CircularProgress } from '@mui/material';
 import CardCity from '../card-city';
-import { useLocation } from 'react-router-dom';
 import { FailedRequest } from '../../../shared/components/failed-request';
 import { CardNotFound } from '../../../shared/components/card-not-found/CardNotFound';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useEffect } from 'react';
 import { fetchCities } from '../../../../store/actions/cities';
+import { useUrlParams } from '../../hook/use-url-params';
 
 export const CitiesList = () => {
   const dispatch = useAppDispatch();
-  const location = useLocation();
+  const { searchParam, pageParam, sortParam } = useUrlParams();
   const {
     data: cities,
-    currentSearch,
+    params: { search: currentSearch, sort: currentSort, page: currentPage },
     loading,
     error,
   } = useAppSelector((store) => store.citiesReducer.citiesFiltered);
-  const searchParam = new URLSearchParams(location.search).get('search') || '';
-  const pageParam = parseInt(
-    new URLSearchParams(location.search).get('page') || '1'
-  );
 
   useEffect(() => {
-    if (currentSearch === searchParam && cities.length > 0) return;
-    // Significa que ya se hizo la busqueda y tengo los datos, no hago nada
+    if (
+      currentSearch === searchParam &&
+      currentPage === pageParam &&
+      currentSort === sortParam &&
+      cities.length > 0
+    )
+      return; // Si la busqueda en la url es igual a la busqueda actual, no hago nada
 
     dispatch(
-      fetchCities(
-        searchParam
-          ? { search: searchParam, page: pageParam }
-          : { page: pageParam }
-      )
+      fetchCities({
+        search: searchParam,
+        page: pageParam,
+        sort: sortParam,
+      })
     );
-  }, [searchParam]);
+  }, [searchParam, pageParam, sortParam]);
 
   return (
     <>

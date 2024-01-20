@@ -2,6 +2,8 @@ import { createReducer } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
 import { fetchCities, fetchPopularCities } from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
+import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
+import { CityPaginationData } from '../../modules/cities/models/CityPaginationData';
 
 type GloblaState = {
   hasBeenModified: boolean; // Si la data ha sido modificada al menos una vez
@@ -9,7 +11,7 @@ type GloblaState = {
 
 const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[]> &
-    GloblaState & { totalPages: number; currentSearch: string };
+    GloblaState & { params: CitySearchParams & CityPaginationData };
   popularCities: StatusResponse<CityBasic[]> & GloblaState;
 } = {
   popularCities: {
@@ -19,11 +21,16 @@ const citiesState: {
     hasBeenModified: false,
   },
   citiesFiltered: {
-    currentSearch: '',
+    params: {
+      search: '',
+      sort: 'createdAt',
+      page: 0,
+      totalPages: 0,
+      foundCitiesCount: 0,
+    },
     loading: true,
     error: null,
     data: [],
-    totalPages: 0,
     hasBeenModified: false,
   },
 };
@@ -34,14 +41,21 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       state.citiesFiltered.loading = true;
     })
     .addCase(fetchCities.fulfilled, (state, action) => {
-      state.citiesFiltered.currentSearch = action.payload.currentSearch;
+      state.citiesFiltered.params = {
+        ...state.citiesFiltered.params,
+        ...action.payload.params,
+      };
+
+      state.citiesFiltered.data = action.payload.cities;
       state.citiesFiltered.hasBeenModified = true;
       state.citiesFiltered.loading = false;
-      state.citiesFiltered.data = action.payload.cities;
-      state.citiesFiltered.totalPages = action.payload.totalPages;
     })
     .addCase(fetchCities.rejected, (state, action) => {
-      state.citiesFiltered.currentSearch = '';
+      state.citiesFiltered.params.search = '';
+      state.citiesFiltered.params.sort = 'createdAt';
+      state.citiesFiltered.params.page = 0;
+      state.citiesFiltered.params.totalPages = 0;
+      state.citiesFiltered.params.foundCitiesCount = 0;
 
       state.citiesFiltered.loading = false;
       state.citiesFiltered.error = action.error;
