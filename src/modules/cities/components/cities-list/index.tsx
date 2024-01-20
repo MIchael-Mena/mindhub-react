@@ -5,7 +5,7 @@ import { CardNotFound } from '../../../shared/components/card-not-found/CardNotF
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useEffect } from 'react';
 import { fetchCities } from '../../../../store/actions/cities';
-import { useUrlParams } from '../../hook/use-url-params';
+import { useUrlParams } from '../../hooks/useUrlParams';
 
 export const CitiesList = () => {
   const dispatch = useAppDispatch();

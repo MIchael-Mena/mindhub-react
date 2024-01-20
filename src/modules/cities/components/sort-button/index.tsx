@@ -13,28 +13,7 @@ export const SortButton = () => {
       ? 'More recent'
       : sortValue;
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    const newSortValue = event.target.value as string;
-    if (newSortValue === currentSort) return;
-    setSortParam(
-      (params: URLSearchParams) => {
-        if (newSortValue === 'More recent') {
-          params.delete('sort');
-        } else {
-          params.set('sort', newSortValue);
-        }
-        return params;
-      },
-      { preventScrollReset: true }
-    );
-  };
-
-  // Lo uso para controlar que el valor de sortValue sea valido en la url (si no lo es, lo elimino)
-  useEffect(() => {
-    // Si la buscado esta vacia (sortValue === null) o si el valor de sortValue es valido, no hago nada
-    if (!sortValue || (sortValue && sortValue in sortOptionsMapping)) return;
-
-    // En otro caso elimino el parametro sort de la url
+  const deleteSortParam = () => {
     setSortParam(
       (params: URLSearchParams) => {
         params.delete('sort');
@@ -42,6 +21,29 @@ export const SortButton = () => {
       },
       { preventScrollReset: true }
     );
+  };
+
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    const newSortValue = event.target.value as string;
+    if (newSortValue === currentSort) return;
+    if (newSortValue === 'More recent') {
+      deleteSortParam();
+    } else {
+      setSortParam(
+        (params: URLSearchParams) => {
+          params.set('sort', newSortValue);
+          return params;
+        },
+        { preventScrollReset: true }
+      );
+    }
+  };
+
+  // Lo uso para controlar que el valor de sortValue sea valido en la url (si no lo es, lo elimino)
+  useEffect(() => {
+    // Si la buscado esta vacia (sortValue === null) o si el valor de sortValue es valido, no hago nada
+    if (!sortValue || sortValue in sortOptionsMapping) return;
+    deleteSortParam();
   }, [sortValue]);
 
   return (

@@ -4,8 +4,8 @@ import { useAppSelector } from '../../../../store/hooks';
 import { useEffect } from 'react';
 
 export const PaginationControls = () => {
-  console.log('PaginationControls');
   // TODO: no se usa useNavigate ya que navega a la misma pagina y genera un renderizado en todos los componentes
+  // a diferencia de useSearchParams que no genera renderizados extras (solamente a los que estan suscritos)
   // const navigate = useNavigate();
   const totalPages = useAppSelector(
     // Redux me asegura que el store no va a cambiar mientras se esta renderizando
@@ -14,10 +14,9 @@ export const PaginationControls = () => {
   );
   const [searchParam, setSearchParams] = useSearchParams();
   const searchParamRaw = searchParam.get('page');
-
   const currentPage = Number(searchParamRaw) || 1; // Si se pasa un 0, '0' o null a Number sera false
 
-  function handlePageChange(newPage: number) {
+  const handlePageChange = (newPage: number) => {
     setSearchParams(
       (params: URLSearchParams) => {
         params.set('page', newPage.toString());
@@ -25,7 +24,7 @@ export const PaginationControls = () => {
       },
       { preventScrollReset: true }
     );
-  }
+  };
 
   // Use effect para controlar que el valor de page sea valido en la url (si no lo es, lo elimino)
   useEffect(() => {

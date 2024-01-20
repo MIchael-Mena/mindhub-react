@@ -3,8 +3,8 @@ import Finder from '../components/finder';
 import Hero from '../../shared/components/hero';
 import { CitiesList } from '../components/cities-list';
 import { PaginationControls } from '../components/pagination-controls';
-
 import { SortButton } from '../components/sort-button';
+import { CitiesCountDisplay } from '../components/cities-count-display';
 
 const Cities = () => {
   const heroImage = 'src/assets/images/city-bg.png';
@@ -12,7 +12,7 @@ const Cities = () => {
     <>
       <Container
         disableGutters
-        maxWidth={'lg'}
+        // maxWidth={'lg'}
         sx={{
           alignSelf: 'auto',
           display: 'flex',
@@ -32,8 +32,16 @@ const Cities = () => {
 
         <Divider sx={{ width: '90%', mt: 3, mb: 3 }} />
 
-        <Grid container alignItems="center" rowGap={2}>
-          <Grid item xs={0} md={4} />
+        <Grid container alignItems="center" rowGap={2} px={{ md: 6 }}>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            // display="inline-flex"
+            // justifyContent="center"
+          >
+            <CitiesCountDisplay />
+          </Grid>
           <Grid
             item
             xs={12}
@@ -51,7 +59,7 @@ const Cities = () => {
             gap={1}
             justifyContent={{ xs: 'center', md: 'flex-end' }}
             alignItems="center"
-            pr={{ xs: 0, md: 6 }}
+            // pr={{ xs: 0, md: 6 }}
           >
             <SortButton />
           </Grid>
