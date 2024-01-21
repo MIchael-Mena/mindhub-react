@@ -12,7 +12,7 @@ const Cities = () => {
     <>
       <Container
         disableGutters
-        // maxWidth={'lg'}
+        maxWidth={'lg'}
         sx={{
           alignSelf: 'auto',
           display: 'flex',
@@ -33,13 +33,7 @@ const Cities = () => {
         <Divider sx={{ width: '90%', mt: 3, mb: 3 }} />
 
         <Grid container alignItems="center" rowGap={2} px={{ md: 6 }}>
-          <Grid
-            item
-            xs={12}
-            md={4}
-            // display="inline-flex"
-            // justifyContent="center"
-          >
+          <Grid item xs={12} md={4}>
             <CitiesCountDisplay />
           </Grid>
           <Grid

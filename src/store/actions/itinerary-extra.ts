@@ -3,6 +3,11 @@ import { ApiService } from '../../services/api.service';
 import { RootState } from '../store';
 import { Activity } from '../../models/Acitivity';
 import { Comment } from '../../models/Comment';
+import { PaginationData } from '../../models/PaginationData';
+
+interface CommentResponse extends PaginationData {
+  comments: Comment[];
+}
 
 const updateComment = createAsyncThunk(
   'updateComment',
@@ -64,19 +69,21 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk(
       return (getState() as RootState).itineraryExtraReducer.data;
     }
     try {
-      const commentsPromise = ApiService.getData<Comment[]>(
+      const commentsPromise = ApiService.getData<CommentResponse>(
         `/comment/for-itinerary/${itineraryId}`
       );
       const activitiesPromise = ApiService.getData<Activity[]>(
         `/activity/for-itinerary/${itineraryId}`
       );
 
-      const [comments, activities] = await Promise.all([
+      const [commentRes, activities] = await Promise.all([
         commentsPromise,
         activitiesPromise,
       ]);
 
-      return { comments, activities, itineraryId };
+      const { comments, ...commentParams } = commentRes;
+
+      return { comments, commentParams, activities, itineraryId };
     } catch (error) {
       throw error;
     }

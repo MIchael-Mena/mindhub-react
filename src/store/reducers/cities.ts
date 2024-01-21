@@ -3,7 +3,7 @@ import { CityBasic } from '../../models/CityBasic';
 import { fetchCities, fetchPopularCities } from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
 import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
-import { CityPaginationData } from '../../modules/cities/models/CityPaginationData';
+import { PaginationData } from '../../models/PaginationData';
 
 type GloblaState = {
   hasBeenModified: boolean; // Si la data ha sido modificada al menos una vez
@@ -11,7 +11,7 @@ type GloblaState = {
 
 const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[]> &
-    GloblaState & { params: CitySearchParams & CityPaginationData };
+    GloblaState & { params: CitySearchParams & PaginationData };
   popularCities: StatusResponse<CityBasic[]> & GloblaState;
 } = {
   popularCities: {
@@ -26,7 +26,7 @@ const citiesState: {
       sort: 'createdAt',
       page: 0,
       totalPages: 0,
-      foundCitiesCount: 0,
+      totalCount: 0,
     },
     loading: true,
     error: null,
@@ -55,7 +55,7 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       state.citiesFiltered.params.sort = 'createdAt';
       state.citiesFiltered.params.page = 0;
       state.citiesFiltered.params.totalPages = 0;
-      state.citiesFiltered.params.foundCitiesCount = 0;
+      state.citiesFiltered.params.totalCount = 0;
 
       state.citiesFiltered.loading = false;
       state.citiesFiltered.error = action.error;

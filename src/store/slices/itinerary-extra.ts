@@ -10,6 +10,11 @@ import {
 } from '../actions/itinerary-extra';
 
 const itineraryExtraState: StatusResponse<{
+  commentParams: {
+    page: number;
+    totalPages: number;
+    totalCount: number;
+  };
   comments: Comment[];
   activities: Activity[];
   itineraryId: string;
@@ -17,6 +22,11 @@ const itineraryExtraState: StatusResponse<{
   loading: false,
   error: null,
   data: {
+    commentParams: {
+      page: 0,
+      totalPages: 0,
+      totalCount: 0,
+    },
     comments: [] as Comment[],
     activities: [] as Activity[],
     itineraryId: '',
@@ -29,7 +39,12 @@ const itineraryExtraSlice = createSlice({
   reducers: {
     // Las acciones sincronicas van aca
     resetState: (state) => {
-      state.data = { comments: [], activities: [], itineraryId: '' };
+      state.data = {
+        comments: [],
+        activities: [],
+        itineraryId: '',
+        commentParams: { page: 0, totalPages: 0, totalCount: 0 },
+      };
       state.loading = false;
       state.error = null;
     },
@@ -86,7 +101,12 @@ const itineraryExtraSlice = createSlice({
         fetchCommentsAndActivitiesByItineraryId.fulfilled,
         (state, action) => {
           state.loading = false;
-          state.data = action.payload;
+          state.data.comments = action.payload.comments;
+          state.data.activities = action.payload.activities;
+          state.data.commentParams = {
+            ...state.data.commentParams,
+            ...action.payload.commentParams,
+          };
         }
       )
       .addCase(
@@ -94,7 +114,16 @@ const itineraryExtraSlice = createSlice({
         (state, action) => {
           // es el error que devuelve el servidor 404 si no encuentra comentarios o actividades para ese itinerario
           // action.error.code === 'ERR_BAD_REQUEST'
-          state.data = { comments: [], activities: [], itineraryId: '' };
+          state.data = {
+            commentParams: {
+              page: 0,
+              totalPages: 0,
+              totalCount: 0,
+            },
+            comments: [] as Comment[],
+            activities: [] as Activity[],
+            itineraryId: '',
+          };
           state.loading = false;
           state.error = action.error;
         }

@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
 import { ApiService } from '../../services/api.service';
-import { CityPaginationData } from '../../modules/cities/models/CityPaginationData';
+import { PaginationData } from '../../models/PaginationData';
 import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
 
-interface CityGetResponse extends CityPaginationData {
+interface CityGetResponse extends PaginationData {
   cities: CityBasic[];
 }
 
@@ -24,6 +24,7 @@ const fetchCities = createAsyncThunk(
         {
           // populate_itineraries: true,
           basic_info: true, // Evito traer algunos campos que no necesito como la fecha de creacion, etc
+          limit: 9,
           ...payload,
         }
       );

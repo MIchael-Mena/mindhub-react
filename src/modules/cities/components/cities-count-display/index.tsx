@@ -3,7 +3,7 @@ import { useAppSelector } from '../../../../store/hooks';
 
 export const CitiesCountDisplay = () => {
   const foundCitiesCount = useAppSelector(
-    (store) => store.citiesReducer.citiesFiltered.params.foundCitiesCount
+    (store) => store.citiesReducer.citiesFiltered.params.totalCount
   );
   return (
     <>
