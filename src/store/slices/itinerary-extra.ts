@@ -6,24 +6,21 @@ import {
   createComment,
   deleteComment,
   fetchCommentsAndActivitiesByItineraryId,
+  fetchMoreComments,
   updateComment,
 } from '../actions/itinerary-extra';
+import { ApiResponse } from '../../models/ApiResponse';
+import { ItineraryExtraState } from '../../models/ItineraryExtra';
 
-const itineraryExtraState: StatusResponse<{
-  commentParams: {
-    page: number;
-    totalPages: number;
-    totalCount: number;
-  };
-  comments: Comment[];
-  activities: Activity[];
-  itineraryId: string;
-}> = {
+const itineraryExtraState: StatusResponse<
+  ItineraryExtraState,
+  ApiResponse<undefined> | undefined
+> = {
   loading: false,
   error: null,
   data: {
     commentParams: {
-      page: 0,
+      currentPage: 0,
       totalPages: 0,
       totalCount: 0,
     },
@@ -43,7 +40,7 @@ const itineraryExtraSlice = createSlice({
         comments: [],
         activities: [],
         itineraryId: '',
-        commentParams: { page: 0, totalPages: 0, totalCount: 0 },
+        commentParams: { currentPage: 0, totalPages: 0, totalCount: 0 },
       };
       state.loading = false;
       state.error = null;
@@ -60,7 +57,7 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(createComment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
 
       .addCase(deleteComment.pending, (state) => {
@@ -68,14 +65,14 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
         state.loading = false;
-        const commentId = action.payload.data._id;
+        const commentId = action.payload.commentId;
         state.data.comments = state.data.comments.filter(
           (c) => c._id !== commentId
         );
       })
       .addCase(deleteComment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
 
       .addCase(updateComment.pending, (state) => {
@@ -83,7 +80,7 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(updateComment.fulfilled, (state, action) => {
         state.loading = false;
-        const comment = action.payload.data!;
+        const comment = action.payload;
         const index = state.data.comments.findIndex(
           (c) => c._id === comment._id
         );
@@ -91,7 +88,7 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(updateComment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
 
       .addCase(fetchCommentsAndActivitiesByItineraryId.pending, (state) => {
@@ -103,6 +100,7 @@ const itineraryExtraSlice = createSlice({
           state.loading = false;
           state.data.comments = action.payload.comments;
           state.data.activities = action.payload.activities;
+          state.data.itineraryId = action.payload.itineraryId;
           state.data.commentParams = {
             ...state.data.commentParams,
             ...action.payload.commentParams,
@@ -112,11 +110,9 @@ const itineraryExtraSlice = createSlice({
       .addCase(
         fetchCommentsAndActivitiesByItineraryId.rejected,
         (state, action) => {
-          // es el error que devuelve el servidor 404 si no encuentra comentarios o actividades para ese itinerario
-          // action.error.code === 'ERR_BAD_REQUEST'
           state.data = {
             commentParams: {
-              page: 0,
+              currentPage: 0,
               totalPages: 0,
               totalCount: 0,
             },
@@ -125,9 +121,26 @@ const itineraryExtraSlice = createSlice({
             itineraryId: '',
           };
           state.loading = false;
-          state.error = action.error;
+          state.error = action.payload;
         }
-      );
+      )
+
+      .addCase(fetchMoreComments.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMoreComments.fulfilled, (state, action) => {
+        state.loading = false;
+        const comments = action.payload.comments;
+        state.data.comments =
+          comments.length > 0
+            ? [...state.data.comments, ...comments]
+            : state.data.comments;
+        state.data.commentParams.currentPage = action.payload.currentPage;
+      })
+      .addCase(fetchMoreComments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

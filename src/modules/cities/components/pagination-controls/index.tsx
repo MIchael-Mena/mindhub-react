@@ -41,16 +41,20 @@ export const PaginationControls = () => {
   }, [searchParamRaw]);
 
   return (
-    <Stack spacing={4} mt={3}>
-      <Pagination
-        count={totalPages || 0}
-        shape="rounded"
-        variant="outlined"
-        color="primary"
-        defaultPage={1}
-        page={currentPage}
-        onChange={(_event, page) => handlePageChange(page)}
-      />
-    </Stack>
+    <>
+      {totalPages > 1 && (
+        <Stack spacing={4}>
+          <Pagination
+            count={totalPages || 0}
+            shape="rounded"
+            variant="outlined"
+            color="primary"
+            defaultPage={1}
+            page={currentPage}
+            onChange={(_event, page) => handlePageChange(page)}
+          />
+        </Stack>
+      )}
+    </>
   );
 };

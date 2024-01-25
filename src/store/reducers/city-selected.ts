@@ -1,4 +1,8 @@
-import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import {
+  SerializedError,
+  combineReducers,
+  createReducer,
+} from '@reduxjs/toolkit';
 import { City } from '../../models/City';
 import {
   addFavouriteItinerary,
@@ -12,7 +16,7 @@ import { StatusResponse } from '../../models/StatusResponse';
 import { Itinerary } from '../../models/Itinerary';
 import { Like } from '../../models/Like';
 
-const cityState: StatusResponse<City> & {
+const cityState: StatusResponse<City, SerializedError> & {
   hasBeenModified: boolean;
 } = {
   loading: true,

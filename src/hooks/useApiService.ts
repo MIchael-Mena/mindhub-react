@@ -8,13 +8,13 @@ import { StatusResponse } from '../models/StatusResponse';
  * @param initialSkipFirstExecution: booleano que indica si se quiere saltar la primera ejecucion del hook, por defecto es false
  * @returns: objeto con el estado de la llamada a la api
  */
-export const useApiService = <T>(
+export const useApiService = <T, P>(
   crudMethod: () => Promise<T>,
   listenTo: React.DependencyList = [],
   initialSkipFirstExecution: boolean = false
 ) => {
   const skipFirstExecutionRef = useRef(initialSkipFirstExecution);
-  const [state, setState] = useState<StatusResponse<T>>({
+  const [state, setState] = useState<StatusResponse<T, P>>({
     // Si se quiere saltar la primera ejecucion, se pone el loading a false
     loading: !initialSkipFirstExecution,
     data: [] as T,
@@ -50,7 +50,7 @@ export const useApiService = <T>(
     } catch (error) {
       setState({
         data: [] as T,
-        error: error as Error, // Revisar si es necesario el casting
+        error: error as P, // Revisar si es necesario el casting
         loading: false,
       });
     }

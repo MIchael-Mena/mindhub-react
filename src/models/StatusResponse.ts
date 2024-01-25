@@ -1,7 +1,5 @@
-import { SerializedError } from '@reduxjs/toolkit';
-
-export interface StatusResponse<T> {
+export interface StatusResponse<T, P> {
   data: T;
   loading: boolean;
-  error: SerializedError | null;
+  error: P | null;
 }

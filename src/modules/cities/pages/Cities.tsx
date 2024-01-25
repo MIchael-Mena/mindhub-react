@@ -19,6 +19,7 @@ const Cities = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          gap: 5,
           pb: 3,
         }}
       >
@@ -30,7 +31,7 @@ const Cities = () => {
           </Typography>
         </Hero>
 
-        <Divider sx={{ width: '90%', mt: 3, mb: 3 }} />
+        <Divider sx={{ width: '90%' }} />
 
         <Grid container alignItems="center" rowGap={2} px={{ md: 6 }}>
           <Grid item xs={12} md={4}>
@@ -53,7 +54,6 @@ const Cities = () => {
             gap={1}
             justifyContent={{ xs: 'center', md: 'flex-end' }}
             alignItems="center"
-            // pr={{ xs: 0, md: 6 }}
           >
             <SortButton />
           </Grid>

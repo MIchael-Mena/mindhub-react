@@ -7,6 +7,7 @@ import './Finder.css';
 const Finder = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const currentSearch = searchParam.get('search') || '';
+  const pageParam = Number(searchParam.get('page')) || 1;
 
   // Maneja el estado del valor dentro del input, cuando el usuario decidad buscar, se actualiza el valor de searchParam y la url
   const [searchQuery, setSearchQuery] = useState(currentSearch);
@@ -20,23 +21,18 @@ const Finder = () => {
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchQuery === currentSearch) return; // si no hay cambios, no hago nada
-    if (!searchQuery) {
-      setSearchParam(
-        (params: URLSearchParams) => {
+    setSearchParam(
+      (params: URLSearchParams) => {
+        if (!searchQuery) {
           params.delete('search');
-          return params;
-        },
-        { preventScrollReset: true }
-      );
-    } else {
-      setSearchParam(
-        (params: URLSearchParams) => {
+        } else {
           params.set('search', searchQuery);
-          return params;
-        },
-        { preventScrollReset: true }
-      );
-    }
+          if (pageParam !== 1) params.set('page', '1');
+        }
+        return params;
+      },
+      { preventScrollReset: true }
+    );
   };
 
   // Para que en renderizados despues del primero, el valor de searchQuery siempre sea el ultimo

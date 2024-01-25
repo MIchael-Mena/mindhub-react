@@ -44,11 +44,10 @@ export const CitiesList = () => {
           justifyContent: 'center',
           flexWrap: 'wrap',
           gap: 3,
-          marginTop: 4,
           minHeight: 400,
         }}
       >
-        {loading ? (
+        {loading && cities.length === 0 ? (
           <CircularProgress color="secondary" size={200} />
         ) : error ? (
           <FailedRequest message="Oops! Something went wrong." width="290px" />

@@ -1,10 +1,10 @@
 import { Collapse, Grid } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { Comments } from '../comments';
+import { ItineraryCommentsSection } from '../itinerary-comments-section';
 import { useAppDispatch } from '../../../../store/hooks';
 import { ButtonViewMore } from '../button-view-more';
 import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/actions/itinerary-extra';
-import { Activities } from '../../activities';
+import { ItineraryActivitiesSection } from '../../itinerary-activities-section';
 
 export const ItineraryExtra = ({
   activeItineraryId,
@@ -21,8 +21,9 @@ export const ItineraryExtra = ({
   const updateHeightContainer = () => {
     if (activitiesRef.current) {
       const activitiesHeight = activitiesRef.current.clientHeight;
-      const commentsHeight = commentsRef.current!.clientHeight;
-      if (activitiesHeight > 250 && commentsHeight > 250) {
+      // const commentsHeight = commentsRef.current!.clientHeight;
+      // no se tiene en cuenta la altura del titulo de cada seccion (activities y comments)
+      if (activitiesHeight > 250) {
         commentsRef.current!.style.maxHeight = activitiesHeight + 'px';
       }
     }
@@ -88,10 +89,13 @@ export const ItineraryExtra = ({
           }}
         >
           <Grid item xs={12} md={6}>
-            <Activities ref={activitiesRef} />
+            <ItineraryActivitiesSection ref={activitiesRef} />
           </Grid>
           <Grid item xs={12} md={6} boxShadow={2}>
-            <Comments ref={commentsRef} itineraryId={activeItineraryId} />
+            <ItineraryCommentsSection
+              ref={commentsRef}
+              itineraryId={activeItineraryId}
+            />
           </Grid>
         </Grid>
       </Collapse>

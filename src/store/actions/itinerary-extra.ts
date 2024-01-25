@@ -2,66 +2,86 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ApiService } from '../../services/api.service';
 import { RootState } from '../store';
 import { Activity } from '../../models/Acitivity';
-import { Comment } from '../../models/Comment';
+import { Comment, CommentToCreate } from '../../models/Comment';
 import { PaginationData } from '../../models/PaginationData';
+import { AxiosError } from 'axios';
+import { ApiResponse } from '../../models/ApiResponse';
+import { ItineraryExtraState } from '../../models/ItineraryExtra';
 
 interface CommentResponse extends PaginationData {
   comments: Comment[];
 }
 
-const updateComment = createAsyncThunk(
+const maxCommentsPerPage = 4;
+
+const getErrorMessage = (err: any) => {
+  const error: AxiosError<ApiResponse<undefined>> = err;
+  const apiRes = error.response
+    ? error.response.data
+    : ({
+        success: false,
+        message: 'An error has occurred while processing your request', // mensaje generico, cada accion podria tener su propio mensaje
+      } as ApiResponse<undefined>);
+  return apiRes;
+};
+
+const updateComment = createAsyncThunk<
+  Comment,
+  { _id: string; text: string },
+  { rejectValue: ApiResponse<undefined> }
+>(
   'updateComment',
-  async (comment: { _id: string; text: string }) => {
+  async (comment: { _id: string; text: string }, { rejectWithValue }) => {
     try {
       const response = await ApiService.patchData<Comment>(
         `/comment/update/${comment._id}`,
         { text: comment.text }
       );
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
-
-const deleteComment = createAsyncThunk(
-  'deleteComment',
-  async (commentId: string) => {
-    try {
-      const response = await ApiService.deleteData<string>(
-        `/comment/delete/${commentId}`
-      );
-      // el backend en data responde con un mensaje de exito, en su lugar se devuelve el id del comentario eliminado
-      return { ...response, data: { _id: commentId } };
-    } catch (error) {
-      throw error;
-    }
-  }
-);
-
-const createComment = createAsyncThunk(
-  'createComment',
-  async (comment: {
-    text: string;
-    onModel: string; // El modelo al que pertenece el comentario (itinerary o activity)
-    _reference: string; // El id del itinerario o actividad
-    _user: string; // El id del usuario
-  }) => {
-    try {
-      const response = await ApiService.postData<Comment>(
-        '/comment/create',
-        comment
-      );
       return response.data!;
     } catch (error) {
-      throw error;
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
 
-const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk(
+const deleteComment = createAsyncThunk<
+  { commentId: string },
+  string,
+  { rejectValue: ApiResponse<undefined> }
+>('deleteComment', async (commentId: string, { rejectWithValue }) => {
+  try {
+    // no me interesa lo que devuelve el backend, solo el id del comentario eliminado
+    await ApiService.deleteData<string>(`/comment/delete/${commentId}`);
+    // el backend en data responde con un mensaje de exito, en su lugar se devuelve el id del comentario eliminado
+    return { commentId: commentId };
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
+  }
+});
+
+const createComment = createAsyncThunk<
+  Comment,
+  CommentToCreate,
+  { rejectValue: ApiResponse<undefined> }
+>('createComment', async (comment: CommentToCreate, { rejectWithValue }) => {
+  try {
+    const response = await ApiService.postData<Comment>(
+      '/comment/create',
+      comment
+    );
+    return response.data!;
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
+  }
+});
+
+const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
+  ItineraryExtraState,
+  string,
+  { rejectValue: ApiResponse<undefined> }
+>(
   'fetchCommentsAndActivitiesByItineraryId',
-  async (itineraryId: string, { getState }) => {
+  async (itineraryId: string, { getState, rejectWithValue }) => {
     const { itineraryId: currentItineraryId } = (getState() as RootState)
       .itineraryExtraReducer.data;
     if (itineraryId === currentItineraryId) {
@@ -70,29 +90,116 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk(
     }
     try {
       const commentsPromise = ApiService.getData<CommentResponse>(
-        `/comment/for-itinerary/${itineraryId}`
+        `/comment/for-itinerary/${itineraryId}`,
+        {
+          limit: maxCommentsPerPage,
+        }
       );
       const activitiesPromise = ApiService.getData<Activity[]>(
         `/activity/for-itinerary/${itineraryId}`
       );
 
+      /*       const [commentsResult, activitiesResult] = await Promise.allSettled([
+        commentsPromise,
+        activitiesPromise,
+      ]); */
       const [commentRes, activities] = await Promise.all([
         commentsPromise,
         activitiesPromise,
       ]);
 
-      const { comments, ...commentParams } = commentRes;
+      const { comments, ...commentParamsRes } = commentRes;
+      const commentParams = { currentPage: 1, ...commentParamsRes };
 
-      return { comments, commentParams, activities, itineraryId };
+      return {
+        comments,
+        commentParams,
+        activities,
+        itineraryId,
+      };
     } catch (error) {
-      throw error;
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
 
+const fetchMoreComments = createAsyncThunk<
+  { comments: Comment[]; currentPage: number },
+  undefined,
+  { rejectValue: ApiResponse<undefined> }
+>('fetchMoreComments', async (_, { getState, rejectWithValue }) => {
+  const {
+    itineraryId,
+    commentParams: { currentPage, totalPages },
+  } = (getState() as RootState).itineraryExtraReducer.data;
+  if (currentPage > 0 && currentPage === totalPages) {
+    // Si no hay más páginas. Evito hacer la llamada al servidor.
+    return {
+      comments: [],
+      currentPage,
+    };
+  }
+  try {
+    const commentsRes = await ApiService.getData<CommentResponse>(
+      `/comment/for-itinerary/${itineraryId}`,
+      {
+        page: currentPage + 1,
+        limit: maxCommentsPerPage,
+      }
+    );
+
+    const { comments } = commentsRes;
+
+    return {
+      comments,
+      currentPage: currentPage + 1,
+    };
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
+  }
+});
+
+/* const fetchMoreComments = createAsyncThunk(
+  'fetchMoreComments',
+  async (_, { getState, rejectWithValue }) => {
+    const {
+      itineraryId,
+      comments: currentComments,
+      commentParams: { currentPage, totalPages },
+    } = (getState() as RootState).itineraryExtraReducer.data;
+    if (currentPage > 0 && currentPage === totalPages) {
+      // Si no hay más páginas, devuelve el estado actual. Evito hacer la llamada al servidor y un nuevo renderizado.
+      return {
+        comments: (getState() as RootState).itineraryExtraReducer.data.comments,
+        currentPage,
+      };
+    }
+    try {
+      const commentsRes = await ApiService.getData<CommentResponse>(
+        `/comment/for-itinerary/${itineraryId}`,
+        {
+          page: currentPage + 1,
+          limit: maxPerPage,
+        }
+      );
+
+      const { comments } = commentsRes;
+
+      return {
+        comments: [...currentComments, ...comments],
+        currentPage: currentPage + 1,
+      };
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
+      // throw error;
+    }
+  }
+); */
+
 export {
   updateComment,
   deleteComment,
-  fetchCommentsAndActivitiesByItineraryId,
   createComment,
+  fetchCommentsAndActivitiesByItineraryId,
+  fetchMoreComments,
 };

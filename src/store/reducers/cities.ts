@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { SerializedError, createReducer } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
 import { fetchCities, fetchPopularCities } from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
@@ -10,9 +10,9 @@ type GloblaState = {
 };
 
 const citiesState: {
-  citiesFiltered: StatusResponse<CityBasic[]> &
+  citiesFiltered: StatusResponse<CityBasic[], SerializedError> &
     GloblaState & { params: CitySearchParams & PaginationData };
-  popularCities: StatusResponse<CityBasic[]> & GloblaState;
+  popularCities: StatusResponse<CityBasic[], SerializedError> & GloblaState;
 } = {
   popularCities: {
     loading: true,
@@ -23,7 +23,7 @@ const citiesState: {
   citiesFiltered: {
     params: {
       search: '',
-      sort: 'createdAt',
+      sort: 'updatedAt',
       page: 0,
       totalPages: 0,
       totalCount: 0,
@@ -52,7 +52,7 @@ const citiesReducer = createReducer(citiesState, (builder) => {
     })
     .addCase(fetchCities.rejected, (state, action) => {
       state.citiesFiltered.params.search = '';
-      state.citiesFiltered.params.sort = 'createdAt';
+      state.citiesFiltered.params.sort = 'updatedAt';
       state.citiesFiltered.params.page = 0;
       state.citiesFiltered.params.totalPages = 0;
       state.citiesFiltered.params.totalCount = 0;
