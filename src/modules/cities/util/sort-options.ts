@@ -1,5 +1,5 @@
 const sortOptionsMapping = {
-  'More recent': 'updatedAt',
+  'Most recent': 'updatedAt',
   City: 'name',
   Country: 'country',
 };

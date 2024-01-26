@@ -6,7 +6,10 @@ import { Comment, CommentToCreate } from '../../models/Comment';
 import { PaginationData } from '../../models/PaginationData';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '../../models/ApiResponse';
-import { ItineraryExtraState } from '../../models/ItineraryExtra';
+import {
+  CommentPaginationOptions,
+  ItineraryExtraState,
+} from '../../models/ItineraryExtra';
 
 interface CommentResponse extends PaginationData {
   comments: Comment[];
@@ -109,7 +112,10 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
       ]);
 
       const { comments, ...commentParamsRes } = commentRes;
-      const commentParams = { currentPage: 1, ...commentParamsRes };
+      const commentParams = {
+        page: 1,
+        ...commentParamsRes,
+      };
 
       return {
         comments,
@@ -123,7 +129,7 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
   }
 );
 
-const fetchMoreComments = createAsyncThunk<
+/* const fetchMoreComments = createAsyncThunk<
   { comments: Comment[]; currentPage: number },
   undefined,
   { rejectValue: ApiResponse<undefined> }
@@ -157,49 +163,68 @@ const fetchMoreComments = createAsyncThunk<
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
   }
-});
+}); */
 
-/* const fetchMoreComments = createAsyncThunk(
+const fetchComments = createAsyncThunk<
+  { comments: Comment[] } & CommentPaginationOptions & PaginationData,
+  CommentPaginationOptions,
+  { rejectValue: ApiResponse<undefined> }
+>(
   'fetchMoreComments',
-  async (_, { getState, rejectWithValue }) => {
+  async (
+    { order, page }: CommentPaginationOptions,
+    { getState, rejectWithValue }
+  ) => {
     const {
       itineraryId,
-      comments: currentComments,
-      commentParams: { currentPage, totalPages },
+      comments,
+      commentParams: {
+        page: currentPage,
+        totalPages,
+        order: currentOrder,
+        totalCount,
+      },
     } = (getState() as RootState).itineraryExtraReducer.data;
-    if (currentPage > 0 && currentPage === totalPages) {
-      // Si no hay más páginas, devuelve el estado actual. Evito hacer la llamada al servidor y un nuevo renderizado.
+    const activeOrder = order || currentOrder!;
+    if (page > totalPages) {
+      // Si no hay más páginas. Evito hacer la llamada al servidor.
       return {
-        comments: (getState() as RootState).itineraryExtraReducer.data.comments,
-        currentPage,
+        comments,
+        page: currentPage,
+        order: currentOrder, // no se actualiza el orden
+        totalPages,
+        totalCount,
       };
     }
     try {
       const commentsRes = await ApiService.getData<CommentResponse>(
         `/comment/for-itinerary/${itineraryId}`,
         {
-          page: currentPage + 1,
-          limit: maxPerPage,
+          limit: maxCommentsPerPage,
+          sort: 'updatedAt',
+          order: activeOrder,
+          page,
         }
       );
 
-      const { comments } = commentsRes;
+      const { comments, ...params } = commentsRes;
 
       return {
-        comments: [...currentComments, ...comments],
-        currentPage: currentPage + 1,
+        comments,
+        page,
+        order: activeOrder,
+        ...params,
       };
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
-      // throw error;
     }
   }
-); */
+);
 
 export {
   updateComment,
   deleteComment,
   createComment,
   fetchCommentsAndActivitiesByItineraryId,
-  fetchMoreComments,
+  fetchComments,
 };

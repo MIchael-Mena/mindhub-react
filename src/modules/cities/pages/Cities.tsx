@@ -33,27 +33,39 @@ const Cities = () => {
 
         <Divider sx={{ width: '90%' }} />
 
-        <Grid container alignItems="center" rowGap={2} px={{ md: 6 }}>
-          <Grid item xs={12} md={4}>
+        <Grid container alignItems="center" rowGap={3} px={{ md: 6 }}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={4}
+            order={{ xs: 3, lg: 1 }}
+            display="inline-flex"
+            justifyContent={{ xs: 'center', md: 'flex-end', lg: 'flex-start' }}
+          >
             <CitiesCountDisplay />
           </Grid>
           <Grid
             item
             xs={12}
-            md={4}
+            md={12}
+            lg={4}
             display="inline-flex"
             justifyContent="center"
+            order={{ xs: 1, lg: 1 }}
           >
             <Finder />
           </Grid>
           <Grid
             item
             xs={12}
-            md={4}
+            md={6}
+            lg={4}
             display="inline-flex"
+            justifyContent={{ xs: 'center', md: 'flex-start', lg: 'flex-end' }}
             gap={1}
-            justifyContent={{ xs: 'center', md: 'flex-end' }}
             alignItems="center"
+            order={{ xs: 2, lg: 1 }}
           >
             <SortButton />
           </Grid>

@@ -1,10 +1,10 @@
-import { Collapse, Grid } from '@mui/material';
+import { Collapse, Grid, Theme, useMediaQuery } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { ItineraryCommentsSection } from '../itinerary-comments-section';
 import { useAppDispatch } from '../../../../store/hooks';
 import { ButtonViewMore } from '../button-view-more';
 import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/actions/itinerary-extra';
-import { ItineraryActivitiesSection } from '../../itinerary-activities-section';
+import { ItineraryActivitiesSection } from '../itinerary-activities-section';
 
 export const ItineraryExtra = ({
   activeItineraryId,
@@ -14,12 +14,15 @@ export const ItineraryExtra = ({
   animationDuration?: number;
 }) => {
   const dispatch = useAppDispatch();
+  const isLargeScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('lg')
+  );
   const activitiesRef = useRef<HTMLDivElement>(null);
   const commentsRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
 
   const updateHeightContainer = () => {
-    if (activitiesRef.current) {
+    if (activitiesRef.current && isLargeScreen) {
       const activitiesHeight = activitiesRef.current.clientHeight;
       // const commentsHeight = commentsRef.current!.clientHeight;
       // no se tiene en cuenta la altura del titulo de cada seccion (activities y comments)
@@ -88,10 +91,10 @@ export const ItineraryExtra = ({
             overflow: 'hidden',
           }}
         >
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} lg={6}>
             <ItineraryActivitiesSection ref={activitiesRef} />
           </Grid>
-          <Grid item xs={12} md={6} boxShadow={2}>
+          <Grid item xs={12} lg={6} boxShadow={2}>
             <ItineraryCommentsSection
               ref={commentsRef}
               itineraryId={activeItineraryId}

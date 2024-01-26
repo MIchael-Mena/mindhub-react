@@ -51,7 +51,7 @@ export const CitiesList = () => {
           <CircularProgress color="secondary" size={200} />
         ) : error ? (
           <FailedRequest message="Oops! Something went wrong." width="290px" />
-        ) : cities.length === 0 && searchParam ? ( // Podria usar 404 del error como condicion
+        ) : cities.length === 0 && searchParam ? (
           <CardNotFound
             message={`No cities found for "${searchParam}", try again.`}
           />

@@ -5,20 +5,34 @@ import { ButtonLoadMore } from '../button-load-more';
 import { CommentsList } from '../comments-list';
 import { CommentCountDisplay } from '../comment-count-display';
 import { CommentInputForm } from '../comment-input-form';
+import SortButtonComments from '../sort-button-comments';
 
 type CommentsProps = {
   itineraryId: string;
+  titleHeightInPx?: string;
 };
 
 export const ItineraryCommentsSection = forwardRef<
   HTMLDivElement,
   CommentsProps
->(({ itineraryId }, refForward) => {
+>(({ itineraryId, titleHeightInPx = '60px' }, refForward) => {
   const isLogged = useAppSelector((store) => store.userReducer.isLogged);
   const userId = useAppSelector((store) => store.userReducer.user._id);
   return (
     <>
-      <CommentCountDisplay />
+      <Box
+        px={2}
+        height={titleHeightInPx}
+        display="inline-flex"
+        bgcolor="secondary.main"
+        width="100%"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <CommentCountDisplay />
+        <SortButtonComments />
+      </Box>
+
       <Box sx={{ overflowY: 'auto' }} py={2} ref={refForward}>
         <List disablePadding>
           <CommentsList isLogged={isLogged} userId={userId!} />

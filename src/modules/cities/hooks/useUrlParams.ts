@@ -16,7 +16,7 @@ export const useUrlParams = () => {
   const sortParam =
     sortOptionsMapping[
       (!sortParamRaw || !(sortParamRaw in sortOptionsMapping)
-        ? 'More recent'
+        ? 'Most recent'
         : sortParamRaw) as keyof typeof sortOptionsMapping
     ];
 

@@ -10,7 +10,7 @@ export const SortButton = () => {
 
   const currentSort =
     !sortValue || !(sortValue in sortOptionsMapping)
-      ? 'More recent'
+      ? 'Most recent'
       : sortValue;
 
   const deleteSortParam = () => {
@@ -26,7 +26,7 @@ export const SortButton = () => {
   const handleChange = (event: SelectChangeEvent<string>) => {
     const newSortValue = event.target.value as string;
     if (newSortValue === currentSort) return;
-    if (newSortValue === 'More recent') {
+    if (newSortValue === 'Most recent') {
       deleteSortParam();
     } else {
       setSortParam(
@@ -53,6 +53,7 @@ export const SortButton = () => {
         Sort by:
       </Typography>
       <Select
+        sx={{ borderRadius: '0.7rem' }}
         variant="outlined"
         value={currentSort}
         onChange={handleChange}

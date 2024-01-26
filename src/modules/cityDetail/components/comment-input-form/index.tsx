@@ -14,9 +14,6 @@ export const CommentInputForm = ({
   isLogged: boolean;
   userId: string;
 }) => {
-  if (!isLogged) {
-    return null;
-  }
   const dispatch = useAppDispatch();
 
   const textFieldRef = useRef<HTMLInputElement>(null);

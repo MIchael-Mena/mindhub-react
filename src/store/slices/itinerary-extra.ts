@@ -6,7 +6,7 @@ import {
   createComment,
   deleteComment,
   fetchCommentsAndActivitiesByItineraryId,
-  fetchMoreComments,
+  fetchComments,
   updateComment,
 } from '../actions/itinerary-extra';
 import { ApiResponse } from '../../models/ApiResponse';
@@ -20,7 +20,8 @@ const itineraryExtraState: StatusResponse<
   error: null,
   data: {
     commentParams: {
-      currentPage: 0,
+      order: 'asc',
+      page: 0,
       totalPages: 0,
       totalCount: 0,
     },
@@ -40,7 +41,12 @@ const itineraryExtraSlice = createSlice({
         comments: [],
         activities: [],
         itineraryId: '',
-        commentParams: { currentPage: 0, totalPages: 0, totalCount: 0 },
+        commentParams: {
+          page: 0,
+          totalPages: 0,
+          totalCount: 0,
+          order: 'asc',
+        },
       };
       state.loading = false;
       state.error = null;
@@ -112,9 +118,10 @@ const itineraryExtraSlice = createSlice({
         (state, action) => {
           state.data = {
             commentParams: {
-              currentPage: 0,
+              page: 0,
               totalPages: 0,
               totalCount: 0,
+              order: 'asc',
             },
             comments: [] as Comment[],
             activities: [] as Activity[],
@@ -125,19 +132,30 @@ const itineraryExtraSlice = createSlice({
         }
       )
 
-      .addCase(fetchMoreComments.pending, (state) => {
+      .addCase(fetchComments.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchMoreComments.fulfilled, (state, action) => {
+      .addCase(fetchComments.fulfilled, (state, action) => {
         state.loading = false;
-        const comments = action.payload.comments;
+        const { comments, ...params } = action.payload;
+        state.data.comments =
+          action.payload.page > 1 &&
+          state.data.commentParams.order === params.order
+            ? [...state.data.comments, ...comments]
+            : comments;
+        /*         state.data.commentParams = {
+          ...state.data.commentParams,
+          ...params,
+        }; */
+        state.data.commentParams = params;
+        /*         const comments = action.payload.comments;
         state.data.comments =
           comments.length > 0
             ? [...state.data.comments, ...comments]
-            : state.data.comments;
-        state.data.commentParams.currentPage = action.payload.currentPage;
+            : state.data.comments; */
+        // state.data.commentParams.page = action.payload.page;
       })
-      .addCase(fetchMoreComments.rejected, (state, action) => {
+      .addCase(fetchComments.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -3,10 +3,16 @@ import { Comment } from './Comment';
 import { PaginationData } from './PaginationData';
 
 export interface ItineraryExtraState {
-  commentParams: {
-    currentPage: number;
-  } & PaginationData;
+  commentParams: /* {
+    page: number;
+    order?: 'asc' | 'desc';
+  } */ CommentPaginationOptions & PaginationData;
   comments: Comment[];
   activities: Activity[];
   itineraryId: string;
+}
+
+export interface CommentPaginationOptions {
+  order?: 'asc' | 'desc';
+  page: number;
 }
