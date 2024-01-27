@@ -12,6 +12,24 @@ import {
 import { ApiResponse } from '../../models/ApiResponse';
 import { ItineraryExtraState } from '../../models/ItineraryExtra';
 
+const resetState = (
+  state: StatusResponse<ItineraryExtraState, ApiResponse<undefined> | undefined>
+) => {
+  state.data = {
+    commentParams: {
+      page: 0,
+      totalPages: 0,
+      totalCount: 0,
+      order: 'desc',
+    },
+    comments: [] as Comment[],
+    activities: [] as Activity[],
+    itineraryId: '',
+  };
+  state.loading = false;
+  state.error = null;
+};
+
 const itineraryExtraState: StatusResponse<
   ItineraryExtraState,
   ApiResponse<undefined> | undefined
@@ -20,7 +38,7 @@ const itineraryExtraState: StatusResponse<
   error: null,
   data: {
     commentParams: {
-      order: 'asc',
+      order: 'desc',
       page: 0,
       totalPages: 0,
       totalCount: 0,
@@ -36,21 +54,7 @@ const itineraryExtraSlice = createSlice({
   initialState: itineraryExtraState,
   reducers: {
     // Las acciones sincronicas van aca
-    resetState: (state) => {
-      state.data = {
-        comments: [],
-        activities: [],
-        itineraryId: '',
-        commentParams: {
-          page: 0,
-          totalPages: 0,
-          totalCount: 0,
-          order: 'asc',
-        },
-      };
-      state.loading = false;
-      state.error = null;
-    },
+    resetState: (state) => resetState(state),
   },
   extraReducers: (builder) => {
     builder
@@ -59,7 +63,7 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.comments.push(action.payload); // Debo asegurarme de ordenarlos segun el criterio que quiera
+        state.data.comments.unshift(action.payload); // Debo asegurarme de ordenarlos segun el criterio que quiera
       })
       .addCase(createComment.rejected, (state, action) => {
         state.loading = false;
@@ -116,18 +120,7 @@ const itineraryExtraSlice = createSlice({
       .addCase(
         fetchCommentsAndActivitiesByItineraryId.rejected,
         (state, action) => {
-          state.data = {
-            commentParams: {
-              page: 0,
-              totalPages: 0,
-              totalCount: 0,
-              order: 'asc',
-            },
-            comments: [] as Comment[],
-            activities: [] as Activity[],
-            itineraryId: '',
-          };
-          state.loading = false;
+          resetState(state);
           state.error = action.payload;
         }
       )
@@ -143,17 +136,7 @@ const itineraryExtraSlice = createSlice({
           state.data.commentParams.order === params.order
             ? [...state.data.comments, ...comments]
             : comments;
-        /*         state.data.commentParams = {
-          ...state.data.commentParams,
-          ...params,
-        }; */
         state.data.commentParams = params;
-        /*         const comments = action.payload.comments;
-        state.data.comments =
-          comments.length > 0
-            ? [...state.data.comments, ...comments]
-            : state.data.comments; */
-        // state.data.commentParams.page = action.payload.page;
       })
       .addCase(fetchComments.rejected, (state, action) => {
         state.loading = false;

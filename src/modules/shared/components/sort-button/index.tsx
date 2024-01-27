@@ -1,19 +1,19 @@
 import { Button, Menu, MenuItem, Typography } from '@mui/material';
-import { useState } from 'react';
 import SortIcon from '@mui/icons-material/Sort';
-import { useAppDispatch } from '../../../../store/hooks';
-import { fetchComments } from '../../../../store/actions/itinerary-extra';
+import { useState } from 'react';
 
-// const sortsAvailable = ['Most recent', 'Most old'];
-const sortsAvailable: { [key: string]: 'asc' | 'desc' } = {
-  'Most recent': 'desc',
-  'Most old': 'asc',
-};
+interface SortButtonProps {
+  currentSort: string;
+  sortsAvailable: { [key: string]: string };
+  onSortSelected: (sort: string) => void;
+}
 
-export default function SortButtonComments() {
-  const dispatch = useAppDispatch();
+export const SortButton = ({
+  currentSort,
+  sortsAvailable,
+  onSortSelected,
+}: SortButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [sortType, setSortType] = useState('');
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -21,19 +21,14 @@ export default function SortButtonComments() {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleSort = (sort: string) => {
+    setAnchorEl(null);
+    onSortSelected(sort);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const handleSort = (selectedSortType: string) => {
-    // console.log(`Sorting by ${selectedSortType}`);
-    setSortType(selectedSortType);
-    setAnchorEl(null);
-    dispatch(
-      fetchComments({ order: sortsAvailable[selectedSortType], page: 1 })
-    );
-  };
-
   return (
     <>
       <Button
@@ -42,7 +37,7 @@ export default function SortButtonComments() {
         onClick={handleClick}
         startIcon={<SortIcon />}
       >
-        {sortType || 'Sort'}
+        {currentSort || 'Sort'}
       </Button>
       <Menu
         id="sort-menu-comments"
@@ -53,7 +48,7 @@ export default function SortButtonComments() {
       >
         {Object.keys(sortsAvailable).map((sort) => (
           <MenuItem key={sort} onClick={() => handleSort(sort)}>
-            <Typography color={sortType === sort ? 'primary' : 'inherit'}>
+            <Typography color={currentSort === sort ? 'primary' : 'inherit'}>
               {sort}
             </Typography>
           </MenuItem>
@@ -61,4 +56,4 @@ export default function SortButtonComments() {
       </Menu>
     </>
   );
-}
+};

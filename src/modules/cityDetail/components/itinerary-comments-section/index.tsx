@@ -5,7 +5,7 @@ import { ButtonLoadMore } from '../button-load-more';
 import { CommentsList } from '../comments-list';
 import { CommentCountDisplay } from '../comment-count-display';
 import { CommentInputForm } from '../comment-input-form';
-import SortButtonComments from '../sort-button-comments';
+import SortComments from '../sort-comments';
 
 type CommentsProps = {
   itineraryId: string;
@@ -30,18 +30,18 @@ export const ItineraryCommentsSection = forwardRef<
         justifyContent="space-between"
       >
         <CommentCountDisplay />
-        <SortButtonComments />
+        <SortComments />
       </Box>
 
       <Box sx={{ overflowY: 'auto' }} py={2} ref={refForward}>
         <List disablePadding>
-          <CommentsList isLogged={isLogged} userId={userId!} />
-          <ButtonLoadMore />
           <CommentInputForm
             isLogged={isLogged}
             userId={userId!}
             itineraryId={itineraryId}
           />
+          <CommentsList isLogged={isLogged} userId={userId!} />
+          <ButtonLoadMore />
         </List>
       </Box>
     </>

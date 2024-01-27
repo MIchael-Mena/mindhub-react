@@ -20,11 +20,11 @@ export const ButtonLoadMore = () => {
         <ListItem sx={{ display: 'inline-block', textAlign: 'center' }}>
           <Button
             variant="text"
-            sx={{ borderRadius: 5, pl: 2 }}
+            sx={{ borderRadius: 5, px: 2 }}
             onClick={handleLoadMore}
+            endIcon={<ArrowDropDownIcon />}
           >
             Load more
-            <ArrowDropDownIcon />
           </Button>
         </ListItem>
       )}

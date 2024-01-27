@@ -85,8 +85,10 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
 >(
   'fetchCommentsAndActivitiesByItineraryId',
   async (itineraryId: string, { getState, rejectWithValue }) => {
-    const { itineraryId: currentItineraryId } = (getState() as RootState)
-      .itineraryExtraReducer.data;
+    const {
+      itineraryId: currentItineraryId,
+      commentParams: { order },
+    } = (getState() as RootState).itineraryExtraReducer.data;
     if (itineraryId === currentItineraryId) {
       // Si el itineraryId no ha cambiado, simplemente devuelve el estado actual.
       return (getState() as RootState).itineraryExtraReducer.data;
@@ -96,6 +98,8 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
         `/comment/for-itinerary/${itineraryId}`,
         {
           limit: maxCommentsPerPage,
+          sort: 'updatedAt',
+          order: order!,
         }
       );
       const activitiesPromise = ApiService.getData<Activity[]>(
@@ -129,42 +133,6 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
   }
 );
 
-/* const fetchMoreComments = createAsyncThunk<
-  { comments: Comment[]; currentPage: number },
-  undefined,
-  { rejectValue: ApiResponse<undefined> }
->('fetchMoreComments', async (_, { getState, rejectWithValue }) => {
-  const {
-    itineraryId,
-    commentParams: { currentPage, totalPages },
-  } = (getState() as RootState).itineraryExtraReducer.data;
-  if (currentPage > 0 && currentPage === totalPages) {
-    // Si no hay más páginas. Evito hacer la llamada al servidor.
-    return {
-      comments: [],
-      currentPage,
-    };
-  }
-  try {
-    const commentsRes = await ApiService.getData<CommentResponse>(
-      `/comment/for-itinerary/${itineraryId}`,
-      {
-        page: currentPage + 1,
-        limit: maxCommentsPerPage,
-      }
-    );
-
-    const { comments } = commentsRes;
-
-    return {
-      comments,
-      currentPage: currentPage + 1,
-    };
-  } catch (error) {
-    return rejectWithValue(getErrorMessage(error));
-  }
-}); */
-
 const fetchComments = createAsyncThunk<
   { comments: Comment[] } & CommentPaginationOptions & PaginationData,
   CommentPaginationOptions,
@@ -186,12 +154,12 @@ const fetchComments = createAsyncThunk<
       },
     } = (getState() as RootState).itineraryExtraReducer.data;
     const activeOrder = order || currentOrder!;
-    if (page > totalPages) {
+    if (page > totalPages || (page === 1 && activeOrder === currentOrder)) {
       // Si no hay más páginas. Evito hacer la llamada al servidor.
       return {
         comments,
         page: currentPage,
-        order: currentOrder, // no se actualiza el orden
+        order: currentOrder,
         totalPages,
         totalCount,
       };

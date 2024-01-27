@@ -1,10 +1,59 @@
-import SortIcon from '@mui/icons-material/Sort';
-import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { sortOptionsMapping } from '../../util/sort-options';
+import { SortButton } from '../../../shared/components/sort-button';
 
-export const SortButton = () => {
+export const SortCities = () => {
+  const [sortParam, setSortParam] = useSearchParams();
+  const sortValue = sortParam.get('sort');
+
+  const currentSort =
+    !sortValue || !(sortValue in sortOptionsMapping)
+      ? 'Most recent'
+      : sortValue;
+
+  const deleteSortParam = () => {
+    setSortParam(
+      (params: URLSearchParams) => {
+        params.delete('sort');
+        return params;
+      },
+      { preventScrollReset: true }
+    );
+  };
+
+  const handleSort = (selectedSort: string) => {
+    if (selectedSort === 'Most recent') {
+      deleteSortParam();
+    } else {
+      setSortParam(
+        (params: URLSearchParams) => {
+          params.set('sort', selectedSort);
+          return params;
+        },
+        { preventScrollReset: true }
+      );
+    }
+  };
+
+  // Lo uso para controlar que el valor de sortValue sea valido en la url (si no lo es, lo elimino)
+  useEffect(() => {
+    // Si la buscado esta vacia (sortValue === null) o si el valor de sortValue es valido, no hago nada
+    if (!sortValue || sortValue in sortOptionsMapping) return;
+    deleteSortParam();
+  }, [sortValue]);
+
+  return (
+    <SortButton
+      currentSort={currentSort}
+      sortsAvailable={sortOptionsMapping}
+      onSortSelected={handleSort}
+    />
+  );
+};
+
+// Version 2 con Select de Material UI
+/* export const SortButton = () => {
   const [sortParam, setSortParam] = useSearchParams();
   const sortValue = sortParam.get('sort');
 
@@ -53,6 +102,7 @@ export const SortButton = () => {
         Sort by:
       </Typography>
       <Select
+        type="text"
         sx={{ borderRadius: '0.7rem' }}
         variant="outlined"
         value={currentSort}
@@ -68,4 +118,4 @@ export const SortButton = () => {
       </Select>
     </>
   );
-};
+}; */

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useEffect } from 'react';
 import { fetchCities } from '../../../../store/actions/cities';
 import { useUrlParams } from '../../hooks/useUrlParams';
+import { CardCitySkeleton } from '../card-city-skeleton';
 
 export const CitiesList = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,8 @@ export const CitiesList = () => {
         }}
       >
         {loading && cities.length === 0 ? (
-          <CircularProgress color="secondary" size={200} />
+          // <CircularProgress color="secondary" size={200} />
+          <CardCitySkeleton />
         ) : error ? (
           <FailedRequest message="Oops! Something went wrong." width="290px" />
         ) : cities.length === 0 && searchParam ? (

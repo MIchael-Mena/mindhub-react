@@ -3,7 +3,7 @@ import Finder from '../components/finder';
 import Hero from '../../shared/components/hero';
 import { CitiesList } from '../components/cities-list';
 import { PaginationControls } from '../components/pagination-controls';
-import { SortButton } from '../components/sort-button';
+import { SortCities } from '../components/sort-cities';
 import { CitiesCountDisplay } from '../components/cities-count-display';
 
 const Cities = () => {
@@ -67,7 +67,7 @@ const Cities = () => {
             alignItems="center"
             order={{ xs: 2, lg: 1 }}
           >
-            <SortButton />
+            <SortCities />
           </Grid>
         </Grid>
 
