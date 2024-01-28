@@ -56,6 +56,8 @@ export const CommentInputForm = ({
         >
           <Box display="flex" width="100%" gap={1}>
             <TextField
+              id="comment"
+              name="comment"
               fullWidth
               inputRef={textFieldRef}
               placeholder="Write a comment..."

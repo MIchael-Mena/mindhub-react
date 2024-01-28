@@ -26,13 +26,12 @@ const CitysCarousel = () => {
     data: popularCities,
     loading,
     error,
-    hasBeenModified,
   } = useAppSelector((store) => store.citiesReducer.popularCities);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!hasBeenModified) dispatch(fetchPopularCities({ limit: 12 }));
+    if (popularCities.length === 0) dispatch(fetchPopularCities({ limit: 12 }));
   }, []);
 
   // const {
@@ -143,7 +142,7 @@ const CitysCarousel = () => {
               {loading ? (
                 <CircularProgress size={'250px'} />
               ) : (
-                <FailedRequest message="Opps! Something went wrong fetching popular cities." />
+                <FailedRequest message="An error has occurred, try again later." />
               )}
             </Paper>
           ) : (

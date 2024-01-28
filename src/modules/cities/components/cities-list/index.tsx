@@ -1,5 +1,4 @@
-import { Box, CircularProgress } from '@mui/material';
-import CardCity from '../card-city';
+import { Box } from '@mui/material';
 import { FailedRequest } from '../../../shared/components/failed-request';
 import { CardNotFound } from '../../../shared/components/card-not-found/CardNotFound';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
@@ -7,6 +6,7 @@ import { useEffect } from 'react';
 import { fetchCities } from '../../../../store/actions/cities';
 import { useUrlParams } from '../../hooks/useUrlParams';
 import { CardCitySkeleton } from '../card-city-skeleton';
+import { CardCityLoader } from '../card-city-loader';
 
 export const CitiesList = () => {
   const dispatch = useAppDispatch();
@@ -48,19 +48,26 @@ export const CitiesList = () => {
           minHeight: 400,
         }}
       >
-        {loading && cities.length === 0 ? (
-          // <CircularProgress color="secondary" size={200} />
-          <CardCitySkeleton />
+        {/* loading && cities.length === 0 ? Si utilio esta condicion no se mostrara el estado cargando si ya tengo datos guardados*/}
+        {loading ? (
+          Array.from(Array(cities.length > 0 ? cities.length : 3).keys()).map(
+            (i) => <CardCitySkeleton key={i} />
+          )
         ) : error ? (
-          <FailedRequest message="Oops! Something went wrong." width="290px" />
+          <FailedRequest
+            message="An error has occurred, try again later."
+            width="300px"
+          />
         ) : cities.length === 0 && searchParam ? (
           <CardNotFound
             message={`No cities found for "${searchParam}", try again.`}
           />
         ) : cities.length === 0 ? (
-          <CardNotFound />
+          <CardNotFound message="Sorry, there are no cities available." />
         ) : (
-          cities.map((city, index) => <CardCity key={index} city={city} />)
+          cities.map((city, index) => (
+            <CardCityLoader key={index} city={city} />
+          ))
         )}
       </Box>
     </>

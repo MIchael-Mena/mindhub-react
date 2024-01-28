@@ -5,20 +5,16 @@ import { StatusResponse } from '../../models/StatusResponse';
 import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
 import { PaginationData } from '../../models/PaginationData';
 
-type GloblaState = {
-  hasBeenModified: boolean; // Si la data ha sido modificada al menos una vez
-};
-
 const citiesState: {
-  citiesFiltered: StatusResponse<CityBasic[], SerializedError> &
-    GloblaState & { params: CitySearchParams & PaginationData };
-  popularCities: StatusResponse<CityBasic[], SerializedError> & GloblaState;
+  citiesFiltered: StatusResponse<CityBasic[], SerializedError> & {
+    params: CitySearchParams & PaginationData;
+  };
+  popularCities: StatusResponse<CityBasic[], SerializedError>;
 } = {
   popularCities: {
     loading: true,
     error: null,
     data: [],
-    hasBeenModified: false,
   },
   citiesFiltered: {
     params: {
@@ -31,7 +27,6 @@ const citiesState: {
     loading: true,
     error: null,
     data: [],
-    hasBeenModified: false,
   },
 };
 
@@ -47,7 +42,6 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       };
 
       state.citiesFiltered.data = action.payload.cities;
-      state.citiesFiltered.hasBeenModified = true;
       state.citiesFiltered.loading = false;
     })
     .addCase(fetchCities.rejected, (state, action) => {
@@ -67,7 +61,6 @@ const citiesReducer = createReducer(citiesState, (builder) => {
     .addCase(fetchPopularCities.fulfilled, (state, action) => {
       state.popularCities.loading = false;
       state.popularCities.data = action.payload.cities;
-      state.popularCities.hasBeenModified = true;
     })
     .addCase(fetchPopularCities.rejected, (state, action) => {
       state.popularCities.loading = false;

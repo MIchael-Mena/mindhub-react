@@ -66,6 +66,7 @@ const Finder = () => {
           }}
         >
           <InputBase
+            id="search"
             placeholder="Find your city"
             value={searchQuery}
             onChange={handleSearchChange}

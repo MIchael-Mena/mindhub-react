@@ -10,15 +10,9 @@ interface CityGetResponse extends PaginationData {
 
 const fetchCities = createAsyncThunk(
   'fetchCities',
-  async (payload: CitySearchParams, api) => {
+  async (payload: CitySearchParams) => {
     try {
-      // Opcion para poder acceder a un estado desde un action, tambien se puede desestructurar el objeto api
-      // console.log(
-      //   'state',
-      //   (api.getState() as RootState).citiesReducer.cities.hasBeenModified
-      // );
       const { search, page, sort } = payload;
-      // console.log('payload', payload);
       const cityGetResponse = await ApiService.getData<CityGetResponse>(
         '/city',
         {

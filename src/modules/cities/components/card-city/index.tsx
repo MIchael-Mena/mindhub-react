@@ -26,6 +26,7 @@ const CardCity = ({ city }: CardCityProps) => {
       <Card
         elevation={1}
         sx={{
+          display: 'flex',
           maxWidth: 300,
           borderRadius: '15px',
           boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',
@@ -33,16 +34,15 @@ const CardCity = ({ city }: CardCityProps) => {
             boxShadow: (theme) => '0 0 3px 1px ' + theme.palette.success.main,
           },
           transition: 'box-shadow 0.3s ease-in-out',
-          display: 'flex',
           flexDirection: 'column',
         }}
       >
         <CardMedia
           component="img"
           loading="lazy"
+          image={city.images[0]}
           height="140"
           sx={{ border: '1px solid #ccc', borderRadius: '15px 15px 0 0' }}
-          image={city.images[0]}
           alt={city.name}
         />
 
