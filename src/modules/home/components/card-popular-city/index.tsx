@@ -6,23 +6,13 @@ import './CardPopularCity.css';
 
 const CardPopularCity = (city: CityBasic) => {
   const pathCityDetail = `/city-detail/${city['_id']}`;
-  const currentPath = window.location.pathname;
+  const currentPath = window.location.pathname; // No se usa, pero queda como ejemplo de state de Anchor
 
   return (
-    <Box className="card-destination">
+    <Box className="card-popular-city">
       <Box
-        position={'absolute'}
-        borderRadius={'5px'}
-        border={'1px solid #fff'}
-        px={1}
-        left={15}
-        top={0 - 20}
+        className="title-container"
         width={{ xs: 'calc(100% - 30px)', sm: 'auto' }}
-        minHeight={40}
-        maxWidth={'calc(100% - 30px)'} // 15px a la izquierda y derecha el bordeRadius
-        display={'flex'}
-        justifyContent={'center'}
-        alignItems={'center'}
         sx={{
           backgroundColor: (theme) => theme.palette.background.paper,
           zIndex: 3,
@@ -42,11 +32,11 @@ const CardPopularCity = (city: CityBasic) => {
       </Box>
 
       <Box
-        overflow={'hidden'}
-        borderRadius={'15px'}
-        width={'100%'}
-        height={'100%'}
-        position={'relative'}
+        overflow="hidden"
+        borderRadius="15px"
+        width="100%"
+        height="100%"
+        position="relative"
       >
         <img src={city.images[0]} alt="Imagen" className="image-container" />
         <Box className="description-container" p={{ xs: 2, sm: 4 }}>

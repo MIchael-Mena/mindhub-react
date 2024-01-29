@@ -6,6 +6,7 @@ import {
   Box,
   CircularProgress,
   Container,
+  Divider,
   Fab,
   Grid,
   Paper,
@@ -40,12 +41,6 @@ const CityDetail = () => {
       dispatch(fetchCitySelectedById({ id }));
     }
   }, [id]);
-
-  // const {
-  //   data: city,
-  //   loading,
-  //   error,
-  // } = useApiService<City>(() => ApiService.getData(`/city/${id}`));
 
   return (
     <Container disableGutters maxWidth="lg" sx={{ alignSelf: 'center' }}>
@@ -82,7 +77,7 @@ const CityDetail = () => {
             {loading ? (
               <CircularProgress color="secondary" size={200} />
             ) : error?.code === 'ERR_BAD_REQUEST' ? (
-              <CardNotFound message={`No city found with id "${id}".`} />
+              <CardNotFound message="The requested city does not exist." />
             ) : (
               <FailedRequest width="290px" />
             )}
@@ -105,7 +100,11 @@ const CityDetail = () => {
               />
             </Grid>
 
-            <CityAttributes {...city} />
+            <Grid item xs={12}>
+              <Divider sx={{ backgroundColor: 'white' }} />
+              <CityAttributes {...city} />
+              <Divider sx={{ backgroundColor: 'white' }} />
+            </Grid>
 
             <Grid item xs={12}>
               <TitleUnderlined pr={2} pl={1} display="inline-flex" mb={2}>

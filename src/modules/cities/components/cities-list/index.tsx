@@ -36,6 +36,7 @@ export const CitiesList = () => {
     );
   }, [searchParam, pageParam, sortParam]);
 
+  const skeletonCount = cities.length > 0 ? cities.length : 3;
   return (
     <>
       <Box
@@ -50,9 +51,9 @@ export const CitiesList = () => {
       >
         {/* loading && cities.length === 0 ? Si utilio esta condicion no se mostrara el estado cargando si ya tengo datos guardados*/}
         {loading ? (
-          Array.from(Array(cities.length > 0 ? cities.length : 3).keys()).map(
-            (i) => <CardCitySkeleton key={i} />
-          )
+          Array.from(Array(skeletonCount).keys()).map((i) => (
+            <CardCitySkeleton key={i} />
+          ))
         ) : error ? (
           <FailedRequest
             message="An error has occurred, try again later."

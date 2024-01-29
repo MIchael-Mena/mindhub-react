@@ -1,5 +1,5 @@
 import { Button, Container, Divider, Grid, Typography } from '@mui/material';
-import CitysCarousel from '../components/citys-carousel';
+import PopularCities from '../components/popular-cities';
 import Logo from '../../core/components/logo';
 import Hero from '../../shared/components/hero';
 import { Link as Anchor } from 'react-router-dom';
@@ -75,7 +75,7 @@ const Home = () => {
 
       <Divider variant="middle" />
 
-      <CitysCarousel />
+      <PopularCities />
     </Container>
   );
 };
