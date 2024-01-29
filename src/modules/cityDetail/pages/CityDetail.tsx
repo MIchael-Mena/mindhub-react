@@ -24,6 +24,7 @@ import { Itineraries } from '../components/itineraries';
 import TitleUnderlined from '../../shared/components/styled/TitleUnderlined';
 import { fetchCitySelectedById } from '../../../store/actions/city-selected';
 import { shallowEqual } from 'react-redux';
+import { ItineraryImg } from '../components/itinerary-img';
 
 const CityDetail = () => {
   const { id } = useParams();
@@ -87,7 +88,8 @@ const CityDetail = () => {
             <CityInfo {...city} />
 
             <Grid item xs={12} md={6}>
-              <img
+              <ItineraryImg cityName={city.name} images={city.images} />
+              {/*               <img
                 src={city.images[0]}
                 alt={city.name}
                 style={{
@@ -97,7 +99,7 @@ const CityDetail = () => {
                   border: '1px solid #ccc',
                   boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',
                 }}
-              />
+              /> */}
             </Grid>
 
             <Grid item xs={12}>
