@@ -1,7 +1,4 @@
 import { useParams } from 'react-router-dom';
-// import { useApiService } from '../hooks/useApiService';
-// import { ApiService } from '../services/api.service';
-// import { City } from '../models/City';
 import {
   Box,
   CircularProgress,
@@ -10,7 +7,6 @@ import {
   Fab,
   Grid,
   Paper,
-  Typography,
 } from '@mui/material';
 import { FailedRequest } from '../../shared/components/failed-request';
 import { useNavigate } from 'react-router-dom';
@@ -20,11 +16,10 @@ import { CityInfo } from '../components/city-info';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useEffect } from 'react';
 import { CardNotFound } from '../../shared/components/card-not-found/CardNotFound';
-import { Itineraries } from '../components/itineraries';
-import TitleUnderlined from '../../shared/components/styled/TitleUnderlined';
 import { fetchCitySelectedById } from '../../../store/actions/city-selected';
 import { shallowEqual } from 'react-redux';
 import { ItineraryImg } from '../components/itinerary-img';
+import { ItinerariesSection } from '../components/itineraries-section';
 
 const CityDetail = () => {
   const { id } = useParams();
@@ -85,21 +80,19 @@ const CityDetail = () => {
           </Box>
         ) : (
           <Grid container spacing={3}>
-            <CityInfo {...city} />
+            <Grid
+              item
+              xs={12}
+              md={6}
+              display={'flex'}
+              flexDirection={'column'}
+              justifyContent={'space-evenly'}
+            >
+              <CityInfo {...city} />
+            </Grid>
 
             <Grid item xs={12} md={6}>
               <ItineraryImg cityName={city.name} images={city.images} />
-              {/*               <img
-                src={city.images[0]}
-                alt={city.name}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                  borderRadius: 10,
-                  border: '1px solid #ccc',
-                  boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',
-                }}
-              /> */}
             </Grid>
 
             <Grid item xs={12}>
@@ -109,18 +102,7 @@ const CityDetail = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <TitleUnderlined pr={2} pl={1} display="inline-flex" mb={2}>
-                <Typography variant="h4" gutterBottom>
-                  Itineraries
-                </Typography>
-              </TitleUnderlined>
-              {city.itineraries! && city.itineraries.length > 0 ? (
-                <Itineraries itineraries={city.itineraries!} />
-              ) : (
-                <Box display="flex" justifyContent="center">
-                  <CardNotFound message="No itineraries found for this city." />
-                </Box>
-              )}
+              <ItinerariesSection itineraries={city.itineraries!} />
             </Grid>
           </Grid>
         )}

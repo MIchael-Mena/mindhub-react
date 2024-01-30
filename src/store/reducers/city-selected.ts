@@ -16,13 +16,10 @@ import { StatusResponse } from '../../models/StatusResponse';
 import { Itinerary } from '../../models/Itinerary';
 import { Like } from '../../models/Like';
 
-const cityState: StatusResponse<City, SerializedError> & {
-  hasBeenModified: boolean;
-} = {
+const cityState: StatusResponse<City, SerializedError> = {
   loading: true,
   error: null,
   data: {} as City,
-  hasBeenModified: false,
 };
 
 const cityReducer = createReducer(cityState, (builder) => {
@@ -33,7 +30,6 @@ const cityReducer = createReducer(cityState, (builder) => {
       // atributo likes de los itinerarios, pero no se hara por si se quiere usar en un futuro.
       state.data = action.payload;
       state.loading = false;
-      state.hasBeenModified = true;
     })
 
     .addCase(fetchCitySelectedById.pending, (state) => {
@@ -42,7 +38,6 @@ const cityReducer = createReducer(cityState, (builder) => {
     .addCase(fetchCitySelectedById.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
-      state.hasBeenModified = true;
     })
     .addCase(fetchCitySelectedById.rejected, (state, action) => {
       state.loading = false;

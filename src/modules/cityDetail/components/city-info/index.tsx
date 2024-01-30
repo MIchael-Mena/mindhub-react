@@ -1,18 +1,11 @@
 import { FlagCircleOutlined, PlaceTwoTone } from '@mui/icons-material';
-import { Box, Fab, Grid, Rating, Typography } from '@mui/material';
-import { CityBasic } from '../../../../models/CityBasic';
+import { Box, Fab, Rating, Typography } from '@mui/material';
 import TitleUnderlined from '../../../shared/components/styled/TitleUnderlined';
+import { City } from '../../../../models/City';
 
-export const CityInfo = (city: CityBasic) => {
+export const CityInfo = (city: City) => {
   return (
-    <Grid
-      item
-      xs={12}
-      md={6}
-      display={'flex'}
-      flexDirection={'column'}
-      justifyContent={'space-evenly'}
-    >
+    <>
       <Box
         display="inline-flex"
         justifyContent="space-between"
@@ -47,6 +40,6 @@ export const CityInfo = (city: CityBasic) => {
           readOnly
         />
       </Box>
-    </Grid>
+    </>
   );
 };
