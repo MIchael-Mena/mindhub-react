@@ -27,7 +27,6 @@ export default function UserAccesssModal() {
   const [showSignIn, setShowSignIn] = useState(true);
 
   const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
   const handleClose = (
     _event?: {},
     _reason?: 'backdropClick' | 'escapeKeyDown'
@@ -43,13 +42,6 @@ export default function UserAccesssModal() {
   const toggleComponent = () => {
     setShowSignIn(!showSignIn);
   };
-
-  // useEffect(() => {
-  //   if (open) {
-  //     // Si el modal está abierto, establece showSignIn en true cada vez que se renderiza UserAccesssModal.
-  //     setShowSignIn(true);
-  //   }
-  // }, [open]);
 
   return (
     <>

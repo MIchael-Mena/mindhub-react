@@ -34,12 +34,12 @@ export const CommentInputForm = ({
     dispatch(createComment(commentToPost)).then((e) => {
       if (e.meta.requestStatus === 'fulfilled') {
         textFieldRef.current!.value = '';
-      } else if (e.meta.requestStatus === 'rejected' && e.payload) {
+      } /* else if (e.meta.requestStatus === 'rejected' && e.payload) {
         const payload = e.payload as ApiResponse<undefined>;
         enqueueSnackbar(payload.message, {
           variant: 'error',
         });
-      }
+      } */
     });
   };
   return (

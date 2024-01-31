@@ -1,5 +1,7 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import { ApiResponse } from '../models/ApiResponse';
+import { setAuthError } from '../store/actions/user';
+import { Action } from '@reduxjs/toolkit';
 
 export class ApiService {
   private static baseUrl: string = 'http://localhost:5000/api';
@@ -14,6 +16,26 @@ export class ApiService {
       },
     };
   };
+  private static dispatch: (action: Action) => void;
+
+  static initialize(dispatch: (action: Action) => void) {
+    this.dispatch = dispatch;
+    this.instanceAxios.interceptors.response.use(
+      (response) => response,
+      (error: AxiosError) => {
+        if (error.response?.status === 401) {
+          this.dispatch(setAuthError(true));
+          const apiRes: ApiResponse<undefined> = {
+            success: false,
+            message: 'The session has expired, please log in again',
+            timestamp: new Date().toISOString(),
+          };
+          error.response.data = apiRes;
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
 
   constructor() {}
 

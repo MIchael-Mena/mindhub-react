@@ -1,17 +1,20 @@
 import UserIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { Button } from '@mui/material';
-import { logout } from '../../../../store/actions/user';
+import { logout, setAuthError } from '../../../../store/actions/user';
 import { ApiResponse } from '../../../../models/ApiResponse';
 import { enqueueSnackbar } from 'notistack';
 import { UserAvatar } from '../../../shared/components/user-avatar';
+import { useEffect } from 'react';
 
 interface ControlAuthProps {
   handleLoginOpen: () => void;
 }
 
 export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
-  const { isLogged, user } = useAppSelector((state) => state.userReducer);
+  const { isLogged, user, authError } = useAppSelector(
+    (state) => state.userReducer
+  );
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -24,6 +27,13 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
       }
     });
   };
+
+  useEffect(() => {
+    if (authError) {
+      handleLoginOpen();
+      dispatch(setAuthError(false));
+    }
+  }, [authError]);
 
   return (
     <>

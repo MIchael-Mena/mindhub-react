@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
 import Header from '../modules/core/components/header';
 import Footer from '../modules/core/components/footer';
-import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { useEffect } from 'react';
 import { authenticate } from '../store/actions/user';
-import { enqueueSnackbar } from 'notistack';
+import { ApiService } from '../services/api.service';
 
 const Layout = () => {
   const componentSizes = {
@@ -17,17 +17,13 @@ const Layout = () => {
   // const navigate = useNavigate();
 
   useEffect(() => {
+    // Me aseguro que el servicio de API este inicializado una sola vez y que puede despachar acciones si es necesario
+    ApiService.initialize(dispatch);
+
     // Si no tengo token, no hago nada
     if (localStorage.getItem('token') === null) return;
 
-    dispatch(authenticate()).then((res) => {
-      if (res.payload === 'Unauthorized') {
-        enqueueSnackbar('The session has expired, please log in again', {
-          variant: 'warning',
-        });
-        // navigate('/home');
-      }
-    });
+    dispatch(authenticate());
   }, []);
 
   return (

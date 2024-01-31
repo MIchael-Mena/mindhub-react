@@ -1,14 +1,17 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { LoginForm } from '../../models/LoginForm';
 import { ApiService } from '../../services/api.service';
 import { User } from '../../models/User';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '../../models/ApiResponse';
+import { enqueueSnackbar } from 'notistack';
 
 interface LikeResponse {
   totalLikes: number;
   itineraryId: string;
 }
+
+const setAuthError = createAction<boolean>('setAuthError');
 
 const authenticate = createAsyncThunk('authenticate', async () => {
   try {
@@ -18,13 +21,18 @@ const authenticate = createAsyncThunk('authenticate', async () => {
     return response;
   } catch (error) {
     const res = (error as AxiosError).response!;
+    const apiRes = res.data as ApiResponse<User>;
     // Si tengo un token invalido, el backend devuelve un error 401 en res.status y res.data sera 'Unauthorized'
     // TODO: Refactorizar el backend para que res.data devuelva un objeto del tipo ApiResponse
     localStorage.removeItem('token'); // Para cualquier error, se elimina el token
-    return {
+    enqueueSnackbar(apiRes.message, {
+      variant: 'error',
+    });
+    return apiRes;
+    /*     return {
       success: false,
       message: res.data ?? 'Unauthorized',
-    } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data)
+    } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data) */
   }
 });
 
@@ -136,6 +144,7 @@ const removeFavouriteItinerary = createAsyncThunk(
 );
 
 export {
+  setAuthError,
   authenticate,
   login,
   register,

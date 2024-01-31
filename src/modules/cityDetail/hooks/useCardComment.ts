@@ -53,7 +53,7 @@ export const useCardComment = ({
           variant: 'error',
         });
     });
-  }, [dispatch, text]);
+  }, [text]);
 
   const handleDelete = useCallback(() => {
     dispatch(deleteComment(_id!)).then((e) => {
@@ -64,7 +64,7 @@ export const useCardComment = ({
           variant: 'error',
         });
     });
-  }, [dispatch]);
+  }, []);
 
   const handleViewOptions = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {

@@ -10,6 +10,7 @@ import {
   CommentPaginationOptions,
   ItineraryExtraState,
 } from '../../models/ItineraryExtra';
+import { enqueueSnackbar } from 'notistack';
 
 interface CommentResponse extends PaginationData {
   comments: Comment[];
@@ -19,12 +20,16 @@ const maxCommentsPerPage = 4;
 
 const getErrorMessage = (err: any) => {
   const error: AxiosError<ApiResponse<undefined>> = err;
-  const apiRes = error.response
-    ? error.response.data
-    : ({
-        success: false,
-        message: 'An error has occurred while processing your request', // mensaje generico, cada accion podria tener su propio mensaje
-      } as ApiResponse<undefined>);
+  const apiRes =
+    error.response && error.response.data
+      ? error.response.data
+      : ({
+          success: false,
+          message: 'An error has occurred while processing your request', // mensaje generico, cada accion podria tener su propio mensaje
+        } as ApiResponse<undefined>);
+  enqueueSnackbar(apiRes.message, {
+    variant: 'error',
+  });
   return apiRes;
 };
 

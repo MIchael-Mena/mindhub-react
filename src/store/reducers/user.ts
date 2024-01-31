@@ -9,6 +9,7 @@ import {
   register,
   registerWithGoogle,
   removeFavouriteItinerary,
+  setAuthError,
 } from '../actions/user';
 import { ApiResponse } from '../../models/ApiResponse';
 import { Comment } from '../../models/Comment';
@@ -27,53 +28,68 @@ const defaultUser: User = {
   favouriteItineraries: [],
 };
 
-const initialState: { user: User; isLogged: boolean } = {
+interface UserState {
+  user: User;
+  isLogged: boolean;
+  authError: boolean;
+}
+
+const initialState: UserState = {
   isLogged: false,
   user: defaultUser,
+  authError: false,
 };
 
 const handleSuccessfullAction = (
-  state: {
-    user: User;
-    isLogged: boolean;
-  },
+  state: UserState,
   payload: ApiResponse<User>
 ) => {
   // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
-  if (payload.success) {
-    return {
-      isLogged: true,
-      user: payload.data ?? defaultUser,
-    };
-  }
-  return state;
+  return payload.success
+    ? { ...state, user: payload.data ?? defaultUser, isLogged: true }
+    : state;
 };
 
 const userReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(login.fulfilled, (_state, action) =>
-      handleSuccessfullAction(_state, action.payload)
+    .addCase(setAuthError, (state, action) => {
+      state.authError = action.payload;
+    })
+
+    .addCase(login.fulfilled, (state, action) =>
+      handleSuccessfullAction(state, action.payload)
     )
-    .addCase(register.fulfilled, (_state, action) =>
-      handleSuccessfullAction(_state, action.payload)
+    .addCase(register.fulfilled, (state, action) =>
+      handleSuccessfullAction(state, action.payload)
     )
 
-    .addCase(authenticate.fulfilled, (_state, action) =>
-      handleSuccessfullAction(_state, action.payload)
+    .addCase(authenticate.fulfilled, (state, action) =>
+      handleSuccessfullAction(state, action.payload)
     )
+
+    // Revisar, nunca se va a cumplir este caso 'rejected' porque el interceptor de axios
+    // ya maneja el error de autenticacion
     .addCase(authenticate.rejected, (_state, _action) => initialState)
 
     .addCase(logout.fulfilled, (_state, _action) => initialState)
 
-    .addCase(registerWithGoogle.fulfilled, (_state, action) =>
-      handleSuccessfullAction(_state, action.payload)
+    .addCase(registerWithGoogle.fulfilled, (state, action) =>
+      handleSuccessfullAction(state, action.payload)
     )
-    .addCase(loginWithGoogle.fulfilled, (_state, action) =>
-      handleSuccessfullAction(_state, action.payload)
+    .addCase(loginWithGoogle.fulfilled, (state, action) =>
+      handleSuccessfullAction(state, action.payload)
     )
 
     .addCase(addFavouriteItinerary.fulfilled, (state, action) => {
+      // version con immer
       if (action.payload.success) {
+        state.user.favouriteItineraries!.push(
+          action.payload.data?.itineraryId!
+        );
+      }
+
+      // version sin immer
+      /*       if (action.payload.success) {
         return {
           ...state,
           user: {
@@ -85,11 +101,17 @@ const userReducer = createReducer(initialState, (builder) => {
           },
         };
       }
-      return state;
+      return state; */
     })
 
     .addCase(removeFavouriteItinerary.fulfilled, (state, action) => {
       if (action.payload.success) {
+        state.user.favouriteItineraries =
+          state.user.favouriteItineraries?.filter(
+            (id) => id !== action.payload.data?.itineraryId
+          );
+      }
+      /*       if (action.payload.success) {
         return {
           ...state,
           user: {
@@ -100,7 +122,7 @@ const userReducer = createReducer(initialState, (builder) => {
           },
         };
       }
-      return state;
+      return state; */
     });
 });
 
