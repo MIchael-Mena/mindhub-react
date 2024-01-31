@@ -12,6 +12,7 @@ interface ControlAuthProps {
 }
 
 export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
+  console.log('ControlAuth');
   const { isLogged, user, authError } = useAppSelector(
     (state) => state.userReducer
   );
@@ -30,8 +31,9 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
 
   useEffect(() => {
     if (authError) {
+      dispatch(logout());
       handleLoginOpen();
-      dispatch(setAuthError(false));
+      // dispatch(setAuthError(false));
     }
   }, [authError]);
 

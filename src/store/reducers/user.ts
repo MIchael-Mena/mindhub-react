@@ -63,13 +63,18 @@ const userReducer = createReducer(initialState, (builder) => {
       handleSuccessfullAction(state, action.payload)
     )
 
-    .addCase(authenticate.fulfilled, (state, action) =>
-      handleSuccessfullAction(state, action.payload)
+    .addCase(
+      authenticate.fulfilled,
+      (state, action) =>
+        action.payload.success
+          ? {
+              ...state,
+              user: action.payload.data ?? defaultUser,
+              isLogged: true,
+            }
+          : initialState
+      // handleSuccessfullAction(state, action.payload)
     )
-
-    // Revisar, nunca se va a cumplir este caso 'rejected' porque el interceptor de axios
-    // ya maneja el error de autenticacion
-    .addCase(authenticate.rejected, (_state, _action) => initialState)
 
     .addCase(logout.fulfilled, (_state, _action) => initialState)
 

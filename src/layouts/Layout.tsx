@@ -14,7 +14,6 @@ const Layout = () => {
     footer: '70px',
   };
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
 
   useEffect(() => {
     // Me aseguro que el servicio de API este inicializado una sola vez y que puede despachar acciones si es necesario

@@ -14,6 +14,8 @@ interface LikeResponse {
 const setAuthError = createAction<boolean>('setAuthError');
 
 const authenticate = createAsyncThunk('authenticate', async () => {
+  if (localStorage.getItem('token') === null)
+    return { success: false, message: 'Unauthorized' } as ApiResponse<User>; // Evita que se haga la peticion si no hay token
   try {
     const response = await ApiService.postData<User>('/user/authenticate');
     localStorage.setItem('token', response.token!);
