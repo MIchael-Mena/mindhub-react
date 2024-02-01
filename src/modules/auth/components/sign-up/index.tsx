@@ -175,11 +175,7 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
             mt={2}
           >
             <ButtonForm
-              onSubmit={(form: User) =>
-                dispatch(register(form)).then(
-                  (res) => res.payload as ApiResponse<User>
-                )
-              }
+              onSubmit={(form: User) => dispatch(register(form)).unwrap()}
               payloadOfSubmit={payloadOfSubmit}
               onClose={onClose}
               buttonText="Sign up"
@@ -189,7 +185,7 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
               onClose={onClose}
               buttonText="Sign up with Google"
               dispatchGoogle={(googleCode: string) =>
-                dispatch(registerWithGoogle({ code: googleCode })).then(
+                dispatch(registerWithGoogle(googleCode)).then(
                   (res) => res.payload as ApiResponse<User>
                 )
               }

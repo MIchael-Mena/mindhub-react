@@ -46,7 +46,7 @@ const handleSuccessfullAction = (
 ) => {
   // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
   return payload.success
-    ? { ...state, user: payload.data ?? defaultUser, isLogged: true }
+    ? { authError: false, user: payload.data ?? defaultUser, isLogged: true }
     : state;
 };
 
@@ -63,7 +63,7 @@ const userReducer = createReducer(initialState, (builder) => {
       handleSuccessfullAction(state, action.payload)
     )
 
-    .addCase(
+    /*     .addCase(
       authenticate.fulfilled,
       (state, action) =>
         action.payload.success
@@ -73,10 +73,17 @@ const userReducer = createReducer(initialState, (builder) => {
               isLogged: true,
             }
           : initialState
-      // handleSuccessfullAction(state, action.payload)
-    )
+    ) */
+    .addCase(authenticate.fulfilled, (_state, action) => {
+      return {
+        authError: false,
+        user: action.payload.data ?? defaultUser,
+        isLogged: true,
+      };
+    })
+    .addCase(authenticate.rejected, (_state, _action) => initialState)
 
-    .addCase(logout.fulfilled, (_state, _action) => initialState)
+    .addCase(logout, (_state, _action) => initialState)
 
     .addCase(registerWithGoogle.fulfilled, (state, action) =>
       handleSuccessfullAction(state, action.payload)

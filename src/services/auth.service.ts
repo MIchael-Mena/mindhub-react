@@ -1,15 +1,11 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
 import { User } from '../models/User';
 import { ApiResponse } from '../models/ApiResponse';
+import { ApiService } from './api.service';
 
-export class AuthService {
-  private static baseUrl: string = 'http://localhost:5000/api';
-  private static instanceAxios: AxiosInstance = axios.create({
-    baseURL: this.baseUrl,
-    timeout: 2000,
-  });
-
-  constructor() {}
+export class AuthService extends ApiService {
+  constructor() {
+    super();
+  }
 
   public static async login(
     email: string,
@@ -17,7 +13,7 @@ export class AuthService {
   ): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/auth/login',
+        '/user/login',
         {
           email,
           password,
@@ -26,19 +22,67 @@ export class AuthService {
       localStorage.setItem('token', response.data.token!);
       return response.data;
     } catch (error) {
-      return (error as AxiosError).response!.data as ApiResponse<User>;
+      // return (error as AxiosError).response!.data as ApiResponse<User>;
+      throw error;
     }
   }
 
   public static async register(user: User): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/auth/register',
+        '/user/register',
         user
       );
       return response.data;
     } catch (error) {
-      return (error as AxiosError).response!.data as ApiResponse<User>;
+      throw error;
+    }
+  }
+
+  public static async loginWithGoogle(
+    code: string
+  ): Promise<ApiResponse<User>> {
+    try {
+      const response = await this.instanceAxios.post<ApiResponse<User>>(
+        '/user/login-google',
+        { code }
+      );
+      localStorage.setItem('token', response.data.token!);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public static async registerWithGoogle(
+    code: string
+  ): Promise<ApiResponse<User>> {
+    try {
+      const response = await this.instanceAxios.post<ApiResponse<User>>(
+        '/user/register-google',
+        { code }
+      );
+      localStorage.setItem('token', response.data.token!);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public static logout() {
+    localStorage.removeItem('token');
+  }
+
+  public static async authenticate(): Promise<ApiResponse<User>> {
+    try {
+      const response = await this.instanceAxios.post<ApiResponse<User>>(
+        '/user/authenticate'
+      );
+      localStorage.setItem('token', response.data.token!);
+      return response.data;
+    } catch (error) {
+      localStorage.removeItem('token');
+      throw error;
     }
   }
 }

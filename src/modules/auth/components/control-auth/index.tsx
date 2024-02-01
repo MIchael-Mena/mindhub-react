@@ -1,8 +1,7 @@
 import UserIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { Button } from '@mui/material';
-import { logout, setAuthError } from '../../../../store/actions/user';
-import { ApiResponse } from '../../../../models/ApiResponse';
+import { logout } from '../../../../store/actions/user';
 import { enqueueSnackbar } from 'notistack';
 import { UserAvatar } from '../../../shared/components/user-avatar';
 import { useEffect } from 'react';
@@ -12,20 +11,15 @@ interface ControlAuthProps {
 }
 
 export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
-  console.log('ControlAuth');
   const { isLogged, user, authError } = useAppSelector(
     (state) => state.userReducer
   );
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    dispatch(logout()).then((res) => {
-      let resPayload = res.payload as ApiResponse<string>;
-      if (resPayload.success) {
-        enqueueSnackbar(resPayload.message, {
-          variant: 'success',
-        });
-      }
+    dispatch(logout());
+    enqueueSnackbar('You have been logged out', {
+      variant: 'success',
     });
   };
 
@@ -33,7 +27,6 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
     if (authError) {
       dispatch(logout());
       handleLoginOpen();
-      // dispatch(setAuthError(false));
     }
   }, [authError]);
 

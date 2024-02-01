@@ -4,7 +4,7 @@ import { ApiService } from '../../services/api.service';
 import { User } from '../../models/User';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '../../models/ApiResponse';
-import { enqueueSnackbar } from 'notistack';
+import { AuthService } from '../../services/auth.service';
 
 interface LikeResponse {
   totalLikes: number;
@@ -13,7 +13,7 @@ interface LikeResponse {
 
 const setAuthError = createAction<boolean>('setAuthError');
 
-const authenticate = createAsyncThunk('authenticate', async () => {
+/* const authenticate = createAsyncThunk('authenticate', async () => {
   if (localStorage.getItem('token') === null)
     return { success: false, message: 'Unauthorized' } as ApiResponse<User>; // Evita que se haga la peticion si no hay token
   try {
@@ -24,21 +24,44 @@ const authenticate = createAsyncThunk('authenticate', async () => {
   } catch (error) {
     const res = (error as AxiosError).response!;
     const apiRes = res.data as ApiResponse<User>;
-    // Si tengo un token invalido, el backend devuelve un error 401 en res.status y res.data sera 'Unauthorized'
-    // TODO: Refactorizar el backend para que res.data devuelva un objeto del tipo ApiResponse
-    localStorage.removeItem('token'); // Para cualquier error, se elimina el token
+    localStorage.removeItem('token'); 
     enqueueSnackbar(apiRes.message, {
       variant: 'error',
     });
     return apiRes;
-    /*     return {
-      success: false,
-      message: res.data ?? 'Unauthorized',
-    } as ApiResponse<User>; // Se devuelve un objeto del tipo ApiResponse (no tendra data) */
+  }
+}); */
+
+const authenticate = createAsyncThunk<
+  ApiResponse<User>,
+  void,
+  { rejectValue: ApiResponse<User> }
+>('authenticate', async (_, { rejectWithValue }) => {
+  try {
+    const response = await AuthService.authenticate();
+    return response;
+  } catch (err: any) {
+    const error: AxiosError<ApiResponse<User>> = err;
+    return rejectWithValue(error.response?.data!);
   }
 });
 
-const login = createAsyncThunk('login', async (payload: LoginForm) => {
+const login = createAsyncThunk<
+  ApiResponse<User>,
+  LoginForm,
+  { rejectValue: ApiResponse<User> }
+>('login', async (payload: LoginForm, { rejectWithValue }) => {
+  try {
+    const response = await AuthService.login(payload.email, payload.password);
+    return response;
+  } catch (error) {
+    return rejectWithValue(
+      (error as AxiosError).response?.data as ApiResponse<User>
+    );
+  }
+});
+
+/* const login = createAsyncThunk('login', async (payload: LoginForm) => {
   try {
     const response = await ApiService.postData<User>('/user/login', payload);
 
@@ -54,37 +77,38 @@ const login = createAsyncThunk('login', async (payload: LoginForm) => {
     // return 'rejected';
     return (error as AxiosError).response?.data as ApiResponse<User>;
   }
-});
+}); */
 
-const register = createAsyncThunk('register', async (payload: User) => {
+/* const register = createAsyncThunk('register', async (payload: User) => {
   try {
     const response = await ApiService.postData<User>('/user/register', payload);
     return response;
   } catch (error) {
     return (error as AxiosError).response?.data as ApiResponse<User>;
   }
-});
+}); */
 
-const logout = createAsyncThunk('logout', async () => {
-  const errorResponse = {
-    success: false,
-    message: 'Could not logout',
-  } as ApiResponse<User>;
+const register = createAsyncThunk<
+  ApiResponse<User>,
+  User,
+  { rejectValue: ApiResponse<User> }
+>('register', async (user: User, { rejectWithValue }) => {
   try {
-    // const token = localStorage.getItem('token');
-    // if (!token) return Promise.resolve(errorResponse);
-
-    const response = await ApiService.postData<User>('/user/logout');
+    const response = await AuthService.register(user);
     return response;
   } catch (error) {
-    return errorResponse;
-  } finally {
-    // Se ejecuta siempre, tanto si hay error como si no
-    localStorage.removeItem('token');
+    return rejectWithValue(
+      (error as AxiosError).response?.data as ApiResponse<User>
+    );
   }
 });
 
-const registerWithGoogle = createAsyncThunk(
+const logout = createAction('logout', () => {
+  AuthService.logout();
+  return { payload: null };
+});
+
+/* const registerWithGoogle = createAsyncThunk(
   'registerFromGoogle',
   async (payload: { code: string }) => {
     try {
@@ -99,9 +123,39 @@ const registerWithGoogle = createAsyncThunk(
       // response.data es de Axios
     }
   }
-);
+); */
 
-const loginWithGoogle = createAsyncThunk(
+const registerWithGoogle = createAsyncThunk<
+  ApiResponse<User>,
+  string,
+  { rejectValue: ApiResponse<User> }
+>('registerFromGoogle', async (code: string, { rejectWithValue }) => {
+  try {
+    const response = await AuthService.registerWithGoogle(code);
+    return response;
+  } catch (error) {
+    return rejectWithValue(
+      (error as AxiosError).response?.data as ApiResponse<User>
+    );
+  }
+});
+
+const loginWithGoogle = createAsyncThunk<
+  ApiResponse<User>,
+  string,
+  { rejectValue: ApiResponse<User> }
+>('signInWithGoogle', async (code: string, { rejectWithValue }) => {
+  try {
+    const response = await AuthService.loginWithGoogle(code);
+    return response;
+  } catch (error) {
+    return rejectWithValue(
+      (error as AxiosError).response?.data as ApiResponse<User>
+    );
+  }
+});
+
+/* const loginWithGoogle = createAsyncThunk(
   'signInWithGoogle',
   async (payload: { code: string }) => {
     try {
@@ -115,7 +169,7 @@ const loginWithGoogle = createAsyncThunk(
       return (error as AxiosError).response?.data as ApiResponse<User>;
     }
   }
-);
+); */
 
 const addFavouriteItinerary = createAsyncThunk(
   'addFavouriteItinerary',

@@ -3,7 +3,6 @@ import { enqueueSnackbar } from 'notistack';
 import { useRef } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { createComment } from '../../../../store/actions/itinerary-extra';
-import { ApiResponse } from '../../../../models/ApiResponse';
 
 export const CommentInputForm = ({
   itineraryId,
@@ -31,16 +30,21 @@ export const CommentInputForm = ({
       _reference: itineraryId,
       _user: userId!,
     };
-    dispatch(createComment(commentToPost)).then((e) => {
+    dispatch(createComment(commentToPost))
+      .unwrap()
+      .then(() => {
+        textFieldRef.current!.value = '';
+      });
+    /*     dispatch(createComment(commentToPost)).then((e) => {
       if (e.meta.requestStatus === 'fulfilled') {
         textFieldRef.current!.value = '';
-      } /* else if (e.meta.requestStatus === 'rejected' && e.payload) {
+      } else if (e.meta.requestStatus === 'rejected' && e.payload) {
         const payload = e.payload as ApiResponse<undefined>;
         enqueueSnackbar(payload.message, {
           variant: 'error',
         });
-      } */
-    });
+      }
+    }); */
   };
   return (
     <>

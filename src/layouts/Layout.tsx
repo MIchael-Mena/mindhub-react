@@ -6,6 +6,8 @@ import { useAppDispatch } from '../store/hooks';
 import { useEffect } from 'react';
 import { authenticate } from '../store/actions/user';
 import { ApiService } from '../services/api.service';
+import { ApiResponse } from '../models/ApiResponse';
+import { enqueueSnackbar } from 'notistack';
 
 const Layout = () => {
   const componentSizes = {
@@ -21,8 +23,13 @@ const Layout = () => {
 
     // Si no tengo token, no hago nada
     if (localStorage.getItem('token') === null) return;
-
-    dispatch(authenticate());
+    dispatch(authenticate())
+      .unwrap()
+      .catch((res: ApiResponse<void>) => {
+        enqueueSnackbar(res.message, {
+          variant: 'error',
+        });
+      });
   }, []);
 
   return (

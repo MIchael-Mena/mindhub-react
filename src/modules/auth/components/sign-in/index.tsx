@@ -7,8 +7,6 @@ import { rules } from '../../../../models/rulesValidation';
 import { login, loginWithGoogle } from '../../../../store/actions/user';
 import { useAppDispatch } from '../../../../store/hooks';
 import { LoginForm } from '../../../../models/LoginForm';
-import { ApiResponse } from '../../../../models/ApiResponse';
-import { User } from '../../../../models/User';
 import { ButtonForm } from '../button-form';
 import { useState } from 'react';
 import { ButtonGoogle } from '../button-google';
@@ -73,11 +71,7 @@ export const SignIn = ({ onSignUpClick, onClose }: SignInProps) => {
 
         <Grid item xs={12} display="flex" flexDirection="column" gap={2} mt={2}>
           <ButtonForm
-            onSubmit={(form: LoginForm) =>
-              dispatch(login(form)).then(
-                (res) => res.payload as ApiResponse<User> // res es el resultado de la promesa de axios
-              )
-            }
+            onSubmit={(form: LoginForm) => dispatch(login(form)).unwrap()}
             payloadOfSubmit={payloadOfSubmit}
             onClose={onClose}
             buttonText="Sign in"
@@ -86,9 +80,7 @@ export const SignIn = ({ onSignUpClick, onClose }: SignInProps) => {
           <ButtonGoogle
             onClose={onClose}
             dispatchGoogle={(googleCode: string) =>
-              dispatch(loginWithGoogle({ code: googleCode })).then(
-                (res) => res.payload as ApiResponse<User>
-              )
+              dispatch(loginWithGoogle(googleCode)).then((res) => res.payload!)
             }
             buttonText="Sign in with Google"
           />
