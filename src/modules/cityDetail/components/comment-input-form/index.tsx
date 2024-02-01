@@ -3,6 +3,7 @@ import { enqueueSnackbar } from 'notistack';
 import { useRef } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { createComment } from '../../../../store/actions/itinerary-extra';
+import { ApiResponse } from '../../../../models/ApiResponse';
 
 export const CommentInputForm = ({
   itineraryId,
@@ -34,7 +35,13 @@ export const CommentInputForm = ({
       .unwrap()
       .then(() => {
         textFieldRef.current!.value = '';
+      })
+      .catch((res: ApiResponse<void>) => {
+        enqueueSnackbar(res.message, {
+          variant: 'error',
+        });
       });
+
     /*     dispatch(createComment(commentToPost)).then((e) => {
       if (e.meta.requestStatus === 'fulfilled') {
         textFieldRef.current!.value = '';

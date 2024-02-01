@@ -10,7 +10,7 @@ import {
   CommentPaginationOptions,
   ItineraryExtraState,
 } from '../../models/ItineraryExtra';
-import { enqueueSnackbar } from 'notistack';
+// import { enqueueSnackbar } from 'notistack';
 
 interface CommentResponse extends PaginationData {
   comments: Comment[];
@@ -19,24 +19,24 @@ interface CommentResponse extends PaginationData {
 const maxCommentsPerPage = 4;
 
 const getErrorMessage = (err: any) => {
-  const error: AxiosError<ApiResponse<undefined>> = err;
+  const error: AxiosError<ApiResponse<void>> = err;
   const apiRes =
     error.response && error.response.data
       ? error.response.data
       : ({
           success: false,
           message: 'An error has occurred while processing your request', // mensaje generico, cada accion podria tener su propio mensaje
-        } as ApiResponse<undefined>);
-  enqueueSnackbar(apiRes.message, {
+        } as ApiResponse<void>);
+  /*   enqueueSnackbar(apiRes.message, {
     variant: 'error',
-  });
+  }); */
   return apiRes;
 };
 
 const updateComment = createAsyncThunk<
   Comment,
   { _id: string; text: string },
-  { rejectValue: ApiResponse<undefined> }
+  { rejectValue: ApiResponse<void> }
 >(
   'updateComment',
   async (comment: { _id: string; text: string }, { rejectWithValue }) => {
@@ -55,7 +55,7 @@ const updateComment = createAsyncThunk<
 const deleteComment = createAsyncThunk<
   { commentId: string },
   string,
-  { rejectValue: ApiResponse<undefined> }
+  { rejectValue: ApiResponse<void> }
 >('deleteComment', async (commentId: string, { rejectWithValue }) => {
   try {
     // no me interesa lo que devuelve el backend, solo el id del comentario eliminado
@@ -70,7 +70,7 @@ const deleteComment = createAsyncThunk<
 const createComment = createAsyncThunk<
   Comment,
   CommentToCreate,
-  { rejectValue: ApiResponse<undefined> }
+  { rejectValue: ApiResponse<void> }
 >('createComment', async (comment: CommentToCreate, { rejectWithValue }) => {
   try {
     const response = await ApiService.postData<Comment>(
@@ -86,7 +86,7 @@ const createComment = createAsyncThunk<
 const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
   ItineraryExtraState,
   string,
-  { rejectValue: ApiResponse<undefined> }
+  { rejectValue: ApiResponse<void> }
 >(
   'fetchCommentsAndActivitiesByItineraryId',
   async (itineraryId: string, { getState, rejectWithValue }) => {
@@ -141,7 +141,7 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
 const fetchComments = createAsyncThunk<
   { comments: Comment[] } & CommentPaginationOptions & PaginationData,
   CommentPaginationOptions,
-  { rejectValue: ApiResponse<undefined> }
+  { rejectValue: ApiResponse<void> }
 >(
   'fetchMoreComments',
   async (

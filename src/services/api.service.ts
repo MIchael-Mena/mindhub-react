@@ -36,16 +36,12 @@ export class ApiService {
         return Promise.reject(error);
       }
     );
-  }
-
-  constructor() {
+    // TODO: se probo el interceptor en el constructor y no funciono, el token no se agregaba a las peticiones
     // Interceptor de solicitud para agregar el token
-    ApiService.instanceAxios.interceptors.request.use(
+    this.instanceAxios.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem('token');
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
+        if (token) config.headers.Authorization = `Bearer ${token}`;
         return config;
       },
       (error) => {
@@ -53,6 +49,8 @@ export class ApiService {
       }
     );
   }
+
+  constructor() {}
 
   static async getData<T>(
     endPoint: string,

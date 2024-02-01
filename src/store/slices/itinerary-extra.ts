@@ -13,7 +13,7 @@ import { ApiResponse } from '../../models/ApiResponse';
 import { ItineraryExtraState } from '../../models/ItineraryExtra';
 
 const resetState = (
-  state: StatusResponse<ItineraryExtraState, ApiResponse<undefined> | undefined>
+  state: StatusResponse<ItineraryExtraState, ApiResponse<void> | undefined>
 ) => {
   state.data = {
     commentParams: {
@@ -32,7 +32,7 @@ const resetState = (
 
 const itineraryExtraState: StatusResponse<
   ItineraryExtraState,
-  ApiResponse<undefined> | undefined
+  ApiResponse<void> | undefined
 > = {
   loading: false,
   error: null,
