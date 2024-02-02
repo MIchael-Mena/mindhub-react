@@ -1,8 +1,8 @@
 import { ApiResponse } from '../../../../models/ApiResponse';
 import { User } from '../../../../models/User';
-import { enqueueSnackbar } from 'notistack';
 import { Button, CircularProgress } from '@mui/material';
 import { useApiService } from '../../../../hooks/useApiService';
+import { handleSnackbar } from '../../../../utils/apiUtils';
 
 interface ButtonFormProps<T> {
   onSubmit: (form: T) => Promise<ApiResponse<User>>;
@@ -25,16 +25,6 @@ export const ButtonForm = <T extends Object>({
     [payload],
     true
   );
-
-  const handleSnackbar = (
-    message: string | string[],
-    variant: 'success' | 'error'
-  ) => {
-    enqueueSnackbar(Array.isArray(message) ? message.join('.\n') : message, {
-      variant,
-    });
-    // anchorOrigin: { vertical: 'top', horizontal: 'center' }, Esta puesto en el config de forma global
-  };
 
   const handleActionDispatch = async () => {
     await onSubmit(payload!.form)

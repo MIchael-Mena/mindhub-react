@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { authenticate } from '../store/actions/user';
 import { ApiService } from '../services/api.service';
 import { ApiResponse } from '../models/ApiResponse';
-import { enqueueSnackbar } from 'notistack';
+import { handleSnackbar } from '../utils/apiUtils';
 
 const Layout = () => {
   const componentSizes = {
@@ -18,7 +18,7 @@ const Layout = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // Me aseguro que el servicio de API este inicializado una sola vez y que puede despachar acciones si es necesario
+    // Me aseguro que el servicio de API este inicializado una sola vez
     ApiService.initialize(dispatch);
 
     // Si no tengo token, no hago nada
@@ -26,9 +26,7 @@ const Layout = () => {
     dispatch(authenticate())
       .unwrap()
       .catch((res: ApiResponse<void>) => {
-        enqueueSnackbar(res.message, {
-          variant: 'error',
-        });
+        handleSnackbar(res.message, 'error');
       });
   }, []);
 

@@ -40,14 +40,15 @@ const initialState: UserState = {
   authError: false,
 };
 
-const handleSuccessfullAction = (
-  state: UserState,
+const handleAuthenticationSuccess = (
+  _state: UserState,
   payload: ApiResponse<User>
 ) => {
-  // Si el estado no cambio, devuelvo el estado anterior para evitar re-render
-  return payload.success
-    ? { authError: false, user: payload.data ?? defaultUser, isLogged: true }
-    : state;
+  return {
+    authError: false,
+    user: payload.data ?? defaultUser,
+    isLogged: true,
+  };
 };
 
 const userReducer = createReducer(initialState, (builder) => {
@@ -57,84 +58,47 @@ const userReducer = createReducer(initialState, (builder) => {
     })
 
     .addCase(login.fulfilled, (state, action) =>
-      handleSuccessfullAction(state, action.payload)
+      handleAuthenticationSuccess(state, action.payload)
     )
     .addCase(register.fulfilled, (state, action) =>
-      handleSuccessfullAction(state, action.payload)
+      handleAuthenticationSuccess(state, action.payload)
     )
 
-    /*     .addCase(
-      authenticate.fulfilled,
-      (state, action) =>
-        action.payload.success
-          ? {
-              ...state,
-              user: action.payload.data ?? defaultUser,
-              isLogged: true,
-            }
-          : initialState
-    ) */
-    .addCase(authenticate.fulfilled, (_state, action) => {
-      return {
-        authError: false,
-        user: action.payload.data ?? defaultUser,
-        isLogged: true,
-      };
-    })
+    .addCase(authenticate.fulfilled, (state, action) =>
+      handleAuthenticationSuccess(state, action.payload)
+    )
     .addCase(authenticate.rejected, (_state, _action) => initialState)
 
     .addCase(logout, (_state, _action) => initialState)
 
     .addCase(registerWithGoogle.fulfilled, (state, action) =>
-      handleSuccessfullAction(state, action.payload)
+      handleAuthenticationSuccess(state, action.payload)
     )
     .addCase(loginWithGoogle.fulfilled, (state, action) =>
-      handleSuccessfullAction(state, action.payload)
+      handleAuthenticationSuccess(state, action.payload)
     )
 
     .addCase(addFavouriteItinerary.fulfilled, (state, action) => {
       // version con immer
-      if (action.payload.success) {
-        state.user.favouriteItineraries!.push(
-          action.payload.data?.itineraryId!
-        );
-      }
+      state.user.favouriteItineraries!.push(action.payload.data?.itineraryId!);
 
       // version sin immer
-      /*       if (action.payload.success) {
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            favouriteItineraries: [
-              ...state.user.favouriteItineraries!,
-              action.payload.data?.itineraryId!,
-            ],
-          },
-        };
-      }
-      return state; */
+      /*       return {
+        ...state,
+        user: {
+          ...state.user,
+          favouriteItineraries: [
+            ...state.user.favouriteItineraries!,
+            action.payload.data?.itineraryId!,
+          ],
+        },
+      }; */
     })
 
     .addCase(removeFavouriteItinerary.fulfilled, (state, action) => {
-      if (action.payload.success) {
-        state.user.favouriteItineraries =
-          state.user.favouriteItineraries?.filter(
-            (id) => id !== action.payload.data?.itineraryId
-          );
-      }
-      /*       if (action.payload.success) {
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            favouriteItineraries: state.user.favouriteItineraries?.filter(
-              (id) => id !== action.payload.data?.itineraryId
-            ),
-          },
-        };
-      }
-      return state; */
+      state.user.favouriteItineraries = state.user.favouriteItineraries?.filter(
+        (id) => id !== action.payload.data?.itineraryId
+      );
     });
 });
 

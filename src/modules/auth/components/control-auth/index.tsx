@@ -2,9 +2,9 @@ import UserIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { Button } from '@mui/material';
 import { logout } from '../../../../store/actions/user';
-import { enqueueSnackbar } from 'notistack';
 import { UserAvatar } from '../../../shared/components/user-avatar';
 import { useEffect } from 'react';
+import { handleSnackbar } from '../../../../utils/apiUtils';
 
 interface ControlAuthProps {
   handleLoginOpen: () => void;
@@ -18,9 +18,7 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    enqueueSnackbar('You have been logged out', {
-      variant: 'success',
-    });
+    handleSnackbar('You have been logged out', 'success');
   };
 
   useEffect(() => {

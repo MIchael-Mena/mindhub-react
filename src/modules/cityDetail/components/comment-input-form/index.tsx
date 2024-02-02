@@ -1,9 +1,9 @@
 import { Box, Button, ListItem, TextField, Tooltip } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import { useRef } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { createComment } from '../../../../store/actions/itinerary-extra';
 import { ApiResponse } from '../../../../models/ApiResponse';
+import { handleSnackbar } from '../../../../utils/apiUtils';
 
 export const CommentInputForm = ({
   itineraryId,
@@ -20,9 +20,7 @@ export const CommentInputForm = ({
 
   const handleCommentPost = () => {
     if (textFieldRef.current && !textFieldRef.current.value) {
-      enqueueSnackbar('Comment can not be empty', {
-        variant: 'warning',
-      });
+      handleSnackbar('Comment can not be empty', 'warning');
       return;
     }
     const commentToPost = {
@@ -37,21 +35,8 @@ export const CommentInputForm = ({
         textFieldRef.current!.value = '';
       })
       .catch((res: ApiResponse<void>) => {
-        enqueueSnackbar(res.message, {
-          variant: 'error',
-        });
+        handleSnackbar(res.message, 'error');
       });
-
-    /*     dispatch(createComment(commentToPost)).then((e) => {
-      if (e.meta.requestStatus === 'fulfilled') {
-        textFieldRef.current!.value = '';
-      } else if (e.meta.requestStatus === 'rejected' && e.payload) {
-        const payload = e.payload as ApiResponse<undefined>;
-        enqueueSnackbar(payload.message, {
-          variant: 'error',
-        });
-      }
-    }); */
   };
   return (
     <>

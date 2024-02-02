@@ -2,9 +2,9 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { LoginForm } from '../../models/LoginForm';
 import { ApiService } from '../../services/api.service';
 import { User } from '../../models/User';
-import { AxiosError } from 'axios';
 import { ApiResponse } from '../../models/ApiResponse';
 import { AuthService } from '../../services/auth.service';
+import { getApiError } from '../../utils/apiUtils';
 
 interface LikeResponse {
   totalLikes: number;
@@ -12,25 +12,6 @@ interface LikeResponse {
 }
 
 const setAuthError = createAction<boolean>('setAuthError');
-
-/* const authenticate = createAsyncThunk('authenticate', async () => {
-  if (localStorage.getItem('token') === null)
-    return { success: false, message: 'Unauthorized' } as ApiResponse<User>; // Evita que se haga la peticion si no hay token
-  try {
-    const response = await ApiService.postData<User>('/user/authenticate');
-    localStorage.setItem('token', response.token!);
-
-    return response;
-  } catch (error) {
-    const res = (error as AxiosError).response!;
-    const apiRes = res.data as ApiResponse<User>;
-    localStorage.removeItem('token'); 
-    enqueueSnackbar(apiRes.message, {
-      variant: 'error',
-    });
-    return apiRes;
-  }
-}); */
 
 const authenticate = createAsyncThunk<
   ApiResponse<User>,
@@ -41,8 +22,7 @@ const authenticate = createAsyncThunk<
     const response = await AuthService.authenticate();
     return response;
   } catch (err: any) {
-    const error: AxiosError<ApiResponse<User>> = err;
-    return rejectWithValue(error.response?.data!);
+    return rejectWithValue(<ApiResponse<User>>getApiError(err));
   }
 });
 
@@ -51,42 +31,21 @@ const login = createAsyncThunk<
   LoginForm,
   { rejectValue: ApiResponse<User> }
 >('login', async (payload: LoginForm, { rejectWithValue }) => {
+  // 'rejectWithValue' es una funcion que se pasa como tercer argumento a createAsyncThunk
+  // y se usa para devolver un valor personalizado en el estado de la promesa si la promesa es rechazada
   try {
     const response = await AuthService.login(payload.email, payload.password);
     return response;
   } catch (error) {
-    return rejectWithValue(
-      (error as AxiosError).response?.data as ApiResponse<User>
-    );
+    // Si se devuelve (return) un  objeto en el catch, el estado de la promesa pasa a ser
+    // 'fulfilled' (aun dentro del catch) y se puede obtener en el reducer con action.payload
+    // Si lanza throw(error), el estado de la promesa pasa a ser 'rejected' automaticamente
+    // En un componente por ej se usa: dispatch(login()).then((res)=>{})
+    // res.payload es undefined si se lanzo throw(error) y res.payload es el objeto que se devuelve
+    // en el return del catch si se devuelve un objeto
+    return rejectWithValue(<ApiResponse<User>>getApiError(error));
   }
 });
-
-/* const login = createAsyncThunk('login', async (payload: LoginForm) => {
-  try {
-    const response = await ApiService.postData<User>('/user/login', payload);
-
-    localStorage.setItem('token', response.token!);
-
-    return response;
-  } catch (error) {
-    // Si se devuelve un string o cualquier otro objeto, el estado de la promesa pasa a ser 'fulfilled'
-    // y se puede obtener en el reducer con action.payload
-    // Si se devuelve throw(error), el estado de la promesa pasa a ser 'rejected'
-    // Pero si se hace en un componente dispatch(login()) y se hace un .then((res)=>)
-    // el res.payload es undefined, en cambio con la primera opción es el string
-    // return 'rejected';
-    return (error as AxiosError).response?.data as ApiResponse<User>;
-  }
-}); */
-
-/* const register = createAsyncThunk('register', async (payload: User) => {
-  try {
-    const response = await ApiService.postData<User>('/user/register', payload);
-    return response;
-  } catch (error) {
-    return (error as AxiosError).response?.data as ApiResponse<User>;
-  }
-}); */
 
 const register = createAsyncThunk<
   ApiResponse<User>,
@@ -97,9 +56,7 @@ const register = createAsyncThunk<
     const response = await AuthService.register(user);
     return response;
   } catch (error) {
-    return rejectWithValue(
-      (error as AxiosError).response?.data as ApiResponse<User>
-    );
+    return rejectWithValue(<ApiResponse<User>>getApiError(error));
   }
 });
 
@@ -107,23 +64,6 @@ const logout = createAction('logout', () => {
   AuthService.logout();
   return { payload: null };
 });
-
-/* const registerWithGoogle = createAsyncThunk(
-  'registerFromGoogle',
-  async (payload: { code: string }) => {
-    try {
-      const response = await ApiService.postData<User>(
-        '/user/register-google',
-        payload
-      );
-      localStorage.setItem('token', response.token!);
-      return response;
-    } catch (error) {
-      return (error as AxiosError).response?.data as ApiResponse<User>;
-      // response.data es de Axios
-    }
-  }
-); */
 
 const registerWithGoogle = createAsyncThunk<
   ApiResponse<User>,
@@ -134,9 +74,7 @@ const registerWithGoogle = createAsyncThunk<
     const response = await AuthService.registerWithGoogle(code);
     return response;
   } catch (error) {
-    return rejectWithValue(
-      (error as AxiosError).response?.data as ApiResponse<User>
-    );
+    return rejectWithValue(<ApiResponse<User>>getApiError(error));
   }
 });
 
@@ -149,52 +87,42 @@ const loginWithGoogle = createAsyncThunk<
     const response = await AuthService.loginWithGoogle(code);
     return response;
   } catch (error) {
-    return rejectWithValue(
-      (error as AxiosError).response?.data as ApiResponse<User>
-    );
+    return rejectWithValue(<ApiResponse<User>>getApiError(error));
   }
 });
 
-/* const loginWithGoogle = createAsyncThunk(
-  'signInWithGoogle',
-  async (payload: { code: string }) => {
-    try {
-      const response = await ApiService.postData<User>(
-        '/user/login-google',
-        payload
-      );
-      localStorage.setItem('token', response.token!);
-      return response;
-    } catch (error) {
-      return (error as AxiosError).response?.data as ApiResponse<User>;
-    }
-  }
-); */
-
-const addFavouriteItinerary = createAsyncThunk(
+const addFavouriteItinerary = createAsyncThunk<
+  ApiResponse<LikeResponse>,
+  { postId: string },
+  { rejectValue: ApiResponse<LikeResponse> }
+>(
   'addFavouriteItinerary',
-  async (payload: { postId: string }) => {
+  async (payload: { postId: string }, { rejectWithValue }) => {
     try {
       const response = await ApiService.postData<LikeResponse>(
         '/itinerary/like/' + payload.postId
       );
       return response;
     } catch (error) {
-      return (error as AxiosError).response?.data as ApiResponse<LikeResponse>;
+      return rejectWithValue(<ApiResponse<LikeResponse>>getApiError(error));
     }
   }
 );
 
-const removeFavouriteItinerary = createAsyncThunk(
+const removeFavouriteItinerary = createAsyncThunk<
+  ApiResponse<LikeResponse>,
+  { postId: string },
+  { rejectValue: ApiResponse<LikeResponse> }
+>(
   'removeFavouriteItinerary',
-  async (payload: { postId: string }) => {
+  async (payload: { postId: string }, { rejectWithValue }) => {
     try {
       const response = await ApiService.deleteData<LikeResponse>(
         '/itinerary/dislike/' + payload.postId
       );
       return response;
     } catch (error) {
-      return (error as AxiosError).response?.data as ApiResponse<LikeResponse>;
+      return rejectWithValue(<ApiResponse<LikeResponse>>getApiError(error));
     }
   }
 );

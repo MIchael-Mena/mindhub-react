@@ -4,34 +4,18 @@ import { RootState } from '../store';
 import { Activity } from '../../models/Acitivity';
 import { Comment, CommentToCreate } from '../../models/Comment';
 import { PaginationData } from '../../models/PaginationData';
-import { AxiosError } from 'axios';
 import { ApiResponse } from '../../models/ApiResponse';
 import {
   CommentPaginationOptions,
   ItineraryExtraState,
 } from '../../models/ItineraryExtra';
-// import { enqueueSnackbar } from 'notistack';
+import { getApiError } from '../../utils/apiUtils';
 
 interface CommentResponse extends PaginationData {
   comments: Comment[];
 }
 
 const maxCommentsPerPage = 4;
-
-const getErrorMessage = (err: any) => {
-  const error: AxiosError<ApiResponse<void>> = err;
-  const apiRes =
-    error.response && error.response.data
-      ? error.response.data
-      : ({
-          success: false,
-          message: 'An error has occurred while processing your request', // mensaje generico, cada accion podria tener su propio mensaje
-        } as ApiResponse<void>);
-  /*   enqueueSnackbar(apiRes.message, {
-    variant: 'error',
-  }); */
-  return apiRes;
-};
 
 const updateComment = createAsyncThunk<
   Comment,
@@ -47,7 +31,7 @@ const updateComment = createAsyncThunk<
       );
       return response.data!;
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      return rejectWithValue(getApiError(error));
     }
   }
 );
@@ -63,7 +47,7 @@ const deleteComment = createAsyncThunk<
     // el backend en data responde con un mensaje de exito, en su lugar se devuelve el id del comentario eliminado
     return { commentId: commentId };
   } catch (error) {
-    return rejectWithValue(getErrorMessage(error));
+    return rejectWithValue(getApiError(error));
   }
 });
 
@@ -79,7 +63,7 @@ const createComment = createAsyncThunk<
     );
     return response.data!;
   } catch (error) {
-    return rejectWithValue(getErrorMessage(error));
+    return rejectWithValue(getApiError(error));
   }
 });
 
@@ -133,7 +117,7 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
         itineraryId,
       };
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      return rejectWithValue(getApiError(error));
     }
   }
 );
@@ -189,7 +173,7 @@ const fetchComments = createAsyncThunk<
         ...params,
       };
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      return rejectWithValue(getApiError(error));
     }
   }
 );
