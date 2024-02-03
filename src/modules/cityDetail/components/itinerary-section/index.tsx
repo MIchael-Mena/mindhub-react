@@ -6,13 +6,11 @@ import { ItinerariesTab } from '../itineraries-tab';
 import TitleUnderlined from '../../../shared/components/styled/TitleUnderlined';
 import { CardNotFound } from '../../../shared/components/card-not-found/CardNotFound';
 
-interface ItinerariesSectionProps {
+interface ItinerarySectionProps {
   itineraries: Itinerary[];
 }
 
-export const ItinerariesSection = ({
-  itineraries,
-}: ItinerariesSectionProps) => {
+export const ItinerarySection = ({ itineraries }: ItinerarySectionProps) => {
   const [activeItinerary, setActiveItinerary] = useState<number>(0);
   const animationDuration = 500;
 

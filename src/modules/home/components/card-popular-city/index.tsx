@@ -38,7 +38,12 @@ const CardPopularCity = (city: CityBasic) => {
         height="100%"
         position="relative"
       >
-        <img src={city.images[0]} alt="Imagen" className="image-container" />
+        <img
+          src={city.images[0]}
+          alt="Imagen"
+          className="image-container"
+          // loading="lazy"
+        />
         <Box className="description-container" p={{ xs: 2, sm: 4 }}>
           <Typography variant="body1">{city.description}</Typography>
           <Anchor to={pathCityDetail} state={{ from: currentPath }}>

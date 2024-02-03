@@ -6,6 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import NavigationButton from '../navigation-button';
 import './style.css';
 import { useThrottledEvent } from '../../../../hooks/useThrottledEvent';
+import { useIsInView } from '../../../../hooks/useIsInView';
 
 interface CitiesCarouselProps {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ export const CitiesCarousel = ({ children }: CitiesCarouselProps) => {
     }
   };
 
+  const [carouselRef, isInView] = useIsInView(0.5);
   useThrottledEvent<KeyboardEvent>('keydown', handleKeyDown, timeAnimation);
   return (
     <Box
@@ -49,12 +51,14 @@ export const CitiesCarousel = ({ children }: CitiesCarouselProps) => {
         },
         myStyles.shadowBoxGreen,
       ]}
+      ref={carouselRef}
     >
       <Carousel
-        height={'700px'}
+        height="700px"
         navButtonsAlwaysVisible
         duration={timeAnimation}
         animation="slide"
+        autoPlay={isInView}
         stopAutoPlayOnHover
         NavButton={({ onClick, className, style, next, prev }) => {
           return (

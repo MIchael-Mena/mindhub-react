@@ -85,7 +85,6 @@ const itinerariesLikesReducer = createReducer(
         state.splice(0, state.length);
       })
       .addCase(addFavouriteItinerary.fulfilled, (state, action) => {
-        if (!action.payload.success) return;
         updateLikes(
           state,
           action.payload.data?.itineraryId!,
@@ -93,7 +92,6 @@ const itinerariesLikesReducer = createReducer(
         );
       })
       .addCase(removeFavouriteItinerary.fulfilled, (state, action) => {
-        if (!action.payload.success) return;
         updateLikes(
           state,
           action.payload.data?.itineraryId!,

@@ -5,9 +5,10 @@ import { CitiesList } from '../components/cities-list';
 import { PaginationControls } from '../components/pagination-controls';
 import { SortCities } from '../components/sort-cities';
 import { CitiesCountDisplay } from '../components/cities-count-display';
+import heroImage from '../../../assets/images/city-bg.png';
 
 const Cities = () => {
-  const heroImage = 'src/assets/images/city-bg.png';
+  // const heroImage = 'src/assets/images/city-bg.png';
   return (
     <>
       <Container

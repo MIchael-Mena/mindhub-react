@@ -3,10 +3,12 @@ import PopularCities from '../components/popular-cities';
 import Logo from '../../core/components/logo';
 import Hero from '../../shared/components/hero';
 import { Link as Anchor } from 'react-router-dom';
+import imageHero from '../../../assets/images/cities-bg.png';
+import imageToCities from '../../../assets/images/hero-intro.png';
 
 const Home = () => {
-  const imageHero = 'src/assets/images/cities-bg.png';
-  const imageToCities = 'src/assets/images/hero-intro.png';
+  // const imageHero = 'src/assets/images/cities-bg.png';
+  // const imageToCities = 'src/assets/images/hero-intro.png';
   const currentPath = '/home';
 
   return (
@@ -38,7 +40,13 @@ const Home = () => {
             flexDirection: 'column',
           }}
         >
-          <img src={imageToCities} alt="logo" width="100%" height="auto" />
+          <img
+            src={imageToCities}
+            alt="logo"
+            width="100%"
+            height="auto"
+            loading="lazy"
+          />
         </Grid>
 
         <Grid

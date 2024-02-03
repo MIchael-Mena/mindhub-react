@@ -6,6 +6,7 @@ export const CardCitySkeleton = () => {
       elevation={1}
       sx={{
         display: 'flex',
+        minHeight: 300,
         maxWidth: 300,
         borderRadius: '15px',
         boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',

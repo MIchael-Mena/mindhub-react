@@ -24,6 +24,7 @@ const Hero = ({ imageHero, children, size = 'auto' }: HeroProps) => {
       >
         <img
           src={imageHero}
+          loading="lazy"
           alt="Background"
           style={{
             // filter: 'brightness(0.5)',

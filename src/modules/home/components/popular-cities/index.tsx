@@ -1,8 +1,6 @@
 import CityGrid from '../city-grid';
 import { Paper } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-// import { useApiService } from '../../hooks/useApiService';
-// import { ApiService } from '../../services/api.service';
 import { FailedRequest } from '../../../shared/components/failed-request';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { fetchPopularCities } from '../../../../store/actions/cities';
@@ -22,14 +20,6 @@ const PopularCities = () => {
     if (popularCities.length === 0) dispatch(fetchPopularCities({ limit: 12 }));
   }, []);
 
-  // const {
-  //   data: popularCities,
-  //   loading,
-  //   error,
-  // } = useApiService<City[]>(() =>
-  //   ApiService.getData('/city', { limit: 12, sort: 'rating', order: 'desc' })
-  // );
-
   const groupedCities = useMemo(() => {
     return chunkArray(popularCities, 4);
   }, [popularCities]);
@@ -44,7 +34,6 @@ const PopularCities = () => {
             className="common-paper"
           >
             {loading ? (
-              // <CircularProgress size={'250px'} />
               <CityGrid />
             ) : (
               <FailedRequest message="An error has occurred, try again later." />

@@ -1,16 +1,6 @@
 import { useParams } from 'react-router-dom';
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Divider,
-  Fab,
-  Grid,
-  Paper,
-} from '@mui/material';
+import { Box, Container, Divider, Grid, Paper } from '@mui/material';
 import { FailedRequest } from '../../shared/components/failed-request';
-import { useNavigate } from 'react-router-dom';
-import { DoubleArrow } from '@mui/icons-material';
 import { CityAttributes } from '../components/city-attributes';
 import { CityInfo } from '../components/city-info';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
@@ -19,11 +9,14 @@ import { CardNotFound } from '../../shared/components/card-not-found/CardNotFoun
 import { fetchCitySelectedById } from '../../../store/actions/city-selected';
 import { shallowEqual } from 'react-redux';
 import { ItineraryImg } from '../components/itinerary-img';
-import { ItinerariesSection } from '../components/itineraries-section';
+import { ItinerarySection } from '../components/itinerary-section';
+import { CityInfoSkeleton } from '../components/city-info-skeleton';
+import { CityAttributesSkeleton } from '../components/city-attributes-skeleton';
+import { ButtonBack } from '../components/button-back';
+import { ItinerarySectionSkeleton } from '../components/itinerary-section-skeleton';
 
 const CityDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const {
     data: city,
     loading,
@@ -49,30 +42,18 @@ const CityDetail = () => {
           px: { xs: 1, sm: 4 },
           position: 'relative',
           borderRadius: 5,
+          minHeight: 500,
         }}
       >
-        <Fab
-          variant="extended"
-          color="secondary"
-          size="medium"
-          onClick={() => {
-            navigate(-1);
-          }}
-          sx={{ borderRadius: 15, position: 'absolute', top: -24, left: 20 }}
-        >
-          <DoubleArrow sx={{ mr: 1, transform: 'rotate(180deg)' }} />
-          Go Back
-        </Fab>
-        {loading || error ? (
+        <ButtonBack />
+        {error ? (
           <Box
             display={'flex'}
             justifyContent={'center'}
             alignItems={'center'}
             minHeight={500}
           >
-            {loading ? (
-              <CircularProgress color="secondary" size={200} />
-            ) : error?.code === 'ERR_BAD_REQUEST' ? (
+            {error?.code === 'ERR_BAD_REQUEST' ? (
               <CardNotFound message="The requested city does not exist." />
             ) : (
               <FailedRequest width="290px" />
@@ -88,21 +69,33 @@ const CityDetail = () => {
               flexDirection={'column'}
               justifyContent={'space-evenly'}
             >
-              <CityInfo {...city} />
+              {loading ? <CityInfoSkeleton /> : <CityInfo city={city} />}
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <ItineraryImg cityName={city.name} images={city.images} />
+              <ItineraryImg
+                cityName={city.name}
+                images={city.images}
+                parentLoading={loading}
+              />
             </Grid>
 
             <Grid item xs={12}>
               <Divider sx={{ backgroundColor: 'white' }} />
-              <CityAttributes {...city} />
+              {loading ? (
+                <CityAttributesSkeleton />
+              ) : (
+                <CityAttributes {...city} />
+              )}
               <Divider sx={{ backgroundColor: 'white' }} />
             </Grid>
 
             <Grid item xs={12}>
-              <ItinerariesSection itineraries={city.itineraries!} />
+              {loading ? (
+                <ItinerarySectionSkeleton />
+              ) : (
+                <ItinerarySection itineraries={city.itineraries!} />
+              )}
             </Grid>
           </Grid>
         )}

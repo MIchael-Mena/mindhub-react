@@ -3,7 +3,11 @@ import { Box, Fab, Rating, Typography } from '@mui/material';
 import TitleUnderlined from '../../../shared/components/styled/TitleUnderlined';
 import { City } from '../../../../models/City';
 
-export const CityInfo = (city: City) => {
+interface CityInfoProps {
+  city: City;
+}
+
+export const CityInfo = ({ city }: CityInfoProps) => {
   return (
     <>
       <Box
