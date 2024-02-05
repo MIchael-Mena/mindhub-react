@@ -14,6 +14,7 @@ export const CityInfo = ({ city }: CityInfoProps) => {
         display="inline-flex"
         justifyContent="space-between"
         alignItems="center"
+        gap={3}
       >
         <TitleUnderlined display="inline-flex" gap={1} pr={2} pl={1}>
           <FlagCircleOutlined color="primary" fontSize="large" />
