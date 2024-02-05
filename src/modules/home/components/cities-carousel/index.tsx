@@ -4,9 +4,9 @@ import { Box, Theme } from '@mui/material';
 import { KeyboardEvent, useRef, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import NavigationButton from '../navigation-button';
-import './style.css';
 import { useThrottledEvent } from '../../../../hooks/useThrottledEvent';
-import { useIsInView } from '../../../../hooks/useIsInView';
+import useIsInView from '../../../../hooks/useIsInView';
+import './style.css';
 
 interface CitiesCarouselProps {
   children: React.ReactNode;

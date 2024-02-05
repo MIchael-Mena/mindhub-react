@@ -87,9 +87,17 @@ const theme = createTheme({
     MuiFab: {
       defaultProps: {
         style: {
-          textTransform: 'none',
+          transition: 'all 0.2s ease-in-out',
         },
       },
+      variants: [
+        {
+          props: { variant: 'extended' },
+          style: {
+            textTransform: 'none',
+          },
+        },
+      ],
     },
     MuiAlert: {
       styleOverrides: {

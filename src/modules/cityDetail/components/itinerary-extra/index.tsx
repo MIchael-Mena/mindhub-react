@@ -1,10 +1,11 @@
 import { Collapse, Grid } from '@mui/material';
-import { useState } from 'react';
 import { ItineraryCommentsSection } from '../itinerary-comments-section';
 import { ButtonViewMore } from '../button-view-more';
 import { ItineraryActivitiesSection } from '../itinerary-activities-section';
 import { useUpdateHeightContainer } from '../../hooks/useUpdateHeightContainer';
-import { useHandleActiveItineraryChange } from '../../hooks/useHandleActiveItineraryChange';
+import { useItineraryExpansion } from '../../hooks/useItineraryExpansion';
+import { useAppDispatch } from '../../../../store/hooks';
+import { fetchCommentsAndActivitiesByItineraryId } from '../../../../store/actions/itinerary-extra';
 
 interface ItineraryExtraProps {
   activeItineraryId: string;
@@ -15,25 +16,17 @@ export const ItineraryExtra = ({
   activeItineraryId,
   animationDuration = 500,
 }: ItineraryExtraProps) => {
-  const [isItineraryExpanded, setIsItineraryExpanded] = useState(false);
+  const dispatch = useAppDispatch();
+  const fecthCommentsAndActivities = () =>
+    dispatch(
+      fetchCommentsAndActivitiesByItineraryId(activeItineraryId)
+    ).unwrap();
 
-  const { fetchData } = useHandleActiveItineraryChange(
+  const { isItineraryExpanded, handleButtonViewMore } = useItineraryExpansion(
     activeItineraryId,
-    isItineraryExpanded,
-    setIsItineraryExpanded,
-    animationDuration
+    animationDuration,
+    fecthCommentsAndActivities
   );
-
-  // Accion lanzada por el usuario cuando hace click en el boton de ver mas
-  const handleButtonViewMore = () => {
-    if (isItineraryExpanded) {
-      // Evito hacer la peticion cuando el usuario toca el boton de ver mas y ya esta abierto, solo lo cierro
-      setIsItineraryExpanded(false);
-      return;
-    }
-    fetchData();
-  };
-
   const { activitiesRef, commentsRef } =
     useUpdateHeightContainer(isItineraryExpanded);
 

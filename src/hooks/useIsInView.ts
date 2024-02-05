@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useIsInView = (
+/* 
+Hook para detectar si un elemento está en el viewport
+@param threshold - Umbral de visibilidad del elemento
+ */
+const useIsInView = (
   threshold = 0.5
 ): [React.MutableRefObject<any>, boolean] => {
   const [isInView, setIsInView] = useState<boolean>(false);
@@ -25,3 +29,5 @@ export const useIsInView = (
 
   return [ref, isInView];
 };
+
+export default useIsInView;
