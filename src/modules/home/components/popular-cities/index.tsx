@@ -15,7 +15,6 @@ const PopularCities = () => {
     loading,
     error,
   } = useAppSelector((store) => store.citiesReducer.popularCities);
-
   useEffect(() => {
     if (popularCities.length === 0) dispatch(fetchPopularCities({ limit: 12 }));
   }, []);

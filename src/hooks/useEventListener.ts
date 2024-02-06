@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 /*
 Este hook permite registrar un listener para un evento específico en el objeto global 'window'.
  */
@@ -7,6 +7,7 @@ const useEventListener = <T extends Event>(
   handleEvent: (e: T) => void,
   dependencies: React.DependencyList = []
 ) => {
+  // para mantener la referencia y poder remover el listener
   const callback = useCallback(handleEvent, dependencies);
 
   useEffect(() => {

@@ -9,15 +9,20 @@ const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[], SerializedError> & {
     params: CitySearchParams & PaginationData;
   };
-  popularCities: StatusResponse<CityBasic[], SerializedError> & {
+  popularCities: StatusResponse<CityBasic[], SerializedError>;
+  carousel: {
     currentSlide: number;
+    lastSlide: number;
   };
 } = {
   popularCities: {
     loading: true,
     error: null,
     data: [],
+  },
+  carousel: {
     currentSlide: 1,
+    lastSlide: 1,
   },
   citiesFiltered: {
     params: {
@@ -35,6 +40,30 @@ const citiesState: {
 
 const citiesReducer = createReducer(citiesState, (builder) => {
   builder
+    .addCase(
+      'SET_CURRENT_SLIDE',
+      (
+        state,
+        action: {
+          type: 'SET_CURRENT_SLIDE';
+          payload: { currentSlide: number };
+        }
+      ) => {
+        state.carousel.currentSlide = action.payload.currentSlide;
+      }
+    )
+    .addCase(
+      'RECORD_CURRENT_SLIDE', // Accion lanzada por RouteChangeHandler
+      (
+        state,
+        _action: {
+          type: 'RECORD_CURRENT_SLIDE';
+        }
+      ) => {
+        state.carousel.lastSlide = state.carousel.currentSlide;
+      }
+    )
+
     .addCase(fetchCities.pending, (state) => {
       state.citiesFiltered.loading = true;
     })

@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
-import { Theme, useTheme } from '@mui/material'
+import { useMemo } from 'react';
+import { Theme, useTheme } from '@mui/material';
 
 const useStyles = () => {
-  const theme: Theme = useTheme()
+  const theme: Theme = useTheme();
   return useMemo(() => {
     return {
+      theme,
       navLinkActive: {
         color: theme.palette.primary.main,
       },
@@ -17,8 +18,8 @@ const useStyles = () => {
       //   px: { xs: 0, sm: 5, md: 10 },
       //   maxWidth: 'lg',
       // },
-    }
-  }, [theme])
-}
+    };
+  }, [theme]);
+};
 
-export default useStyles
+export default useStyles;

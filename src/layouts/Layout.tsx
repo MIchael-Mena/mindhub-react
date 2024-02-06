@@ -8,6 +8,7 @@ import { authenticate } from '../store/actions/user';
 import { ApiService } from '../services/api.service';
 import { ApiResponse } from '../models/ApiResponse';
 import { handleSnackbar } from '../utils/apiUtils';
+import RouteChangeHandler from '../modules/core/components/route-change-handler';
 
 const Layout = () => {
   const componentSizes = {
@@ -45,6 +46,7 @@ const Layout = () => {
         <Outlet />
       </Box>
       <Footer minHeight={componentSizes.footer} />
+      <RouteChangeHandler />
       <ScrollRestoration
       // TODO: ver documentacion de react-router-dom
       // getKey={(key, location) => {
