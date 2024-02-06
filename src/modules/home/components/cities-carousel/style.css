@@ -1,5 +1,12 @@
 /* No es necesario important si se usa la propiedad style o sx dentro del componente */
 
+.carousel-container {
+  margin-inline: auto;
+  border-radius: 25px 25px 0 0;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
 .nav-buttons-wrapper {
   margin: 0 3rem;
   bottom: 1%;

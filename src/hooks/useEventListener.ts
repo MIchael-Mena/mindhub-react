@@ -7,14 +7,16 @@ const useEventListener = <T extends Event>(
   handleEvent: (e: T) => void,
   dependencies: React.DependencyList = []
 ) => {
+  const callback = useCallback(handleEvent, dependencies);
+
   useEffect(() => {
-    window.addEventListener(eventType, handleEvent as EventListener);
+    window.addEventListener(eventType, callback as EventListener);
 
     // Limpia el listener cuando el componente se desmonta
     return () => {
-      window.removeEventListener(eventType, handleEvent as EventListener);
+      window.removeEventListener(eventType, callback as EventListener);
     };
-  }, dependencies);
+  }, [eventType, callback]);
 };
 
 export default useEventListener;

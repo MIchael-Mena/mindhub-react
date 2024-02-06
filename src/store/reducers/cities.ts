@@ -9,12 +9,15 @@ const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[], SerializedError> & {
     params: CitySearchParams & PaginationData;
   };
-  popularCities: StatusResponse<CityBasic[], SerializedError>;
+  popularCities: StatusResponse<CityBasic[], SerializedError> & {
+    currentSlide: number;
+  };
 } = {
   popularCities: {
     loading: true,
     error: null,
     data: [],
+    currentSlide: 1,
   },
   citiesFiltered: {
     params: {
