@@ -53,6 +53,7 @@ const CardCity = ({ city }: CardCityProps) => {
             sx={{
               width: 'auto',
               display: 'inline-flex',
+              alignItems: 'center',
               px: 2,
               borderRadius: 15,
               mb: 1,

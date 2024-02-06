@@ -1,11 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import useStyles from '../../../../hooks/useStyles';
 import { Box, Theme } from '@mui/material';
-import { KeyboardEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import NavigationButton from '../navigation-button';
-import { useThrottledEvent } from '../../../../hooks/useThrottledEvent';
 import useIsInView from '../../../../hooks/useIsInView';
+import useThrottledCallback from '../../../../hooks/useThrottledCallback';
+import useEventListener from '../../../../hooks/useEventListener';
 import './style.css';
 
 interface CitiesCarouselProps {
@@ -29,8 +30,9 @@ export const CitiesCarousel = ({ children }: CitiesCarouselProps) => {
     }
   };
 
+  const handleThrottle = useThrottledCallback(timeAnimation);
+  useEventListener<KeyboardEvent>('keydown', handleKeyDown, [activeHover]);
   const [carouselRef, isInView] = useIsInView(0.5);
-  useThrottledEvent<KeyboardEvent>('keydown', handleKeyDown, timeAnimation);
   return (
     <Box
       onMouseEnter={() => {
@@ -67,7 +69,9 @@ export const CitiesCarousel = ({ children }: CitiesCarouselProps) => {
                 <NavigationButton
                   direction="next"
                   ref={rightButton}
-                  onClick={onClick}
+                  onClick={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => handleThrottle(() => onClick(e))}
                   className={className}
                   style={style}
                 />
@@ -76,7 +80,9 @@ export const CitiesCarousel = ({ children }: CitiesCarouselProps) => {
                 <NavigationButton
                   direction="prev"
                   ref={leftButton}
-                  onClick={onClick}
+                  onClick={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => handleThrottle(() => onClick(e))}
                   className={className}
                   style={style}
                 />

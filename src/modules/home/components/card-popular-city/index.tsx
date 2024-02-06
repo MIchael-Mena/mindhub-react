@@ -2,6 +2,7 @@ import { CityBasic } from '../../../../models/CityBasic';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { Link as Anchor } from 'react-router-dom';
+import { getSubstringAfterHyphen } from '../../../../utils/util';
 import './CardPopularCity.css';
 
 const CardPopularCity = (city: CityBasic) => {
@@ -23,7 +24,7 @@ const CardPopularCity = (city: CityBasic) => {
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
         <Typography variant="h6" textAlign="center">
-          {city.name}
+          {getSubstringAfterHyphen(city.name)}
         </Typography>
       </Box>
 

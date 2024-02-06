@@ -10,7 +10,8 @@ export const useThrottledEvent = <T>(
   eventType: string,
   callback: (e: T) => void,
   delay: number,
-  element: React.RefObject<HTMLElement> | null = null
+  element: React.RefObject<HTMLElement> | null = null,
+  dependencies: React.DependencyList = []
 ) => {
   const lastCallTimeRef = useRef<number | null>(null);
 
@@ -34,5 +35,5 @@ export const useThrottledEvent = <T>(
         handleEvent as EventListener
       );
     };
-  }, [eventType, callback, delay, element]);
+  }, [dependencies]);
 };

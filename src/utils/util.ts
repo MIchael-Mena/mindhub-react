@@ -48,4 +48,11 @@ function jwtDecode(token: string) {
   };
 }
 
-export { chunkArray, stringAvatar, jwtDecode };
+const getSubstringAfterHyphen = (text: string) => {
+  const parts = text.split('-');
+
+  // Verificar si hay al menos dos partes (antes y después del '-')
+  return parts.length > 1 ? parts[1].trim() : text.trim();
+};
+
+export { chunkArray, stringAvatar, jwtDecode, getSubstringAfterHyphen };

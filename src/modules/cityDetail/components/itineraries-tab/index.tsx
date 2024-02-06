@@ -1,6 +1,7 @@
 import { Slide, Tab, Tabs, useMediaQuery } from '@mui/material';
 import { ItineraryDetail } from '../itinerary-detail';
 import { Itinerary } from '../../../../models/Itinerary';
+import useThrottledCallback from '../../../../hooks/useThrottledCallback';
 
 interface ItinerariesTabProps {
   itineraries: Itinerary[];
@@ -17,20 +18,10 @@ export const ItinerariesTab = ({
 }: ItinerariesTabProps) => {
   const matches = useMediaQuery('(max-width:900px)');
 
-  const handleChange = (args: any[]) => {
-    const [_event, newValue] = args;
-    setActiveItinerary(newValue);
-  };
-
-  let lastExecution = Date.now();
-  const throttledHandleChange = (...args: any[]) => {
-    if (Date.now() - lastExecution >= animationDuration) {
-      handleChange(args);
-      // No es neceseario actualizar lastExecution ya que handleChange vuelve a renderizar el componente
-      // y lastExecution se vuelve a inicializar en Date.now()
-      // lastExecution = Date.now();
-    }
-  };
+  // TODO: el tiempo que se le pasa a useThrottledCallback deberia ser el doble del tiempo de la animacion
+  // si el itinerario extra se encuentra expandido, en caso contrario deberia ser igual al tiempo de la animacion
+  // que es el tiempo de animacion para cambiar de tab
+  const throttledHandleChange = useThrottledCallback(animationDuration);
 
   return (
     <>
@@ -40,7 +31,9 @@ export const ItinerariesTab = ({
         // scrollButtons="auto"
         allowScrollButtonsMobile
         value={activeItinerary}
-        onChange={throttledHandleChange}
+        onChange={(_event, newValue: number) =>
+          throttledHandleChange(() => setActiveItinerary(newValue))
+        }
         aria-label="Itineraries"
         sx={
           matches

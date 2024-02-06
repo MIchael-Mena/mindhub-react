@@ -6,7 +6,7 @@ const NavigationButton = React.forwardRef<
   HTMLButtonElement,
   {
     direction: 'prev' | 'next';
-    onClick: Function;
+    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     className: string;
     style: React.CSSProperties;
   }
