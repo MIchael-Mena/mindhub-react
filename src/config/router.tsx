@@ -1,9 +1,10 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { NavItem } from '../models/NavItem';
 import Layout from '../layouts/Layout';
 import Home from '../modules/home/pages/Home';
 import Cities from '../modules/cities/pages/Cities';
 import CityDetail from '../modules/cityDetail/pages/CityDetail';
-import { NavItem } from '../models/NavItem';
+import NotFound from '../modules/core/components/not-found';
 
 const navItems: NavItem[] = [
   { name: 'Home', path: '/home' },
@@ -23,9 +24,9 @@ const router = createBrowserRouter([
         element: <CityDetail />,
         caseSensitive: true,
       },
+      { path: '*', element: <NotFound /> },
     ],
   },
-  { path: '*', element: <h1>404</h1> },
 ]);
 
 export { router, navItems };
