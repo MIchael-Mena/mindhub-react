@@ -47,13 +47,13 @@ const Layout = () => {
       </Box>
       <Footer minHeight={componentSizes.footer} />
       <RouteChangeHandler />
-      <ScrollRestoration
+      {/*       <ScrollRestoration
       // TODO: ver documentacion de react-router-dom
       // getKey={(key, location) => {
       //   console.log(key, location);
       //   return location[0].pathname;
       // }}
-      />
+      /> */}
     </>
   );
 };

@@ -3,6 +3,7 @@ import useStyles from '../../../../hooks/useStyles';
 import { Box, Button } from '@mui/material';
 import { NavItem } from '../../../../models/NavItem';
 import './NavigationItems.css';
+import { useEffect } from 'react';
 
 interface NavigationItemsProp {
   navItems: NavItem[];
@@ -12,6 +13,10 @@ export const NavigationItems = ({ navItems }: NavigationItemsProp) => {
   const myStyles = useStyles();
   const currentPathName = useLocation().pathname; // Cada vez que cambia la ruta, vuelve a renderizar el componente
   const isActiveItem = (path: string) => currentPathName === path;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPathName]);
+
   return (
     <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
       {navItems.map((item, key) => (
