@@ -1,21 +1,15 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import useStyles from '../../../../hooks/useStyles';
 import { Box, Button } from '@mui/material';
-import { NavItem } from '../../../../models/NavItem';
+import { navItems } from '../../../../config/router';
 import './NavigationItems.css';
-import { useEffect } from 'react';
 
-interface NavigationItemsProp {
-  navItems: NavItem[];
-}
+interface NavigationItemsProp {}
 
-export const NavigationItems = ({ navItems }: NavigationItemsProp) => {
+export const NavigationItems = ({}: NavigationItemsProp) => {
   const myStyles = useStyles();
   const currentPathName = useLocation().pathname; // Cada vez que cambia la ruta, vuelve a renderizar el componente
   const isActiveItem = (path: string) => currentPathName === path;
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [currentPathName]);
 
   return (
     <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
@@ -24,10 +18,7 @@ export const NavigationItems = ({ navItems }: NavigationItemsProp) => {
           to={item.path}
           key={key}
           // state={{ from: window.location.pathname }}
-          preventScrollReset={true}
-          // className={(navData) =>
-          //   navData.isActive ? 'active-nav-link' : 'none'
-          // }
+          // preventScrollReset={true}
         >
           <Button
             className={`hover-effect-nav-link ${

@@ -9,7 +9,6 @@ import imageToCities from '../../../assets/images/hero-intro.png';
 const Home = () => {
   // const imageHero = 'src/assets/images/cities-bg.png';
   // const imageToCities = 'src/assets/images/hero-intro.png';
-  const currentPath = '/home';
 
   return (
     <Container disableGutters maxWidth="lg">
@@ -69,9 +68,9 @@ const Home = () => {
             your next trip has never been easier.
           </Typography>
           <Anchor
-            to="/Cities"
-            preventScrollReset={false}
-            state={{ from: currentPath }}
+            to="/cities"
+            // preventScrollReset={false}
+            state={{ prevetScrollReset: false }}
             style={{ width: '100%', display: 'contents' }}
           >
             <Button variant="contained" color="primary" sx={{ my: 2 }}>

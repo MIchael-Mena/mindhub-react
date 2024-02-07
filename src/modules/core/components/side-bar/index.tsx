@@ -10,17 +10,16 @@ import {
 import Logo from '../logo';
 import { Link as Anchor, useLocation } from 'react-router-dom';
 import useStyles from '../../../../hooks/useStyles';
-import { NavItem } from '../../../../models/NavItem';
+import { navItems } from '../../../../config/router';
 
 interface SideBarProps {
-  navItems: NavItem[];
   mobileOpen: boolean;
   handleDrawerToggle: () => void;
   width: string;
   minWidth: string;
 }
 
-export default function SideBar(props: SideBarProps) {
+export const SideBar = (props: SideBarProps) => {
   const myStyles = useStyles();
   const currentPathName = useLocation().pathname;
   const isActiveItem = (path: string) => currentPathName === path;
@@ -30,7 +29,7 @@ export default function SideBar(props: SideBarProps) {
       <Logo isVisibleInSm={false} sizeXs="small" />
       <Divider />
       <List>
-        {props.navItems.map((item, key) => (
+        {navItems.map((item, key) => (
           <Anchor
             key={key}
             to={item.path}
@@ -76,4 +75,4 @@ export default function SideBar(props: SideBarProps) {
       </Drawer>
     </Box>
   );
-}
+};

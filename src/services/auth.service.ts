@@ -3,6 +3,8 @@ import { ApiResponse } from '../models/ApiResponse';
 import { ApiService } from './api.service';
 
 export class AuthService extends ApiService {
+  private static authEndpoint: string = '/auth';
+
   constructor() {
     super();
   }
@@ -13,7 +15,7 @@ export class AuthService extends ApiService {
   ): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/user/login',
+        this.authEndpoint + '/login',
         {
           email,
           password,
@@ -30,7 +32,7 @@ export class AuthService extends ApiService {
   public static async register(user: User): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/user/register',
+        this.authEndpoint + '/register',
         user
       );
       return response.data;
@@ -44,7 +46,7 @@ export class AuthService extends ApiService {
   ): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/user/login-google',
+        this.authEndpoint + '/login-google',
         { code }
       );
       localStorage.setItem('token', response.data.token!);
@@ -59,7 +61,7 @@ export class AuthService extends ApiService {
   ): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/user/register-google',
+        this.authEndpoint + '/register-google',
         { code }
       );
       localStorage.setItem('token', response.data.token!);
@@ -76,7 +78,7 @@ export class AuthService extends ApiService {
   public static async authenticate(): Promise<ApiResponse<User>> {
     try {
       const response = await this.instanceAxios.post<ApiResponse<User>>(
-        '/user/authenticate'
+        this.authEndpoint + '/authenticate'
       );
       localStorage.setItem('token', response.data.token!);
       return response.data;

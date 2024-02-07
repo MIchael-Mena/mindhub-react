@@ -47,13 +47,16 @@ const Layout = () => {
       </Box>
       <Footer minHeight={componentSizes.footer} />
       <RouteChangeHandler />
-      {/*       <ScrollRestoration
-      // TODO: ver documentacion de react-router-dom
-      // getKey={(key, location) => {
-      //   console.log(key, location);
-      //   return location[0].pathname;
-      // }}
-      /> */}
+      <ScrollRestoration
+        // key={'scroll-restoration'}
+        // Dejo de funcionar preventScrollReset y por eso se usa state
+        getKey={(location, _matches) => {
+          //https:reactrouter.com/en/6.15.0/components/scroll-restoration
+          return location.state && !location.state.preventScrollReset
+            ? null
+            : location.pathname;
+        }}
+      />
     </>
   );
 };
