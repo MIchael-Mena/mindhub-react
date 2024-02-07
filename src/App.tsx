@@ -8,7 +8,7 @@ import { SnackbarConfig } from './config/snackbar.config';
 function App() {
   return (
     <React.Fragment>
-      <GoogleOAuthProvider clientId="671153607848-ptnqdj96rr20jjvhrtissgq5tog4j0je.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <SnackbarConfig>
           <RouterProvider router={router} />
         </SnackbarConfig>
