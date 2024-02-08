@@ -32,75 +32,77 @@ const CityDetail = () => {
   }, [id]);
 
   return (
-    <Container disableGutters maxWidth="lg" sx={{ alignSelf: 'center' }}>
-      <Paper
-        elevation={5}
-        sx={{
-          mt: 4,
-          mb: 2,
-          py: 4,
-          px: { xs: 1, sm: 4 },
-          position: 'relative',
-          borderRadius: 5,
-          minHeight: 500,
-        }}
-      >
-        <ButtonBack />
-        {error ? (
-          <Box
-            display={'flex'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            minHeight={500}
-          >
-            {error?.code === 'ERR_BAD_REQUEST' ? (
-              <CardNotFound message="The requested city does not exist." />
-            ) : (
-              <FailedRequest width="290px" />
-            )}
-          </Box>
-        ) : (
-          <Grid container spacing={3}>
-            <Grid
-              item
-              xs={12}
-              md={6}
+    <>
+      <Container disableGutters maxWidth="lg" sx={{ alignSelf: 'center' }}>
+        <Paper
+          elevation={5}
+          sx={{
+            mt: 4,
+            mb: 2,
+            py: 4,
+            px: { xs: 1, sm: 4 },
+            position: 'relative',
+            borderRadius: 5,
+            minHeight: 500,
+          }}
+        >
+          <ButtonBack />
+          {error ? (
+            <Box
               display={'flex'}
-              flexDirection={'column'}
-              justifyContent={'space-evenly'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              minHeight={500}
             >
-              {loading ? <CityInfoSkeleton /> : <CityInfo city={city} />}
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <ItineraryImg
-                cityName={city.name}
-                images={city.images}
-                parentLoading={loading}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Divider sx={{ backgroundColor: 'white' }} />
-              {loading ? (
-                <CityAttributesSkeleton />
+              {error?.code === 'ERR_BAD_REQUEST' ? (
+                <CardNotFound message="The requested city does not exist." />
               ) : (
-                <CityAttributes {...city} />
+                <FailedRequest width="290px" />
               )}
-              <Divider sx={{ backgroundColor: 'white' }} />
-            </Grid>
+            </Box>
+          ) : (
+            <Grid container spacing={3}>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                display={'flex'}
+                flexDirection={'column'}
+                justifyContent={'space-evenly'}
+              >
+                {loading ? <CityInfoSkeleton /> : <CityInfo city={city} />}
+              </Grid>
 
-            <Grid item xs={12}>
-              {loading ? (
-                <ItinerarySectionSkeleton />
-              ) : (
-                <ItinerarySection itineraries={city.itineraries!} />
-              )}
+              <Grid item xs={12} md={6}>
+                <ItineraryImg
+                  cityName={city.name}
+                  images={city.images}
+                  parentLoading={loading}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Divider sx={{ backgroundColor: 'white' }} />
+                {loading ? (
+                  <CityAttributesSkeleton />
+                ) : (
+                  <CityAttributes {...city} />
+                )}
+                <Divider sx={{ backgroundColor: 'white' }} />
+              </Grid>
+
+              <Grid item xs={12}>
+                {loading ? (
+                  <ItinerarySectionSkeleton />
+                ) : (
+                  <ItinerarySection itineraries={city.itineraries!} />
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        )}
-      </Paper>
-    </Container>
+          )}
+        </Paper>
+      </Container>
+    </>
   );
 };
 

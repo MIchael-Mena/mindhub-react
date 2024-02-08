@@ -3,7 +3,7 @@ import { Box, Grid, Skeleton } from '@mui/material';
 export const ItinerarySectionSkeleton = () => {
   return (
     <>
-      <Box display="inline-flex" gap={1} pr={2} pl={1}>
+      <Box display="inline-flex" gap={1} pr={2} mb={2}>
         <Skeleton variant="circular" width={40} height={40} />
         <Skeleton variant="text" width={100} />
       </Box>

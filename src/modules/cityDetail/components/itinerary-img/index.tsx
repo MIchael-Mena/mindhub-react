@@ -1,5 +1,6 @@
 import { Skeleton } from '@mui/material';
 import { useState } from 'react';
+import './itinerary-img.css';
 
 interface ItineraryImgProps {
   cityName: string;
@@ -23,11 +24,7 @@ export const ItineraryImg = ({
           variant="rectangular"
           width="100%"
           height="320px"
-          sx={{
-            borderRadius: 10,
-            border: '1px solid #ccc',
-            boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',
-          }}
+          className="itinerary-img"
         />
       )}
       {!parentLoading && (
@@ -35,13 +32,14 @@ export const ItineraryImg = ({
           src={images[0]}
           alt={cityName}
           onLoad={handleImageLoaded}
+          className="itinerary-img"
           style={{
             display: imageLoading ? 'none' : 'block',
             maxWidth: '100%',
+            minHeight: '320px',
             height: 'auto',
-            borderRadius: 10,
-            border: '1px solid #ccc',
-            boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',
+            objectFit: 'cover',
+            // borderRadius: 10,
           }}
         />
       )}

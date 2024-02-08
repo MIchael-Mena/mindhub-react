@@ -1,0 +1,15 @@
+/* .itinerary-img {
+  transition: transform 1s;
+}
+
+.itinerary-img:hover {
+  transform: perspective(600px) rotateY(5deg);
+}
+ */
+.itinerary-img {
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 5px 5px 5px 1px rgba(0, 0, 0, 0.3);
+}

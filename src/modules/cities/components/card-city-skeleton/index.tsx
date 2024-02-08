@@ -1,12 +1,14 @@
 import { Card, CardActions, CardContent, Skeleton } from '@mui/material';
 
-export const CardCitySkeleton = () => {
+interface CardCitySkeletonProps {}
+
+export const CardCitySkeleton = ({}: CardCitySkeletonProps) => {
   return (
     <Card
       elevation={1}
       sx={{
         display: 'flex',
-        minHeight: 300,
+        minHeight: 330,
         maxWidth: 300,
         borderRadius: '15px',
         boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',

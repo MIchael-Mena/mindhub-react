@@ -58,11 +58,10 @@ export const ItineraryDetail = ({
           md={9}
           display="flex"
           flexDirection="row"
-          flexWrap={{ xs: 'wrap', md: 'nowrap' }}
+          flexWrap={{ xs: 'wrap', lg: 'nowrap' }}
           gap={{ xs: 1, md: 2 }}
           alignItems="center"
           justifyContent="space-evenly"
-          // height="100%"
           p={{ xs: 1, md: 2 }}
           mb={{ xs: 1, md: 0 }}
         >
@@ -70,7 +69,7 @@ export const ItineraryDetail = ({
             <Typography variant="subtitle1" gutterBottom>
               Duration:
             </Typography>
-            <Box display="flex" alignItems="center">
+            <Box display="inline-flex" alignItems="self-start" minHeight="26px">
               <TimerSharp />
               <Typography variant="body1" mx={1}>
                 {duration / 60} hours
@@ -82,23 +81,27 @@ export const ItineraryDetail = ({
             <Typography variant="subtitle1" gutterBottom>
               Price:
             </Typography>
-            {Array.from(Array(price), (_, i) => (
-              <AirplaneTicketRounded key={i} fontSize="small" />
-            ))}
-            {Array.from(Array(5 - price), (_, i) => (
-              <AirplaneTicketOutlined key={i} fontSize="small" />
-            ))}
+            <Box minHeight="26px" display="inline-flex" alignItems="self-start">
+              {Array.from(Array(price), (_, i) => (
+                <AirplaneTicketRounded key={i} fontSize="small" />
+              ))}
+              {Array.from(Array(5 - price), (_, i) => (
+                <AirplaneTicketOutlined key={i} fontSize="small" />
+              ))}
+            </Box>
           </div>
 
           <div>
             <Typography variant="subtitle1" gutterBottom>
               Tags:
             </Typography>
-            {hashtags.map((hashtag, key) => (
-              <Typography variant="caption" key={key}>
-                {'#' + hashtag + ' '}
-              </Typography>
-            ))}
+            <Box minHeight="26px" display="inline-flex" alignItems="self-start">
+              {hashtags.map((hashtag, key) => (
+                <Typography variant="caption" key={key}>
+                  {'#' + hashtag + ' '}
+                </Typography>
+              ))}
+            </Box>
           </div>
         </Grid>
       </Grid>

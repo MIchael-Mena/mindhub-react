@@ -1,7 +1,8 @@
 import { Alert, Card } from '@mui/material';
+import notFoundImage from '../../../../assets/images/city-not-found.png';
 
 export const CardNotFound = ({ message }: { message?: string }) => {
-  const notFoundImage = '../src/assets/images/city-not-found.png';
+  // const notFoundImage = '../src/assets/images/city-not-found.png';
   const defaultMessage = 'Oops! Something went wrong.';
 
   return (

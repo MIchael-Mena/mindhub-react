@@ -12,6 +12,7 @@ import {
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 import { CityBasic } from '../../../../models/CityBasic';
 import { Link as Anchor } from 'react-router-dom';
+import { getSubstringAfterHyphen } from '../../../../utils/util';
 
 interface CardCityProps {
   city: CityBasic;
@@ -27,7 +28,7 @@ const CardCity = ({ city }: CardCityProps) => {
         elevation={1}
         sx={{
           display: 'flex',
-          minHeight: 300,
+          minHeight: 330,
           maxWidth: 300,
           borderRadius: '15px',
           boxShadow: '5px 5px 5px 1px rgba(0, 0, 0, 0.3)',
@@ -71,7 +72,7 @@ const CardCity = ({ city }: CardCityProps) => {
               <PlaceTwoToneIcon />
             </IconButton>
             <Typography variant="h6" color={'secondary'}>
-              {city.name}
+              {getSubstringAfterHyphen(city.name)}
             </Typography>
           </Paper>
           <Typography variant="body2" color="textSecondary">
