@@ -20,7 +20,7 @@ export const ButtonGoogle = ({
 }: ButtonGoogleProps) => {
   const [googleCode, setGoogleCode] = useState<string | null>(null);
 
-  const { loading } = useApiService<ApiResponse<User>>(() => {
+  const { loading } = useApiService<ApiResponse<User>, void>(() => {
     return googleCode
       ? dispatchGoogle(googleCode).then((res) => handleGoogleAction(res))
       : Promise.resolve({} as ApiResponse<User>);
