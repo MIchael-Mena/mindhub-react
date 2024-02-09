@@ -42,8 +42,8 @@ export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
             username={`${user.firstName} ${user.lastName}`}
             sx={{
               mr: 1,
-              width: '25px',
-              height: '25px',
+              width: '30px',
+              height: '30px',
               fontSize: '0.7rem',
             }}
           />

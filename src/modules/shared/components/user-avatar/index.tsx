@@ -27,7 +27,7 @@ export const UserAvatar = ({
     <>
       <Tooltip title={username} placement={tooltipPlacement} arrow>
         {isValidUrl(imageUrl) ? (
-          <Avatar alt={username} src={imageUrl} />
+          <Avatar alt={username} src={imageUrl} {...rest} />
         ) : (
           <Avatar {...stringAvatar(username)} {...rest} />
         )}

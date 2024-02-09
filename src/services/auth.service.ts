@@ -35,6 +35,7 @@ export class AuthService extends ApiService {
         this.authEndpoint + '/register',
         user
       );
+      localStorage.setItem('token', response.data.token!);
       return response.data;
     } catch (error) {
       throw error;
