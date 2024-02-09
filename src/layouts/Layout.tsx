@@ -1,7 +1,14 @@
 import { Box } from '@mui/material';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import { Outlet } from 'react-router-dom';
+import Header from '../modules/core/components/header';
+import Footer from '../modules/core/components/footer';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
+import { useEffect } from 'react';
+import { authenticate } from '../store/actions/user';
+import { ApiService } from '../services/api.service';
+import { ApiResponse } from '../models/ApiResponse';
+import { handleSnackbar } from '../utils/apiUtils';
+import RouteChangeHandler from '../modules/core/components/route-change-handler';
 
 const Layout = () => {
   const componentSizes = {
@@ -9,6 +16,20 @@ const Layout = () => {
     main: 'calc(100vh - 140px)',
     footer: '70px',
   };
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // Me aseguro que el servicio de API este inicializado una sola vez
+    ApiService.initialize(dispatch);
+
+    // Si no tengo token, no hago nada
+    if (localStorage.getItem('token') === null) return;
+    dispatch(authenticate())
+      .unwrap()
+      .catch((res: ApiResponse<void>) => {
+        handleSnackbar(res.message, 'error');
+      });
+  }, []);
 
   return (
     <>
@@ -17,8 +38,7 @@ const Layout = () => {
         component="main"
         sx={{
           position: 'relative',
-          mt: 2,
-          // mt: componentSizes.header, // no es necesario, se agrego un toolbar vacio en el nav-bar
+          mt: 1,
           minHeight: componentSizes.main,
           display: 'flex',
         }}
@@ -26,6 +46,17 @@ const Layout = () => {
         <Outlet />
       </Box>
       <Footer minHeight={componentSizes.footer} />
+      <RouteChangeHandler />
+      <ScrollRestoration
+        // key={'scroll-restoration'}
+        // Dejo de funcionar preventScrollReset y por eso se usa state
+        getKey={(location, _matches) => {
+          //https:reactrouter.com/en/6.15.0/components/scroll-restoration
+          return location.state && !location.state.preventScrollReset
+            ? null
+            : location.pathname;
+        }}
+      />
     </>
   );
 };

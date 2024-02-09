@@ -1,0 +1,9 @@
+/* No es necesario important si se usa la propiedad style o sx dentro del componente */
+
+.common-paper {
+  border-radius: 0 !important;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}

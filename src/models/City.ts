@@ -1,9 +1,7 @@
-export interface City {
-  _id?: string;
-  name: string;
-  description: string;
-  country: string;
-  images: string[];
+import { CityBasic } from './CityBasic';
+import { Itinerary } from './Itinerary';
+
+export interface City extends CityBasic {
   capital: boolean;
   population: number;
   area: number;
@@ -13,4 +11,5 @@ export interface City {
   religion: string;
   bestTime: string;
   timezone: string;
+  itineraries?: Itinerary[];
 }

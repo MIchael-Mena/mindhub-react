@@ -1,21 +1,32 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { NavItem } from '../models/NavItem';
 import Layout from '../layouts/Layout';
-import Home from '../pages/Home';
-import Cities from '../pages/Cities';
-import CityDetail from '../pages/CityDetail';
+import Home from '../modules/home/pages/Home';
+import Cities from '../modules/cities/pages/Cities';
+import CityDetail from '../modules/cityDetail/pages/CityDetail';
+import NotFound from '../modules/core/components/not-found';
+
+const navItems: NavItem[] = [
+  { name: 'Home', path: '/home' },
+  { name: 'Cities', path: '/cities' },
+];
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      { path: '', element: <Navigate to="/Home" /> },
-      { path: '/Home', element: <Home /> },
-      { path: '/Cities', element: <Cities /> },
-      { path: '/CityDetail/:id', element: <CityDetail /> },
+      { path: '', element: <Navigate to="/home" /> },
+      { path: '/home', element: <Home />, caseSensitive: true },
+      { path: '/cities', element: <Cities />, caseSensitive: true },
+      {
+        path: '/city-detail/:id',
+        element: <CityDetail />,
+        caseSensitive: true,
+      },
+      { path: '*', element: <NotFound /> },
     ],
   },
-  { path: '*', element: <h1>404</h1> },
 ]);
 
-export default router;
+export { router, navItems };

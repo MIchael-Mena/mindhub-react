@@ -1,28 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { StatusResponse } from '../models/StatusResponse';
 
-interface GetDataResponse<T> {
-  data: T;
-  loading: boolean;
-  error: any | null;
-}
-
+// Ejemplo de uso:
 // const {data: cities,loading, error} = useApiService<City[]>(() => ApiService.getData<City[]>('/cities'));
-export const useApiService = <T>(
+/* @param crudMethod: funcion que devuelve una promesa con el resultado de la llamada a la api
+ * @param listenTo: array de dependencias que se pasan al useEffect, por defecto es un array vacio
+ * @param initialSkipFirstExecution: booleano que indica si se quiere saltar la primera ejecucion del hook, por defecto es false
+ * @returns: objeto con el estado de la llamada a la api
+ */
+export const useApiService = <T, P>(
   crudMethod: () => Promise<T>,
-  listenTo: React.DependencyList = []
+  listenTo: React.DependencyList = [],
+  initialSkipFirstExecution: boolean = false
 ) => {
-  const [state, setState] = useState<GetDataResponse<T>>({
-    loading: true,
+  const skipFirstExecutionRef = useRef(initialSkipFirstExecution);
+  const [state, setState] = useState<StatusResponse<T, P>>({
+    // Si se quiere saltar la primera ejecucion, se pone el loading a false
+    loading: !initialSkipFirstExecution,
     data: [] as T,
     error: null,
   });
 
   useEffect(() => {
+    if (skipFirstExecutionRef.current) {
+      skipFirstExecutionRef.current = false;
+      return;
+    }
+    if (initialSkipFirstExecution) setState({ ...state, loading: true });
+
     runApiService(crudMethod);
     return () => {
-      // cleanup
+      // cleanup, se ejecuta cuando se desmonta el componente o cuando cambia el estado de listenTo
       setState({
-        loading: true,
+        loading: !initialSkipFirstExecution,
         data: [] as T,
         error: null,
       });
@@ -40,11 +50,13 @@ export const useApiService = <T>(
     } catch (error) {
       setState({
         data: [] as T,
-        error: error,
+        error: error as P, // Revisar si es necesario el casting
         loading: false,
       });
     }
   };
 
+  // La primera vez que se ejecuta el hook, se ejecuta el crudMethod y devuelve el estado inicial,
+  // despues de resolverse la promesa de crudMethod se actualiza el estado y se vuelve a renderizar el componente
   return state;
 };

@@ -53,11 +53,11 @@ const theme = createTheme({
     },
     subtitle1: {
       fontSize: '1rem',
-      fontWeight: 500,
+      fontWeight: 600,
     },
     subtitle2: {
       fontSize: '0.875rem',
-      fontWeight: 400,
+      fontWeight: 600,
     },
     body1: {
       fontFamily: 'Roboto, sans-serif',
@@ -75,7 +75,7 @@ const theme = createTheme({
       letterSpacing: '0.05em',
     },
     caption: {
-      fontSize: '0.75rem',
+      fontSize: '0.85rem', // 0.75rem previously
       fontWeight: 400,
     },
     overline: {
@@ -84,6 +84,21 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiFab: {
+      defaultProps: {
+        style: {
+          transition: 'all 0.2s ease-in-out',
+        },
+      },
+      variants: [
+        {
+          props: { variant: 'extended' },
+          style: {
+            textTransform: 'none',
+          },
+        },
+      ],
+    },
     MuiAlert: {
       styleOverrides: {
         root: {
