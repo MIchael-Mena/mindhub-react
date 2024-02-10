@@ -19,6 +19,7 @@ const Layout = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('Layout', import.meta.env.BASE_URL, import.meta.env.MODE);
     // Me aseguro que el servicio de API este inicializado una sola vez
     ApiService.initialize(dispatch);
 

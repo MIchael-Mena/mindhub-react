@@ -1,4 +1,5 @@
 import { Alert, AlertTitle, Box } from '@mui/material';
+import imageNotFound from '../../../../assets/images/404.jpg';
 
 export const FailedRequest = ({
   message,
@@ -8,7 +9,7 @@ export const FailedRequest = ({
   width?: string;
 }) => {
   const defaultMessage = 'Oops! Something went wrong.';
-  const imageNotFound = '../src/assets/images/404.jpg';
+  // const imageNotFound = '../src/assets/images/404.jpg';
   return (
     <>
       <Box
