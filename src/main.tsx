@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
@@ -11,13 +11,13 @@ import 'dayjs/locale/en';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // El strict mode puede causar que useState se ejecute dos veces
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeConfig>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
-          <App />
-        </LocalizationProvider>
-      </ThemeConfig>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <ThemeConfig>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+        <App />
+      </LocalizationProvider>
+    </ThemeConfig>
+  </Provider>
+  // </React.StrictMode>
 );
