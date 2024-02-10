@@ -9,10 +9,16 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    environment: .env.production
+    # environment: .env.production
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
+        env:
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+//  Agregar a package.json en "scripts":  "postinstall": "node modifyViteConfig.cjs"
+
 const filePath = path.join(__dirname, 'vite.config.ts');
 
 fs.readFile(filePath, 'utf8', function (err, data) {
