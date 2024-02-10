@@ -8,7 +8,7 @@ import { SnackbarConfig } from './config/snackbar.config';
 function App() {
   console.log(
     'App',
-    import.meta.env.BASE_URL,
+    import.meta.env.VITE_BASE_URL,
     import.meta.env.MODE,
     import.meta.env.VITE_GOOGLE_CLIENT_ID
   );

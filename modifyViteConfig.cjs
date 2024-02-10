@@ -19,4 +19,5 @@ fs.readFile(filePath, 'utf8', function (err, data) {
   fs.writeFile(filePath, result, 'utf8', function (err) {
     if (err) return console.log(err);
   });
+  console.log('Svgr plugin added to vite.config.ts');
 });
