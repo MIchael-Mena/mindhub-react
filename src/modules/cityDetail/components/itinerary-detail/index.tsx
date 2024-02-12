@@ -59,17 +59,17 @@ export const ItineraryDetail = ({
           display="flex"
           flexDirection="row"
           flexWrap={{ xs: 'wrap', lg: 'nowrap' }}
-          gap={{ xs: 1, md: 2 }}
+          gap={{ xs: 1, lg: 2 }}
           alignItems="center"
           justifyContent="space-evenly"
-          p={{ xs: 1, md: 2 }}
-          mb={{ xs: 1, md: 0 }}
+          p={{ xs: 1, lg: 2 }}
+          mb={{ xs: 1, lg: 0 }}
         >
           <div>
             <Typography variant="subtitle1" gutterBottom>
               Duration:
             </Typography>
-            <Box display="inline-flex" alignItems="self-start" minHeight="26px">
+            <Box display="inline-flex" alignItems="self-start" minHeight="24px">
               <TimerSharp />
               <Typography variant="body1" mx={1}>
                 {duration / 60} hours
@@ -81,7 +81,7 @@ export const ItineraryDetail = ({
             <Typography variant="subtitle1" gutterBottom>
               Price:
             </Typography>
-            <Box minHeight="26px" display="inline-flex" alignItems="self-start">
+            <Box minHeight="24px" display="inline-flex" alignItems="self-start">
               {Array.from(Array(price), (_, i) => (
                 <AirplaneTicketRounded key={i} fontSize="small" />
               ))}
@@ -95,7 +95,7 @@ export const ItineraryDetail = ({
             <Typography variant="subtitle1" gutterBottom>
               Tags:
             </Typography>
-            <Box minHeight="26px" display="inline-flex" alignItems="self-start">
+            <Box minHeight="24px" display="inline-flex" alignItems="self-start">
               {hashtags.map((hashtag, key) => (
                 <Typography variant="caption" key={key}>
                   {'#' + hashtag + ' '}

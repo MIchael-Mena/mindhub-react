@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { sortOptionsMapping } from '../util/sort-options';
+import { citiesSortOptionsMapping } from '../util/cities-sort-options';
 
 /* 
   Este hook se encarga de obtener los parametros de la url y parsearlos a los valores que se usan en el backend
@@ -14,10 +14,10 @@ export const useUrlParams = () => {
 
   const sortParamRaw = urlParams.get('sort');
   const sortParam =
-    sortOptionsMapping[
-      (!sortParamRaw || !(sortParamRaw in sortOptionsMapping)
+    citiesSortOptionsMapping[
+      (!sortParamRaw || !(sortParamRaw in citiesSortOptionsMapping)
         ? 'Most recent'
-        : sortParamRaw) as keyof typeof sortOptionsMapping
+        : sortParamRaw) as keyof typeof citiesSortOptionsMapping
     ];
 
   return { searchParam, pageParam, sortParam };

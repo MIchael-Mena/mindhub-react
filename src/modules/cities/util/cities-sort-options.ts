@@ -1,7 +1,7 @@
-const sortOptionsMapping = {
+const citiesSortOptionsMapping = {
   'Most recent': 'updatedAt',
   City: 'name',
   Country: 'country',
 };
 
-export { sortOptionsMapping };
+export { citiesSortOptionsMapping };

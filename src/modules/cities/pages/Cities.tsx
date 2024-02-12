@@ -38,7 +38,7 @@ const Cities = () => {
           <Grid
             item
             xs={12}
-            md={6}
+            sm={6}
             lg={4}
             order={{ xs: 3, lg: 1 }}
             display="inline-flex"
@@ -49,7 +49,6 @@ const Cities = () => {
           <Grid
             item
             xs={12}
-            md={12}
             lg={4}
             display="inline-flex"
             justifyContent="center"
@@ -60,7 +59,7 @@ const Cities = () => {
           <Grid
             item
             xs={12}
-            md={6}
+            sm={6}
             lg={4}
             display="inline-flex"
             justifyContent={{ xs: 'center', md: 'flex-start', lg: 'flex-end' }}

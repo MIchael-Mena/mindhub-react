@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { sortOptionsMapping } from '../../util/sort-options';
+import { citiesSortOptionsMapping } from '../../util/cities-sort-options';
 import { SortButton } from '../../../shared/components/sort-button';
 
 export const SortCities = () => {
@@ -8,7 +8,7 @@ export const SortCities = () => {
   const sortValue = sortParam.get('sort');
 
   const currentSort =
-    !sortValue || !(sortValue in sortOptionsMapping)
+    !sortValue || !(sortValue in citiesSortOptionsMapping)
       ? 'Most recent'
       : sortValue;
 
@@ -39,14 +39,14 @@ export const SortCities = () => {
   // Lo uso para controlar que el valor de sortValue sea valido en la url (si no lo es, lo elimino)
   useEffect(() => {
     // Si la buscado esta vacia (sortValue === null) o si el valor de sortValue es valido, no hago nada
-    if (!sortValue || sortValue in sortOptionsMapping) return;
+    if (!sortValue || sortValue in citiesSortOptionsMapping) return;
     deleteSortParam();
   }, [sortValue]);
 
   return (
     <SortButton
       currentSort={currentSort}
-      sortsAvailable={sortOptionsMapping}
+      sortsAvailable={citiesSortOptionsMapping}
       onSortSelected={handleSort}
     />
   );
