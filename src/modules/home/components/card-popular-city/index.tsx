@@ -7,7 +7,6 @@ import './CardPopularCity.css';
 
 const CardPopularCity = (city: CityBasic) => {
   const pathCityDetail = `/city-detail/${city['_id']}`;
-  const currentPath = window.location.pathname; // No se usa, pero queda como ejemplo de state de Anchor
 
   return (
     <Box className="card-popular-city">
@@ -47,7 +46,7 @@ const CardPopularCity = (city: CityBasic) => {
         />
         <Box className="description-container" p={{ xs: 2, sm: 4 }}>
           <Typography variant="body1">{city.description}</Typography>
-          <Anchor to={pathCityDetail} state={{ from: currentPath }}>
+          <Anchor to={pathCityDetail}>
             <Button
               variant="outlined"
               color="success"

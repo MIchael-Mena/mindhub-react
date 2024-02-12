@@ -13,6 +13,7 @@ import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 import { CityBasic } from '../../../../models/CityBasic';
 import { Link as Anchor } from 'react-router-dom';
 import { getSubstringAfterHyphen } from '../../../../utils/util';
+import { LazyLoadImageWithSkeleton } from '../../../shared/components/lazy-load-image-with-skeleton';
 
 interface CardCityProps {
   city: CityBasic;
@@ -20,7 +21,11 @@ interface CardCityProps {
 
 const CardCity = ({ city }: CardCityProps) => {
   const pathCityDetail = `/city-detail/${city['_id']}`;
-  const currentPath = window.location.pathname;
+  const imgStyle = {
+    height: 140,
+    border: '1px solid #ccc',
+    borderRadius: '15px 15px 0 0',
+  };
 
   return (
     <>
@@ -39,15 +44,19 @@ const CardCity = ({ city }: CardCityProps) => {
           flexDirection: 'column',
         }}
       >
-        <CardMedia
-          component="img"
-          loading="lazy"
-          image={city.images[0]}
-          height="140"
-          sx={{ border: '1px solid #ccc', borderRadius: '15px 15px 0 0' }}
+        <LazyLoadImageWithSkeleton
+          src={city.images[0]}
           alt={city.name}
-        />
-
+          skeletonStyle={imgStyle}
+        >
+          <CardMedia
+            component="img"
+            loading="lazy"
+            image={city.images[0]}
+            sx={imgStyle}
+            alt={city.name}
+          />
+        </LazyLoadImageWithSkeleton>
         <CardContent sx={{ pb: 0 }}>
           <Paper
             variant="outlined"
@@ -81,11 +90,7 @@ const CardCity = ({ city }: CardCityProps) => {
         </CardContent>
 
         <CardActions disableSpacing sx={{ justifyContent: 'end', mt: 'auto' }}>
-          <Anchor
-            to={pathCityDetail}
-            preventScrollReset={false}
-            state={{ from: currentPath }}
-          >
+          <Anchor to={pathCityDetail} preventScrollReset={false}>
             <Button variant="outlined" color="success">
               Explore
             </Button>

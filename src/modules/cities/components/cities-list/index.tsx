@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { fetchCities } from '../../../../store/actions/cities';
 import { useUrlParams } from '../../hooks/useUrlParams';
 import { CardCitySkeleton } from '../card-city-skeleton';
-import { CardCityLoader } from '../card-city-loader';
+import CardCity from '../card-city';
 
 export const CitiesList = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +17,7 @@ export const CitiesList = () => {
     loading,
     error,
   } = useAppSelector((store) => store.citiesReducer.citiesFiltered);
+  // console.log('CitiesList loading', loading);
 
   useEffect(() => {
     if (
@@ -66,9 +67,7 @@ export const CitiesList = () => {
         ) : cities.length === 0 ? (
           <CardNotFound message="Sorry, there are no cities available." />
         ) : (
-          cities.map((city, index) => (
-            <CardCityLoader key={index} city={city} />
-          ))
+          cities.map((city, index) => <CardCity key={index} city={city} />)
         )}
       </Box>
     </>

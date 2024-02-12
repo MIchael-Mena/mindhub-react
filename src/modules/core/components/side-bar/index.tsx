@@ -30,11 +30,7 @@ export const SideBar = (props: SideBarProps) => {
       <Divider />
       <List>
         {navItems.map((item, key) => (
-          <Anchor
-            key={key}
-            to={item.path}
-            state={{ from: window.location.pathname }}
-          >
+          <Anchor key={key} to={item.path}>
             <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: 'center' }}>
                 <ListItemText
