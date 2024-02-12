@@ -17,7 +17,6 @@ export const CitiesList = () => {
     loading,
     error,
   } = useAppSelector((store) => store.citiesReducer.citiesFiltered);
-  // console.log('CitiesList loading', loading);
 
   useEffect(() => {
     if (
@@ -37,7 +36,7 @@ export const CitiesList = () => {
     );
   }, [searchParam, pageParam, sortParam]);
 
-  const skeletonCount = cities.length > 0 ? cities.length : 3;
+  const skeletonCount = cities.length > 0 ? cities.length : searchParam ? 1 : 3;
   return (
     <>
       <Box
