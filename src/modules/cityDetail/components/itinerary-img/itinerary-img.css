@@ -1,15 +1,24 @@
-/* .itinerary-img {
-  transition: transform 1s;
-}
-
-.itinerary-img:hover {
-  transform: perspective(600px) rotateY(5deg);
-}
- */
-.itinerary-img {
-  transition: transform 1s;
-  transform-style: preserve-3d;
+.img-container {
+  overflow: hidden;
+  position: relative;
   border-radius: 10px;
   border: 1px solid #ccc;
   box-shadow: 5px 5px 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+.img-container .glow {
+  display: block;
+  position: absolute;
+  width: 45%;
+  height: 600%;
+  background: rgba(255, 255, 255, 0.2);
+  top: 0;
+  filter: blur(5px);
+  transform: rotate(45deg) translate(-450%, 0);
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.img-container:hover .glow {
+  transform: rotate(45deg) translate(450%, 0);
+  transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
 }

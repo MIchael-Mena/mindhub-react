@@ -26,7 +26,7 @@ export const SideBar = (props: SideBarProps) => {
 
   const drawer = (
     <Box onClick={props.handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Logo isVisibleInSm={false} sizeXs="small" />
+      <Logo isVisibleInSm={false} sizeXs="small" link="/home" />
       <Divider />
       <List>
         {navItems.map((item, key) => (
@@ -47,6 +47,7 @@ export const SideBar = (props: SideBarProps) => {
   );
 
   const container = () => document.body;
+  console.log('container', container);
 
   return (
     <Box component="nav">

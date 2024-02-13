@@ -1,8 +1,8 @@
 import { Box, SvgIcon, Theme, Typography, useMediaQuery } from '@mui/material';
-// import { ReactComponent as MyTineraryIcon } from '../../assets/icons/logo-tinerary.svg';
 import { ReactComponent as MyTineraryIcon } from '../../../../assets/icons/logo-tinerary.svg';
-import './Logo.css';
 import { Variant } from '@mui/material/styles/createTypography';
+import './logo.css';
+import { useNavigate } from 'react-router-dom';
 
 interface logoProps {
   isVisibleInXs?: boolean;
@@ -10,6 +10,7 @@ interface logoProps {
   size?: 'small' | 'medium' | 'large';
   sizeXs?: 'small' | 'medium' | 'large';
   sizeSm?: 'small' | 'medium' | 'large';
+  link?: string;
 }
 
 const logoSize = (size: string) => {
@@ -43,16 +44,19 @@ const Logo = ({
   size,
   sizeXs = 'small',
   sizeSm = 'medium',
+  link,
 }: logoProps) => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
   );
+  const navigate = useNavigate();
   const { textSize, iconSize } = logoSize(
     size || (isSmallScreen ? sizeXs : sizeSm)
   );
 
   return (
     <Box
+      id="logo"
       sx={{
         display: {
           xs: isVisibleInXs ? 'inline-flex' : 'none',
@@ -62,7 +66,9 @@ const Logo = ({
         alignItems: 'center',
         gap: 1,
         flexWrap: 'wrap',
+        cursor: link ? 'pointer' : 'default',
       }}
+      onClick={() => link && navigate(link)}
     >
       <SvgIcon
         component={MyTineraryIcon}
@@ -71,7 +77,7 @@ const Logo = ({
         sx={{ width: 'auto', height: iconSize }}
       />
       <Typography
-        className="logo-text"
+        className="logo-text sparkle u-hover--sparkle"
         component="div"
         variant={textSize as Variant}
       >

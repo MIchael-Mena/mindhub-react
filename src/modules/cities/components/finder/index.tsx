@@ -1,7 +1,5 @@
-// import { ChangeEvent, useState, FormEvent, useEffect } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-// import { useSearchParams } from 'react-router-dom';
 import ClearIcon from '@mui/icons-material/Clear';
 import useSearch from '../../hooks/useSearch';
 
@@ -25,14 +23,14 @@ const Finder = () => {
             borderRadius: 5,
             padding: 1,
             boxShadow: (theme) =>
-              `0px 0px 5px 0px ${theme.palette.primary.dark}`,
+              `0px 0px 3px 0px ${theme.palette.primary.dark}`,
             transition: 'all 0.5s ease',
             '&:hover, &:focus-within': {
               // focus-within se aplica cuando el elemento o sus hijos tienen el foco
               borderRadius: '50px',
               borderColor: (theme) => theme.palette.primary.light,
               boxShadow: (theme) =>
-                `0px 0px 5px 0px ${theme.palette.primary.light}`,
+                `0px 0px 3px 0px ${theme.palette.primary.light}`,
             },
           }}
         >

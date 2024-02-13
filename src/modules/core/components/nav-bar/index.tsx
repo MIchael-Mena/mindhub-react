@@ -34,7 +34,7 @@ const NavBar = ({ handleDrawerToggle, minHeight }: NavBarProps) => {
             <MenuIcon fontSize="large" />
           </IconButton>
 
-          <Logo isVisibleInXs={false} sizeSm="small" />
+          <Logo isVisibleInXs={false} sizeSm="small" link="/home" />
 
           <div>
             <NavigationItems />

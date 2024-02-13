@@ -24,24 +24,25 @@ export const ItineraryImg = ({
           variant="rectangular"
           width="100%"
           height="320px"
-          className="itinerary-img"
+          className="img-container"
         />
       )}
       {!parentLoading && (
-        <img
-          src={images[0]}
-          alt={cityName}
-          onLoad={handleImageLoaded}
-          className="itinerary-img"
-          style={{
-            display: imageLoading ? 'none' : 'block',
-            maxWidth: '100%',
-            minHeight: '320px',
-            height: 'auto',
-            objectFit: 'cover',
-            // borderRadius: 10,
-          }}
-        />
+        <div className="img-container">
+          <img
+            src={images[0]}
+            alt={cityName}
+            onLoad={handleImageLoaded}
+            style={{
+              display: imageLoading ? 'none' : 'block',
+              maxWidth: '100%',
+              minHeight: '320px',
+              height: 'auto',
+              objectFit: 'cover',
+            }}
+          />
+          <span className="glow"></span>
+        </div>
       )}
     </>
   );

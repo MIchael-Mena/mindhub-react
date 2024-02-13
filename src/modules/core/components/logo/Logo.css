@@ -1,8 +1,61 @@
 .logo-text {
   text-shadow: 2px 2px 5px #ac1e1e;
-  cursor: default;
+  transition: color 0.1s;
 }
 
-.logo-text:hover {
+#logo:hover .logo-text {
   color: #d27685;
+}
+
+/* .logo-text:hover {
+  color: #d27685;
+} */
+
+.sparkle {
+  max-width: 10em;
+  margin: auto auto;
+}
+
+.u-hover--sparkle {
+  box-sizing: border-box;
+  position: relative;
+  padding: 0.5em;
+}
+
+.u-hover--sparkle::before,
+.u-hover--sparkle::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transform-origin: center;
+  transition: transform 800ms;
+}
+
+.u-hover--sparkle::before {
+  border-top: 0.2em solid #d27685;
+  border-bottom: 0.2em solid #d27685;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  transform: scale3d(0, 1, 1);
+}
+
+.u-hover--sparkle::after {
+  border-left: 0.2em solid #d27685;
+  /* border-right: 0.2em solid #d27685; */
+  transform: scale3d(1, 0, 1);
+}
+
+/* .u-hover--sparkle:hover::before,
+.u-hover--sparkle:hover::after {
+  transform: scale3d(1, 1, 1);
+}  */
+
+#logo:hover .u-hover--sparkle::before,
+#logo:hover .u-hover--sparkle::after {
+  transform: scale3d(1, 1, 1);
+  /* transition: transform 900ms;  Solo si quiero que la animacion sea al entrar  */
 }
