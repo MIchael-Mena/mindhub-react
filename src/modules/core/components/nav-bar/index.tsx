@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '../logo';
-import UserAccesssModal from '../../../auth/components/user-access-modal';
+import AuthAccesssModal from '../../../auth/components/auth-access-modal';
 import { NavigationItems } from '../navigation-items';
 
 interface NavBarProps {
@@ -38,7 +38,7 @@ const NavBar = ({ handleDrawerToggle, minHeight }: NavBarProps) => {
 
           <div>
             <NavigationItems />
-            <UserAccesssModal />
+            <AuthAccesssModal />
           </div>
         </Toolbar>
       </AppBar>

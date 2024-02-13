@@ -5,7 +5,7 @@ import Fade from '@mui/material/Fade';
 import { useState } from 'react';
 import SignIn from '../sign-in';
 import { SignUp } from '../sign-up';
-import { ControlAuth } from '../control-auth';
+import { ButtonControlAuth } from '../button-control-auth';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -21,7 +21,7 @@ const style = {
   overflow: 'hidden',
 };
 
-export default function UserAccesssModal() {
+const AuthAccesssModal = () => {
   const animationDuration = 500;
   const [open, setOpen] = useState(false);
   const [showSignIn, setShowSignIn] = useState(true);
@@ -39,13 +39,13 @@ export default function UserAccesssModal() {
     }, animationDuration);
   };
 
-  const toggleComponent = () => {
+  const toggleAuthAccess = () => {
     setShowSignIn(!showSignIn);
   };
 
   return (
     <>
-      <ControlAuth handleLoginOpen={handleOpen} />
+      <ButtonControlAuth handleLoginOpen={handleOpen} />
 
       <Modal
         aria-labelledby="user-access-modal"
@@ -63,13 +63,15 @@ export default function UserAccesssModal() {
         <Fade in={open} timeout={animationDuration}>
           <Box sx={style}>
             {showSignIn ? (
-              <SignIn onSignUpClick={toggleComponent} onClose={handleClose} />
+              <SignIn onSignUpClick={toggleAuthAccess} onClose={handleClose} />
             ) : (
-              <SignUp onSignInClick={toggleComponent} onClose={handleClose} />
+              <SignUp onSignInClick={toggleAuthAccess} onClose={handleClose} />
             )}
           </Box>
         </Fade>
       </Modal>
     </>
   );
-}
+};
+
+export default AuthAccesssModal;

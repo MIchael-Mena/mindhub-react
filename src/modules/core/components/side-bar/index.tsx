@@ -46,13 +46,12 @@ export const SideBar = (props: SideBarProps) => {
     </Box>
   );
 
-  const container = () => document.body;
-  console.log('container', container);
+  // const container = () => document.body;
 
   return (
     <Box component="nav">
       <Drawer
-        container={container}
+        // container={container}
         variant="temporary"
         open={props.mobileOpen}
         onClose={props.handleDrawerToggle}

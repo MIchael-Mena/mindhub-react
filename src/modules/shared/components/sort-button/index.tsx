@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
 import { useState } from 'react';
 
@@ -46,13 +46,15 @@ export const SortButton = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {Object.keys(sortsAvailable).map((sort) => (
-          <MenuItem key={sort} onClick={() => handleSort(sort)}>
-            <Typography color={currentSort === sort ? 'primary' : 'inherit'}>
-              {sort}
-            </Typography>
-          </MenuItem>
-        ))}
+        <Box sx={{}}>
+          {Object.keys(sortsAvailable).map((sort) => (
+            <MenuItem key={sort} onClick={() => handleSort(sort)}>
+              <Typography color={currentSort === sort ? 'primary' : 'inherit'}>
+                {sort}
+              </Typography>
+            </MenuItem>
+          ))}
+        </Box>
       </Menu>
     </>
   );

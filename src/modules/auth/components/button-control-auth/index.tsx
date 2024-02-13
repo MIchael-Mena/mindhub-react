@@ -6,11 +6,13 @@ import { UserAvatar } from '../../../shared/components/user-avatar';
 import { useEffect } from 'react';
 import { handleSnackbar } from '../../../../utils/apiUtils';
 
-interface ControlAuthProps {
+interface ButtonControlAuthProps {
   handleLoginOpen: () => void;
 }
 
-export const ControlAuth = ({ handleLoginOpen }: ControlAuthProps) => {
+export const ButtonControlAuth = ({
+  handleLoginOpen,
+}: ButtonControlAuthProps) => {
   const { isLogged, user, authError } = useAppSelector(
     (state) => state.userReducer
   );
