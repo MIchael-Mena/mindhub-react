@@ -1,8 +1,8 @@
 import { Box, SvgIcon, Theme, Typography, useMediaQuery } from '@mui/material';
 import { ReactComponent as MyTineraryIcon } from '../../../../assets/icons/logo-tinerary.svg';
 import { Variant } from '@mui/material/styles/createTypography';
-import './logo.css';
 import { useNavigate } from 'react-router-dom';
+import './logo.css';
 
 interface logoProps {
   isVisibleInXs?: boolean;
