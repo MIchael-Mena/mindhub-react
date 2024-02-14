@@ -1,9 +1,13 @@
 import { SerializedError, createReducer } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
-import { fetchCities, fetchPopularCities } from '../actions/cities';
+import {
+  fetchCitiesBasedOnParams,
+  fetchPopularCities,
+} from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
 import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
 import { PaginationData } from '../../models/PaginationData';
+import { defaultSortValue } from '../../modules/cities/util/cities-sort-options';
 
 const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[], SerializedError> & {
@@ -27,8 +31,9 @@ const citiesState: {
   citiesFiltered: {
     params: {
       search: '',
-      sort: 'updatedAt',
       page: 0,
+      sort: defaultSortValue,
+      order: 'desc',
       totalPages: 0,
       totalCount: 0,
     },
@@ -64,10 +69,11 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       }
     )
 
-    .addCase(fetchCities.pending, (state) => {
+    .addCase(fetchCitiesBasedOnParams.pending, (state) => {
       state.citiesFiltered.loading = true;
+      console.log('fetchCities.pending');
     })
-    .addCase(fetchCities.fulfilled, (state, action) => {
+    .addCase(fetchCitiesBasedOnParams.fulfilled, (state, action) => {
       state.citiesFiltered.params = {
         ...state.citiesFiltered.params,
         ...action.payload.params,
@@ -76,12 +82,13 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       state.citiesFiltered.data = action.payload.cities;
       state.citiesFiltered.loading = false;
     })
-    .addCase(fetchCities.rejected, (state, action) => {
+    .addCase(fetchCitiesBasedOnParams.rejected, (state, action) => {
       state.citiesFiltered.params.search = '';
-      state.citiesFiltered.params.sort = 'updatedAt';
+      state.citiesFiltered.params.sort = defaultSortValue;
       state.citiesFiltered.params.page = 0;
       state.citiesFiltered.params.totalPages = 0;
       state.citiesFiltered.params.totalCount = 0;
+      state.citiesFiltered.params.order = 'desc';
 
       state.citiesFiltered.loading = false;
       state.citiesFiltered.error = action.error;

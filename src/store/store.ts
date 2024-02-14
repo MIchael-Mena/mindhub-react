@@ -12,6 +12,8 @@ export const store = configureStore({
     // activeItineraryReducer: activeItineraryReducer, // No se usa, pero se deja como ejemplo
     itineraryExtraReducer: itineraryExtraReducer,
   },
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(fetchCitiesMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

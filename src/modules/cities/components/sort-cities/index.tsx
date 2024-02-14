@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { citiesSortOptionsMapping } from '../../util/cities-sort-options';
+import {
+  citiesSortOptionsMapping,
+  defaultSort,
+} from '../../util/cities-sort-options';
 import { SortButton } from '../../../shared/components/sort-button';
 
 export const SortCities = () => {
-  const [sortParam, setSortParam] = useSearchParams();
-  const sortValue = sortParam.get('sort');
+  const [params, setParams] = useSearchParams();
+  const sortRaw = params.get('sort');
+  const orderRaw = params.get('order');
 
   const currentSort =
-    !sortValue || !(sortValue in citiesSortOptionsMapping)
-      ? 'Most recent'
-      : sortValue;
+    !sortRaw || !(sortRaw in citiesSortOptionsMapping) ? defaultSort : sortRaw;
 
-  const deleteSortParam = () => {
-    setSortParam(
+  const deleteParams = (paramNames: string[]) => {
+    setParams(
       (params: URLSearchParams) => {
-        params.delete('sort');
+        paramNames.forEach((paramName) => params.delete(paramName));
         return params;
       },
       { preventScrollReset: true }
@@ -23,12 +25,18 @@ export const SortCities = () => {
   };
 
   const handleSort = (selectedSort: string) => {
-    if (selectedSort === 'Most recent') {
-      deleteSortParam();
+    if (selectedSort === defaultSort) {
+      deleteParams(['sort', 'order']);
     } else {
-      setSortParam(
+      setParams(
         (params: URLSearchParams) => {
           params.set('sort', selectedSort);
+          params.set(
+            'order',
+            citiesSortOptionsMapping[
+              selectedSort as keyof typeof citiesSortOptionsMapping
+            ].split('_')[1]
+          );
           return params;
         },
         { preventScrollReset: true }
@@ -39,9 +47,21 @@ export const SortCities = () => {
   // Lo uso para controlar que el valor de sortValue sea valido en la url (si no lo es, lo elimino)
   useEffect(() => {
     // Si la buscado esta vacia (sortValue === null) o si el valor de sortValue es valido, no hago nada
-    if (!sortValue || sortValue in citiesSortOptionsMapping) return;
-    deleteSortParam();
-  }, [sortValue]);
+    // if (!sortRaw || sortRaw in citiesSortOptionsMapping) return;
+    // deleteSortParam();
+
+    const sortParamIsInvalid =
+      sortRaw && !(sortRaw in citiesSortOptionsMapping);
+    const orderParamIsInvalid = orderRaw && !['asc', 'desc'].includes(orderRaw);
+
+    if (sortParamIsInvalid && orderParamIsInvalid) {
+      deleteParams(['sort', 'order']);
+    } else if (sortParamIsInvalid) {
+      deleteParams(['sort']);
+    } else if (orderParamIsInvalid) {
+      deleteParams(['order']);
+    }
+  }, [sortRaw]);
 
   return (
     <SortButton

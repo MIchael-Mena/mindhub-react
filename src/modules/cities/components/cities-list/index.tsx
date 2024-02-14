@@ -10,31 +10,24 @@ import CardCity from '../card-city';
 
 export const CitiesList = () => {
   const dispatch = useAppDispatch();
-  const { searchParam, pageParam, sortParam } = useUrlParams();
+  const { searchParam, pageParam, sortParam, orderParam } = useUrlParams();
   const {
     data: cities,
-    params: { search: currentSearch, sort: currentSort, page: currentPage },
     loading,
     error,
   } = useAppSelector((store) => store.citiesReducer.citiesFiltered);
+  console.log('cities', loading);
 
   useEffect(() => {
-    if (
-      currentSearch === searchParam &&
-      currentPage === pageParam &&
-      currentSort === sortParam &&
-      cities.length > 0
-    )
-      return; // Si la busqueda en la url es igual a la busqueda actual, no hago nada
-
     dispatch(
       fetchCities({
         search: searchParam,
         page: pageParam,
         sort: sortParam,
+        order: orderParam,
       })
     );
-  }, [searchParam, pageParam, sortParam]);
+  }, [searchParam, pageParam, sortParam, orderParam]);
 
   const skeletonCount = cities.length > 0 ? cities.length : searchParam ? 1 : 3;
   return (
