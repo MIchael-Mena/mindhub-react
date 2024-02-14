@@ -13,16 +13,17 @@ import { useState } from 'react';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
 interface SortButtonProps {
-  currentSort: string;
-  sortsAvailable: { [key: string]: string };
-  onSortSelected: (sort: string) => void;
+  currentSortIndex: number;
+  sortsAvailable: string[];
+  onSortSelected: (sortIndex: number) => void;
 }
 
 export const SortButton = ({
-  currentSort,
+  currentSortIndex,
   sortsAvailable,
   onSortSelected,
 }: SortButtonProps) => {
+  const currentSort = sortsAvailable[currentSortIndex];
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (
@@ -31,9 +32,9 @@ export const SortButton = ({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleSort = (sort: string) => {
+  const handleSort = (sortIndex: number) => {
     setAnchorEl(null);
-    onSortSelected(sort);
+    onSortSelected(sortIndex);
   };
 
   const handleClose = () => {
@@ -56,9 +57,9 @@ export const SortButton = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {Object.keys(sortsAvailable).map((sort, index) => (
+        {sortsAvailable.map((sort, index) => (
           <div key={sort}>
-            <MenuItem onClick={() => handleSort(sort)} sx={{ py: 1 }}>
+            <MenuItem onClick={() => handleSort(index)} sx={{ py: 1 }}>
               {currentSort === sort && <ChevronRightRoundedIcon />}
               <Typography
                 variant="button"
@@ -68,7 +69,7 @@ export const SortButton = ({
                 {sort}
               </Typography>
             </MenuItem>
-            {index < Object.keys(sortsAvailable).length - 1 && (
+            {index < sortsAvailable.length - 1 && (
               <Divider
                 sx={{
                   backgroundColor: (theme) =>

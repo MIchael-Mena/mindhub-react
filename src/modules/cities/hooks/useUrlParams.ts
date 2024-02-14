@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import {
-  citiesSortOptionsMapping,
-  defaultSort,
+  citiesSortOptions,
+  defaultSortOption,
 } from '../util/cities-sort-options';
 
 /* 
@@ -17,12 +17,12 @@ export const useUrlParams = () => {
   const orderParam = (urlParams.get('order') || 'desc') as 'asc' | 'desc';
 
   const sortParamRaw = urlParams.get('sort');
-  const sortParam =
-    citiesSortOptionsMapping[
-      (!sortParamRaw || !(sortParamRaw in citiesSortOptionsMapping)
-        ? defaultSort
-        : sortParamRaw) as keyof typeof citiesSortOptionsMapping
-    ].split('_')[0];
+  const isSortParamValid =
+    sortParamRaw &&
+    citiesSortOptions.some((option) => option.rawValue === sortParamRaw);
+  const sortParam = isSortParamValid
+    ? sortParamRaw
+    : defaultSortOption.rawValue;
 
   return { searchParam, pageParam, sortParam, orderParam };
 };

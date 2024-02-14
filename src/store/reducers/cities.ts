@@ -7,7 +7,7 @@ import {
 import { StatusResponse } from '../../models/StatusResponse';
 import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
 import { PaginationData } from '../../models/PaginationData';
-import { defaultSortValue } from '../../modules/cities/util/cities-sort-options';
+import { defaultSortOption } from '../../modules/cities/util/cities-sort-options';
 
 const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[], SerializedError> & {
@@ -31,8 +31,8 @@ const citiesState: {
   citiesFiltered: {
     params: {
       search: '',
-      page: 0,
-      sort: defaultSortValue,
+      page: 0, // da igual si es 0 o 1, el backend lo maneja
+      sort: defaultSortOption.rawValue,
       order: 'desc',
       totalPages: 0,
       totalCount: 0,
@@ -83,7 +83,7 @@ const citiesReducer = createReducer(citiesState, (builder) => {
     })
     .addCase(fetchCitiesBasedOnParams.rejected, (state, action) => {
       state.citiesFiltered.params.search = '';
-      state.citiesFiltered.params.sort = defaultSortValue;
+      state.citiesFiltered.params.sort = defaultSortOption.rawValue;
       state.citiesFiltered.params.page = 0;
       state.citiesFiltered.params.totalPages = 0;
       state.citiesFiltered.params.totalCount = 0;
