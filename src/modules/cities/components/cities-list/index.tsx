@@ -16,7 +16,6 @@ export const CitiesList = () => {
     loading,
     error,
   } = useAppSelector((store) => store.citiesReducer.citiesFiltered);
-  console.log('cities', loading);
 
   useEffect(() => {
     dispatch(

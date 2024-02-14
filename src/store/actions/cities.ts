@@ -49,7 +49,6 @@ const fetchCitiesBasedOnParams = createAsyncThunk<
   CitySearchParams,
   { state: RootState }
 >('fetchCities', async (payload: CitySearchParams) => {
-  console.log('fetchCities', payload);
   try {
     const { search, page, sort, order } = payload;
     const cityGetResponse = await ApiService.getData<CityGetResponse>('/city', {

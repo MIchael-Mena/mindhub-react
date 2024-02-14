@@ -71,7 +71,6 @@ const citiesReducer = createReducer(citiesState, (builder) => {
 
     .addCase(fetchCitiesBasedOnParams.pending, (state) => {
       state.citiesFiltered.loading = true;
-      console.log('fetchCities.pending');
     })
     .addCase(fetchCitiesBasedOnParams.fulfilled, (state, action) => {
       state.citiesFiltered.params = {
