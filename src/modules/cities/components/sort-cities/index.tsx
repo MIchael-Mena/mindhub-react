@@ -1,27 +1,26 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
-  citiesSortOptions,
-  citiesSortOptionsLabels,
-  defaultSortOption,
-} from '../../util/cities-sort-options';
+  CITIES_SORT_OPTIONS,
+  CITIES_SORT_OPTIONS_LABELS,
+  CITIES_DEFAULT_SORT_OPTION,
+} from '../../util/sort-options';
 import { SortButton } from '../../../shared/components/sort-button';
 
 export const SortCities = () => {
-  console.log('SortCities');
   const [params, setParams] = useSearchParams();
   const sortRaw = params.get('sort');
   const orderRaw = params.get('order');
-  const orderParam = orderRaw || defaultSortOption.order;
+  const orderParam = orderRaw || CITIES_DEFAULT_SORT_OPTION.order;
 
-  const currentSorRawIndex = citiesSortOptions.findIndex(
+  const currentSorRawIndex = CITIES_SORT_OPTIONS.findIndex(
     (option) => option.rawValue === sortRaw && option.order === orderParam
   );
   const sortRawIsValid = currentSorRawIndex !== -1;
   // Si sortRaw no es válido, establece currentSortIndex al índice de defaultSortOption
   const currentSortIndex = sortRawIsValid
     ? currentSorRawIndex
-    : citiesSortOptions.indexOf(defaultSortOption);
+    : CITIES_SORT_OPTIONS.indexOf(CITIES_DEFAULT_SORT_OPTION);
 
   const deleteParams = (paramNames: string[]) => {
     setParams(
@@ -36,13 +35,16 @@ export const SortCities = () => {
   const handleSort = (selectedSortIndex: number) => {
     // Tambien funcionaria: citiesSortOptions[selectedSortIndex] === defaultSortOption
     // ya que defaultSortOption es el primer elemento de citiesSortOptions (es el mismo objeto)
-    if (selectedSortIndex === citiesSortOptions.indexOf(defaultSortOption)) {
+    if (
+      selectedSortIndex ===
+      CITIES_SORT_OPTIONS.indexOf(CITIES_DEFAULT_SORT_OPTION)
+    ) {
       deleteParams(['sort', 'order']);
     } else {
       setParams(
         (params: URLSearchParams) => {
-          params.set('sort', citiesSortOptions[selectedSortIndex].rawValue);
-          params.set('order', citiesSortOptions[selectedSortIndex].order);
+          params.set('sort', CITIES_SORT_OPTIONS[selectedSortIndex].rawValue);
+          params.set('order', CITIES_SORT_OPTIONS[selectedSortIndex].order);
           return params;
         },
         { preventScrollReset: true }
@@ -58,13 +60,10 @@ export const SortCities = () => {
     const sortRawIsInvalid = sortRaw && !sortRawIsValid;
 
     if (sortRawIsInvalid && orderRawIsInvalid) {
-      console.error('sortRaw y orderRaw son invalidos');
       deleteParams(['sort', 'order']);
     } else if (sortRawIsInvalid) {
-      console.error('sortRaw es invalido');
       deleteParams(['sort']);
     } else if (orderRawIsInvalid) {
-      console.error('orderRaw es invalido');
       deleteParams(['order']);
     }
   }, [sortRaw, orderRaw]);
@@ -72,7 +71,7 @@ export const SortCities = () => {
   return (
     <SortButton
       currentSortIndex={currentSortIndex}
-      sortsAvailable={citiesSortOptionsLabels}
+      sortsAvailable={CITIES_SORT_OPTIONS_LABELS}
       onSortSelected={handleSort}
     />
   );

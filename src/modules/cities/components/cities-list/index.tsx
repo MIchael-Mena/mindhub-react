@@ -3,7 +3,7 @@ import { FailedRequest } from '../../../shared/components/failed-request';
 import { CardNotFound } from '../../../shared/components/card-not-found/CardNotFound';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useEffect } from 'react';
-import { fetchCities } from '../../../../store/actions/cities';
+import { fetchCitiesWithValidation } from '../../../../store/actions/cities';
 import { useUrlParams } from '../../hooks/useUrlParams';
 import { CardCitySkeleton } from '../card-city-skeleton';
 import CardCity from '../card-city';
@@ -19,7 +19,7 @@ export const CitiesList = () => {
 
   useEffect(() => {
     dispatch(
-      fetchCities({
+      fetchCitiesWithValidation({
         search: searchParam,
         page: pageParam,
         sort: sortParam,

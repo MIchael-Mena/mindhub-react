@@ -1,15 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ApiService } from '../../services/api.service';
-import { RootState } from '../store';
+import { AppDispatch, RootState } from '../store';
 import { Activity } from '../../models/Acitivity';
 import { Comment, CommentToCreate } from '../../models/Comment';
 import { PaginationData } from '../../models/PaginationData';
 import { ApiResponse } from '../../models/ApiResponse';
 import {
-  CommentPaginationOptions,
+  CommentSearchParams,
   ItineraryExtraState,
 } from '../../models/ItineraryExtra';
 import { getApiError } from '../../utils/apiUtils';
+import { COMMENT_DEFAULT_SORT_OPTION } from '../../modules/cities/util/sort-options';
 
 interface CommentResponse extends PaginationData {
   comments: Comment[];
@@ -76,7 +77,7 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
   async (itineraryId: string, { getState, rejectWithValue }) => {
     const {
       itineraryId: currentItineraryId,
-      commentParams: { order },
+      commentParams: { order, sort },
     } = (getState() as RootState).itineraryExtraReducer.data;
     if (itineraryId === currentItineraryId) {
       // Si el itineraryId no ha cambiado, simplemente devuelve el estado actual.
@@ -87,7 +88,7 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
         `/comment/for-itinerary/${itineraryId}`,
         {
           limit: maxCommentsPerPage,
-          sort: 'updatedAt',
+          sort: sort!,
           order: order!,
         }
       );
@@ -122,46 +123,58 @@ const fetchCommentsAndActivitiesByItineraryId = createAsyncThunk<
   }
 );
 
+interface fetchCommentsParams extends CommentSearchParams {
+  append?: boolean; // Si es true, se concatenan los comentarios al array existente
+}
+
+const fetchCommentsWithValidation =
+  ({ sort, order, page, append }: fetchCommentsParams) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const {
+      commentParams: {
+        order: currentOrder,
+        sort: currentSort,
+        page: currentPage,
+        totalPages,
+      },
+    } = getState().itineraryExtraReducer.data;
+    const activeSort = sort || currentSort!;
+    const activeOrder = order || currentOrder!;
+    if (
+      page > totalPages ||
+      (page === currentPage && order === currentOrder && sort === currentSort)
+    )
+      return;
+
+    dispatch(
+      fetchComments({ order: activeOrder, sort: activeSort, page, append })
+    );
+  };
+
 const fetchComments = createAsyncThunk<
-  { comments: Comment[] } & CommentPaginationOptions & PaginationData,
-  CommentPaginationOptions,
+  { comments: Comment[] } & fetchCommentsParams & PaginationData,
+  fetchCommentsParams,
   { rejectValue: ApiResponse<void> }
 >(
   'fetchMoreComments',
   async (
-    { order, page, sort = 'updatedAt' }: CommentPaginationOptions,
+    {
+      order = COMMENT_DEFAULT_SORT_OPTION.order,
+      page,
+      sort = COMMENT_DEFAULT_SORT_OPTION.rawValue,
+      append = false,
+    }: fetchCommentsParams,
     { getState, rejectWithValue }
   ) => {
-    const {
-      itineraryId,
-      comments,
-      commentParams: {
-        page: currentPage,
-        order: currentOrder,
-        totalPages,
-        totalCount,
-      },
-    } = (getState() as RootState).itineraryExtraReducer.data;
-    const activeOrder = order || currentOrder!;
-    if (page > totalPages || (page === 1 && activeOrder === currentOrder)) {
-      // Si no hay más páginas. Evito hacer la llamada al servidor.
-      return {
-        comments,
-        page: currentPage,
-        order: currentOrder,
-        totalPages,
-        totalCount,
-      };
-    }
-
     try {
+      const { itineraryId } = (getState() as RootState).itineraryExtraReducer
+        .data;
       const commentsRes = await ApiService.getData<CommentResponse>(
         `/comment/for-itinerary/${itineraryId}`,
         {
           limit: maxCommentsPerPage,
-          // sort: 'updatedAt',
-          sort: sort,
-          order: activeOrder,
+          sort,
+          order,
           page,
         }
       );
@@ -171,9 +184,10 @@ const fetchComments = createAsyncThunk<
       return {
         comments,
         page,
-        order: activeOrder,
+        order,
         sort,
         ...params,
+        append,
       };
     } catch (error) {
       return rejectWithValue(getApiError(error));
@@ -186,5 +200,6 @@ export {
   deleteComment,
   createComment,
   fetchCommentsAndActivitiesByItineraryId,
+  fetchCommentsWithValidation,
   fetchComments,
 };

@@ -1,7 +1,7 @@
 import { Button, ListItem } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { fetchComments } from '../../../../store/actions/itinerary-extra';
+import { fetchCommentsWithValidation } from '../../../../store/actions/itinerary-extra';
 
 export const ButtonLoadMore = () => {
   const dispatch = useAppDispatch();
@@ -11,7 +11,9 @@ export const ButtonLoadMore = () => {
   );
 
   const handleLoadMore = () => {
-    dispatch(fetchComments({ page: currentPage + 1 }));
+    dispatch(
+      fetchCommentsWithValidation({ page: currentPage + 1, append: true })
+    );
   };
 
   return (

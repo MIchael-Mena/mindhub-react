@@ -1,55 +1,43 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { fetchComments } from '../../../../store/actions/itinerary-extra';
+import { fetchCommentsWithValidation } from '../../../../store/actions/itinerary-extra';
 import { SortButton } from '../../../shared/components/sort-button';
-import { SortOption } from '../../../../models/SortOption';
-
-const sortsComments: SortOption[] = [
-  {
-    label: 'Most recent',
-    rawValue: 'createdAt',
-    order: 'desc',
-  },
-  {
-    label: 'Most old',
-    rawValue: 'createdAt',
-    order: 'asc',
-  },
-];
-
-const sortCommentsLabels = sortsComments.map((option) => option.label);
+import {
+  COMMENTS_SORT_OPTIONS,
+  COMMENTS_SORT_OPTIONS_LABELS,
+} from '../../../cities/util/sort-options';
 
 const SortComments = () => {
-  const initialSortIndex = 0;
+  const initialSortOrderIndex = 0; // COMMENTS_SORT_OPTIONS.indexOf(COMMENTS_DEFAULT_SORT_OPTION)
   const dispatch = useAppDispatch();
-  const tinerraryId = useAppSelector(
+  const itineraryId = useAppSelector(
     (state) => state.itineraryExtraReducer.data.itineraryId
   );
 
-  const [currentSortIndex, setCurrentSortIndex] =
-    useState<number>(initialSortIndex);
+  const [currentSortOrderIndex, setCurrentSortIndex] = useState<number>(
+    initialSortOrderIndex
+  );
 
-  const handleSort = (selectedSortIndex: number) => {
-    setCurrentSortIndex(selectedSortIndex);
+  const handleSortOrderChange = (selectedSortOrderIndex: number) => {
+    setCurrentSortIndex(selectedSortOrderIndex);
     dispatch(
-      fetchComments({
-        // order: Object.values(sortsAvailable)[selectedSortIndex],
-        order: sortsComments[selectedSortIndex].order,
-        sort: sortsComments[selectedSortIndex].rawValue,
+      fetchCommentsWithValidation({
+        order: COMMENTS_SORT_OPTIONS[selectedSortOrderIndex].order,
+        sort: COMMENTS_SORT_OPTIONS[selectedSortOrderIndex].rawValue,
         page: 1,
       })
     );
   };
 
   useEffect(() => {
-    setCurrentSortIndex(initialSortIndex);
-  }, [tinerraryId]);
+    setCurrentSortIndex(initialSortOrderIndex);
+  }, [itineraryId]);
 
   return (
     <SortButton
-      currentSortIndex={currentSortIndex}
-      sortsAvailable={sortCommentsLabels}
-      onSortSelected={handleSort}
+      currentSortIndex={currentSortOrderIndex}
+      sortsAvailable={COMMENTS_SORT_OPTIONS_LABELS}
+      onSortSelected={handleSortOrderChange}
     />
   );
 };

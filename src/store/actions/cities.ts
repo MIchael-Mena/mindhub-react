@@ -29,7 +29,7 @@ interface CityGetResponse extends PaginationData {
     return next(action);
   }; */
 
-const fetchCities =
+const fetchCitiesWithValidation =
   (params: CitySearchParams) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const { totalCount, totalPages, ...currentParams } =
@@ -41,10 +41,10 @@ const fetchCities =
     }
 
     // Si los parámetros son diferentes, despachamos fetchCities
-    dispatch(fetchCitiesBasedOnParams(params));
+    dispatch(fetchCities(params));
   };
 
-const fetchCitiesBasedOnParams = createAsyncThunk<
+const fetchCities = createAsyncThunk<
   { cities: CityBasic[]; params: CitySearchParams & PaginationData },
   CitySearchParams,
   { state: RootState }
@@ -84,4 +84,4 @@ const fetchPopularCities = createAsyncThunk<
   }
 });
 
-export { fetchCities, fetchPopularCities, fetchCitiesBasedOnParams };
+export { fetchCitiesWithValidation, fetchPopularCities, fetchCities };

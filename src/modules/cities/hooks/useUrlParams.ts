@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import {
-  citiesSortOptions,
-  defaultSortOption,
-} from '../util/cities-sort-options';
+  CITIES_SORT_OPTIONS,
+  CITIES_DEFAULT_SORT_OPTION,
+} from '../util/sort-options';
 import { useMemo } from 'react';
 
 /* 
@@ -22,10 +22,10 @@ export const useUrlParams = () => {
     const sortParamRaw = urlParams.get('sort');
     const isSortParamValid =
       sortParamRaw &&
-      citiesSortOptions.some((option) => option.rawValue === sortParamRaw);
+      CITIES_SORT_OPTIONS.some((option) => option.rawValue === sortParamRaw);
     const sortParam = isSortParamValid
       ? sortParamRaw
-      : defaultSortOption.rawValue;
+      : CITIES_DEFAULT_SORT_OPTION.rawValue;
 
     return { searchParam, pageParam, sortParam, orderParam };
   }, [location.search]);

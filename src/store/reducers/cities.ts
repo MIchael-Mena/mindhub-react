@@ -1,13 +1,10 @@
 import { SerializedError, createReducer } from '@reduxjs/toolkit';
 import { CityBasic } from '../../models/CityBasic';
-import {
-  fetchCitiesBasedOnParams,
-  fetchPopularCities,
-} from '../actions/cities';
+import { fetchCities, fetchPopularCities } from '../actions/cities';
 import { StatusResponse } from '../../models/StatusResponse';
 import { CitySearchParams } from '../../modules/cities/models/CitySearchParams';
 import { PaginationData } from '../../models/PaginationData';
-import { defaultSortOption } from '../../modules/cities/util/cities-sort-options';
+import { CITIES_DEFAULT_SORT_OPTION } from '../../modules/cities/util/sort-options';
 
 const citiesState: {
   citiesFiltered: StatusResponse<CityBasic[], SerializedError> & {
@@ -32,8 +29,8 @@ const citiesState: {
     params: {
       search: '',
       page: 0, // da igual si es 0 o 1, el backend lo maneja
-      sort: defaultSortOption.rawValue,
-      order: 'desc',
+      sort: CITIES_DEFAULT_SORT_OPTION.rawValue,
+      order: CITIES_DEFAULT_SORT_OPTION.order,
       totalPages: 0,
       totalCount: 0,
     },
@@ -69,10 +66,10 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       }
     )
 
-    .addCase(fetchCitiesBasedOnParams.pending, (state) => {
+    .addCase(fetchCities.pending, (state) => {
       state.citiesFiltered.loading = true;
     })
-    .addCase(fetchCitiesBasedOnParams.fulfilled, (state, action) => {
+    .addCase(fetchCities.fulfilled, (state, action) => {
       state.citiesFiltered.params = {
         ...state.citiesFiltered.params,
         ...action.payload.params,
@@ -81,13 +78,13 @@ const citiesReducer = createReducer(citiesState, (builder) => {
       state.citiesFiltered.data = action.payload.cities;
       state.citiesFiltered.loading = false;
     })
-    .addCase(fetchCitiesBasedOnParams.rejected, (state, action) => {
+    .addCase(fetchCities.rejected, (state, action) => {
       state.citiesFiltered.params.search = '';
-      state.citiesFiltered.params.sort = defaultSortOption.rawValue;
+      state.citiesFiltered.params.sort = CITIES_DEFAULT_SORT_OPTION.rawValue;
       state.citiesFiltered.params.page = 0;
       state.citiesFiltered.params.totalPages = 0;
       state.citiesFiltered.params.totalCount = 0;
-      state.citiesFiltered.params.order = 'desc';
+      state.citiesFiltered.params.order = CITIES_DEFAULT_SORT_OPTION.order;
 
       state.citiesFiltered.loading = false;
       state.citiesFiltered.error = action.error;

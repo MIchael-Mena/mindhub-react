@@ -11,6 +11,7 @@ import {
 } from '../actions/itinerary-extra';
 import { ApiResponse } from '../../models/ApiResponse';
 import { ItineraryExtraState } from '../../models/ItineraryExtra';
+import { COMMENT_DEFAULT_SORT_OPTION } from '../../modules/cities/util/sort-options';
 
 const resetState = (
   state: StatusResponse<ItineraryExtraState, ApiResponse<void> | undefined>
@@ -18,8 +19,8 @@ const resetState = (
   state.data = {
     commentParams: {
       page: 0,
-      order: 'desc',
-      sort: 'updatedAt',
+      order: COMMENT_DEFAULT_SORT_OPTION.order,
+      sort: COMMENT_DEFAULT_SORT_OPTION.rawValue,
       totalPages: 0,
       totalCount: 0,
     },
@@ -39,7 +40,8 @@ const itineraryExtraState: StatusResponse<
   error: null,
   data: {
     commentParams: {
-      order: 'desc',
+      order: COMMENT_DEFAULT_SORT_OPTION.order,
+      sort: COMMENT_DEFAULT_SORT_OPTION.rawValue,
       page: 0,
       totalPages: 0,
       totalCount: 0,
@@ -112,10 +114,7 @@ const itineraryExtraSlice = createSlice({
           state.data.comments = action.payload.comments;
           state.data.activities = action.payload.activities;
           state.data.itineraryId = action.payload.itineraryId;
-          state.data.commentParams = {
-            ...state.data.commentParams,
-            ...action.payload.commentParams,
-          };
+          state.data.commentParams = action.payload.commentParams;
         }
       )
       .addCase(
@@ -131,12 +130,10 @@ const itineraryExtraSlice = createSlice({
       })
       .addCase(fetchComments.fulfilled, (state, action) => {
         state.loading = false;
-        const { comments, ...params } = action.payload;
-        state.data.comments =
-          action.payload.page > 1 &&
-          state.data.commentParams.order === params.order
-            ? [...state.data.comments, ...comments]
-            : comments;
+        const { comments, append, ...params } = action.payload;
+        state.data.comments = append
+          ? [...state.data.comments, ...comments]
+          : comments;
         state.data.commentParams = params;
       })
       .addCase(fetchComments.rejected, (state, action) => {
