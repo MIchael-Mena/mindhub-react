@@ -18,9 +18,10 @@ const resetState = (
   state.data = {
     commentParams: {
       page: 0,
+      order: 'desc',
+      sort: 'updatedAt',
       totalPages: 0,
       totalCount: 0,
-      order: 'desc',
     },
     comments: [] as Comment[],
     activities: [] as Activity[],

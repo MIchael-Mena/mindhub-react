@@ -26,5 +26,6 @@ const citiesSortOptions: SortOption[] = [
 
 // La opción de ordenación por defecto es la primera de la lista
 const defaultSortOption = citiesSortOptions[0];
+const citiesSortOptionsLabels = citiesSortOptions.map((option) => option.label);
 
-export { citiesSortOptions, defaultSortOption };
+export { citiesSortOptions, defaultSortOption, citiesSortOptionsLabels };

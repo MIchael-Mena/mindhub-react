@@ -129,7 +129,7 @@ const fetchComments = createAsyncThunk<
 >(
   'fetchMoreComments',
   async (
-    { order, page }: CommentPaginationOptions,
+    { order, page, sort = 'updatedAt' }: CommentPaginationOptions,
     { getState, rejectWithValue }
   ) => {
     const {
@@ -137,8 +137,8 @@ const fetchComments = createAsyncThunk<
       comments,
       commentParams: {
         page: currentPage,
-        totalPages,
         order: currentOrder,
+        totalPages,
         totalCount,
       },
     } = (getState() as RootState).itineraryExtraReducer.data;
@@ -153,12 +153,14 @@ const fetchComments = createAsyncThunk<
         totalCount,
       };
     }
+
     try {
       const commentsRes = await ApiService.getData<CommentResponse>(
         `/comment/for-itinerary/${itineraryId}`,
         {
           limit: maxCommentsPerPage,
-          sort: 'updatedAt',
+          // sort: 'updatedAt',
+          sort: sort,
           order: activeOrder,
           page,
         }
@@ -170,6 +172,7 @@ const fetchComments = createAsyncThunk<
         comments,
         page,
         order: activeOrder,
+        sort,
         ...params,
       };
     } catch (error) {

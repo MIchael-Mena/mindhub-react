@@ -8,12 +8,14 @@ import {
 import { SortButton } from '../../../shared/components/sort-button';
 
 export const SortCities = () => {
+  console.log('SortCities');
   const [params, setParams] = useSearchParams();
   const sortRaw = params.get('sort');
   const orderRaw = params.get('order');
+  const orderParam = orderRaw || defaultSortOption.order;
 
   const currentSorRawIndex = citiesSortOptions.findIndex(
-    (option) => option.rawValue === sortRaw
+    (option) => option.rawValue === sortRaw && option.order === orderParam
   );
   const sortRawIsValid = currentSorRawIndex !== -1;
   // Si sortRaw no es válido, establece currentSortIndex al índice de defaultSortOption
@@ -50,13 +52,19 @@ export const SortCities = () => {
 
   // Lo uso para controlar que el valor de sortValue sea valido en la url (si no lo es, lo elimino)
   useEffect(() => {
+    // Solo me interesa el caso en el que hay algo en sortRaw y orderRaw que no es valido,
+    // ignoro si son undefined es decir en la url no hay sort ni order (en ese caso se usara el valor por defecto)
     const orderRawIsInvalid = orderRaw && !['asc', 'desc'].includes(orderRaw);
+    const sortRawIsInvalid = sortRaw && !sortRawIsValid;
 
-    if (!sortRawIsValid && orderRawIsInvalid) {
+    if (sortRawIsInvalid && orderRawIsInvalid) {
+      console.error('sortRaw y orderRaw son invalidos');
       deleteParams(['sort', 'order']);
-    } else if (!sortRawIsValid) {
+    } else if (sortRawIsInvalid) {
+      console.error('sortRaw es invalido');
       deleteParams(['sort']);
     } else if (orderRawIsInvalid) {
+      console.error('orderRaw es invalido');
       deleteParams(['order']);
     }
   }, [sortRaw, orderRaw]);

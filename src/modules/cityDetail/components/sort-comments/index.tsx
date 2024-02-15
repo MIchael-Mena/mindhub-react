@@ -35,6 +35,7 @@ const SortComments = () => {
       fetchComments({
         // order: Object.values(sortsAvailable)[selectedSortIndex],
         order: sortsComments[selectedSortIndex].order,
+        sort: sortsComments[selectedSortIndex].rawValue,
         page: 1,
       })
     );

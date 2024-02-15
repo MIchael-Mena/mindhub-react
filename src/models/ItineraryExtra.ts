@@ -12,4 +12,5 @@ export interface ItineraryExtraState {
 export interface CommentPaginationOptions {
   order?: 'asc' | 'desc';
   page: number;
+  sort?: string;
 }
