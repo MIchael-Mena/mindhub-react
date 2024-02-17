@@ -6,7 +6,6 @@ import { Link as Anchor } from 'react-router-dom';
 import heroImage from '../../../assets/images/home-bg.png';
 import callToAction from '../../../assets/images/call-to-action.png';
 import heorImageLowQuality from '../../../assets/images/home-bg-low-quality.png';
-import LoaderTransition from '../../core/components/loader-transition';
 // Se hizo un preload de la imagen en baja calidad para que se cargue antes de que el usuario llegue a la página.
 
 const Home = () => {
@@ -32,8 +31,6 @@ const Home = () => {
           cities!
         </Typography>
       </Hero>
-
-      <LoaderTransition />
 
       <Grid container spacing={{ xs: 0 }} mx={3} minHeight={600} width={'auto'}>
         <Grid

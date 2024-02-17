@@ -1,6 +1,6 @@
 import { Fab } from '@mui/material';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import './style.css';
+import './button-view-more.css';
 import { useAppSelector } from '../../../../store/hooks';
 
 interface ButtonViewMoreProps {
@@ -43,7 +43,7 @@ export const ButtonViewMore = ({
         <div
           style={{ width: '70px', display: 'flex', justifyContent: 'center' }}
         >
-          <div className="dot-elastic"></div>
+          <span className="dot-elastic"></span>
         </div>
       ) : !show ? (
         'View more'

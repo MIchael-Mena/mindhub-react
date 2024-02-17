@@ -3,7 +3,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { fetchCommentsWithValidation } from '../../../../store/actions/itinerary-extra';
 
-export const ButtonLoadMore = () => {
+export const ButtonLoadMoreComments = () => {
   const dispatch = useAppDispatch();
 
   const { page: currentPage, totalPages } = useAppSelector(

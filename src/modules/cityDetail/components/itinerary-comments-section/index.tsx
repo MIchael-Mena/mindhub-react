@@ -1,7 +1,7 @@
 import { Box, List } from '@mui/material';
 import { forwardRef } from 'react';
 import { useAppSelector } from '../../../../store/hooks';
-import { ButtonLoadMore } from '../button-load-more';
+import { ButtonLoadMoreComments } from '../button-load-more-comments';
 import { CommentsList } from '../comments-list';
 import { CommentCountDisplay } from '../comment-count-display';
 import { CommentInputForm } from '../comment-input-form';
@@ -41,7 +41,7 @@ export const ItineraryCommentsSection = forwardRef<
             itineraryId={itineraryId}
           />
           <CommentsList isLogged={isLogged} userId={userId!} />
-          <ButtonLoadMore />
+          <ButtonLoadMoreComments />
         </List>
       </Box>
     </>
