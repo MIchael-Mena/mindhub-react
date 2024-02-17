@@ -11,6 +11,7 @@ interface logoProps {
   sizeXs?: 'small' | 'medium' | 'large';
   sizeSm?: 'small' | 'medium' | 'large';
   link?: string;
+  animation?: boolean;
 }
 
 const logoSize = (size: string) => {
@@ -45,6 +46,7 @@ const Logo = ({
   sizeXs = 'small',
   sizeSm = 'medium',
   link,
+  animation = false,
 }: logoProps) => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
@@ -73,11 +75,11 @@ const Logo = ({
       <SvgIcon
         component={MyTineraryIcon}
         inheritViewBox
-        // fontSize="large"
         sx={{ width: 'auto', height: iconSize }}
       />
       <Typography
-        className="logo-text sparkle u-hover--sparkle"
+        // className="logo-text sparkle u-hover--sparkle"
+        className={'logo-text' + (animation ? ' sparkle u-hover--sparkle' : '')}
         component="div"
         variant={textSize as Variant}
       >

@@ -3,17 +3,25 @@ import PopularCities from '../components/popular-cities';
 import Logo from '../../core/components/logo';
 import Hero from '../../shared/components/hero';
 import { Link as Anchor } from 'react-router-dom';
-import imageHero from '../../../assets/images/cities-bg.png';
-import imageToCities from '../../../assets/images/hero-intro.png';
+import heroImage from '../../../assets/images/home-bg.png';
+import callToAction from '../../../assets/images/call-to-action.png';
+import heorImageLowQuality from '../../../assets/images/home-bg-low-quality.png';
+import LoaderTransition from '../../core/components/loader-transition';
+// Se hizo un preload de la imagen en baja calidad para que se cargue antes de que el usuario llegue a la página.
 
 const Home = () => {
-  // const imageHero = 'src/assets/images/cities-bg.png';
-  // const imageToCities = 'src/assets/images/hero-intro.png';
+  // const heroImage = 'src/assets/images/home-bg.png';
+  // const callToAction = 'src/assets/images/call-to-action.png';
+  // const heorImageLowQuality = 'src/assets/images/home-bg-low-quality.png';
 
   return (
     <Container disableGutters maxWidth="lg">
-      <Hero imageHero={imageHero} size="65%">
-        <Logo sizeXs={'medium'} sizeSm={'large'} />
+      <Hero
+        imageHeroHighQuality={heroImage}
+        size="74%"
+        imageHeroLowQuality={heorImageLowQuality}
+      >
+        <Logo sizeXs={'medium'} sizeSm={'large'} animation />
         <Typography
           variant="h5"
           color={'success.main'}
@@ -24,6 +32,8 @@ const Home = () => {
           cities!
         </Typography>
       </Hero>
+
+      <LoaderTransition />
 
       <Grid container spacing={{ xs: 0 }} mx={3} minHeight={600} width={'auto'}>
         <Grid
@@ -37,14 +47,15 @@ const Home = () => {
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
+            order: { xs: 2, sm: 1 },
           }}
         >
           <img
-            src={imageToCities}
+            src={callToAction}
             alt="logo"
             width="100%"
             height="auto"
-            loading="lazy"
+            loading="eager"
           />
         </Grid>
 
@@ -57,6 +68,7 @@ const Home = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+            order: { xs: 1, sm: 2 },
           }}
         >
           <Typography variant="h1" fontWeight={'bold'} my={2}>

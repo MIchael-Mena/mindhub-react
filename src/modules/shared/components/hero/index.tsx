@@ -1,59 +1,63 @@
 import { Box } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+import styles from './hero.module.scss';
 
 interface HeroProps {
-  imageHero: string;
+  imageHeroLowQuality?: string;
+  imageHeroHighQuality: string;
   children: ReactNode;
-  // size debe ser un porcetanje de 0 a 100 ajustar de acuerdo a la relacion aspecto de la imagen
-  size: string;
+  size?: string;
 }
 
-const Hero = ({ imageHero, children, size = 'auto' }: HeroProps) => {
+/*
+  En el Box se utilizó padding-bottom para darle altura al contenedor. El valor de padding-bottom es 
+  un porcentaje que se calcula con la relación de aspecto de la imagen. Por ejemplo si la imagen es 
+  de 16:9, por lo que el valor de padding-bottom es 56.25%, que es el resultado de (9/16)*100. Se 
+  prefirió este método en lugar de asignar una altura fija a la imagen, ya que se adapta a cualquier tamaño 
+  de pantalla. 
+  Al renderizar el componente, ya se tiene un espacio reservado para la imagen sin importar el tamaño de 
+  la pantalla (breakpoints). Además, se puede usar el mismo componente para diferentes imágenes sin tener 
+  que hacer ajustes manuales. Solo se debe ajustar el valor de padding-bottom de acuerdo a la 
+  relación de aspecto de la imagen.  
+*/
+const Hero = ({
+  imageHeroLowQuality,
+  imageHeroHighQuality,
+  children,
+  size = 'auto',
+}: HeroProps) => {
+  const [isHighQualityImageLoaded, setIsHighQualityImageLoaded] =
+    useState(false);
+
   return (
-    <>
-      <Box
-        component="section"
-        sx={{
-          position: 'relative',
-          width: '100%',
-          paddingBottom: size,
-          // minHeight: height,
-          overflow: 'hidden',
-          transition: 'all 0.3s ease-in-out',
-        }}
-      >
+    <Box component="section" className={styles.container} paddingBottom={size}>
+      {imageHeroLowQuality && (
         <img
-          src={imageHero}
-          loading="lazy"
+          // loading="eager"
+          src={imageHeroLowQuality}
           alt="Background"
+          className={styles.image}
           style={{
-            // filter: 'brightness(0.5)',
-            filter: 'blur(2px)',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
+            zIndex: 'auto',
+            opacity: 'auto',
           }}
         />
-        <Box
-          sx={{
-            position: 'absolute',
-            backgroundColor: 'rgb(55, 48, 107, 0.8)',
-            p: 2,
-            borderRadius: 15,
-            textAlign: 'center',
-            width: '80%',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {children}
-        </Box>
+      )}
+      <img
+        // loading="lazy"
+        src={imageHeroHighQuality}
+        alt="Background"
+        className={styles.image}
+        style={{
+          zIndex: isHighQualityImageLoaded ? 'auto' : -1,
+          opacity: isHighQualityImageLoaded ? 1 : 0,
+        }}
+        onLoad={() => setIsHighQualityImageLoaded(true)}
+      />
+      <Box className={styles.box} p={2} borderRadius={15}>
+        {children}
       </Box>
-    </>
+    </Box>
   );
 };
 

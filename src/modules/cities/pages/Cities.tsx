@@ -5,10 +5,10 @@ import { CitiesList } from '../components/cities-list';
 import { PaginationControls } from '../components/pagination-controls';
 import { SortCities } from '../components/sort-cities';
 import { CitiesCountDisplay } from '../components/cities-count-display';
-import heroImage from '../../../assets/images/city-bg.png';
+import heroImage from '../../../assets/images/cities-bg.png';
+import heroImageLowQuality from '../../../assets/images/cities-bg-low-quality.png';
 
 const Cities = () => {
-  // const heroImage = 'src/assets/images/city-bg.png';
   return (
     <>
       <Container
@@ -24,7 +24,11 @@ const Cities = () => {
           pb: 3,
         }}
       >
-        <Hero imageHero={heroImage} size="74%">
+        <Hero
+          imageHeroHighQuality={heroImage}
+          imageHeroLowQuality={heroImageLowQuality}
+          size="74%"
+        >
           <Typography variant="h1">Cities</Typography>
           <Typography variant="h5" color="success.main">
             Collection of the most beautiful places and experiences in the world
