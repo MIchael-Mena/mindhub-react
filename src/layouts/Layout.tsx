@@ -10,12 +10,13 @@ import { ApiResponse } from '../models/ApiResponse';
 import { handleSnackbar } from '../utils/apiUtils';
 import RouteChangeHandler from '../modules/core/components/route-change-handler';
 
+const componentSizes = {
+  header: '70px',
+  main: 'calc(100vh - 140px)',
+  footer: '70px',
+};
+
 const Layout = () => {
-  const componentSizes = {
-    header: '70px',
-    main: 'calc(100vh - 140px)',
-    footer: '70px',
-  };
   const dispatch = useAppDispatch();
 
   useEffect(() => {
