@@ -19,6 +19,7 @@ interface InputPasswordControlProps {
   required?: boolean;
   rules?: RegisterOptions;
   useIcon?: boolean;
+  preventCutCopyPaste?: boolean;
 }
 
 export const InputPasswordControl = ({
@@ -29,6 +30,7 @@ export const InputPasswordControl = ({
   margin = 'none',
   required = false,
   useIcon = false,
+  preventCutCopyPaste = false,
 }: InputPasswordControlProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -57,6 +59,7 @@ export const InputPasswordControl = ({
             </InputLabel>
 
             <OutlinedInput // Para la variant filled o standard, usar el componente Input
+              onPaste={(e) => (preventCutCopyPaste ? e.preventDefault() : null)}
               label={label}
               id={name}
               error={!!error}

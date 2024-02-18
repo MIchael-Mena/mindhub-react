@@ -125,6 +125,7 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
               margin="dense"
               control={control}
               rules={rules.confirmPassword}
+              preventCutCopyPaste
             />
           </Grid>
 
@@ -162,7 +163,6 @@ export const SignUp = ({ onSignInClick, onClose }: SignUpProps) => {
               name="profilePic"
               label="Image URL"
               control={control}
-              required
             />
           </Grid>
 

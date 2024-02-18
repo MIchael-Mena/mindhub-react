@@ -1,12 +1,13 @@
 import CityGrid from '../city-grid';
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { FailedRequest } from '../../../shared/components/failed-request';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { fetchPopularCities } from '../../../../store/actions/cities';
 import { chunkArray } from '../../../../utils/util';
 import { CitiesCarousel } from '../cities-carousel';
-import './style.css';
+import TitleUnderlined from '../../../shared/components/styled/TitleUnderlined';
+import './popular-cities.css';
 
 const PopularCities = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,11 @@ const PopularCities = () => {
 
   return (
     <>
+      <TitleUnderlined my={6}>
+        <Typography variant="h3" textAlign="center" py={1}>
+          Popular Cities
+        </Typography>
+      </TitleUnderlined>
       <CitiesCarousel>
         {loading || error ? (
           <Paper
