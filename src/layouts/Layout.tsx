@@ -50,7 +50,8 @@ const Layout = () => {
       <RouteChangeHandler />
       <ScrollRestoration
         // key={'scroll-restoration'}
-        // Dejo de funcionar preventScrollReset y por eso se usa state
+        // Dejo de funcionar preventScrollReset en NavLink (si funciona en useNavigate)
+        // para el caso de NavLink se usa el state, de lo contrario alcanzaria con return location.pathname;
         getKey={(location, _matches) => {
           //https:reactrouter.com/en/6.15.0/components/scroll-restoration
           return location.state && !location.state.preventScrollReset

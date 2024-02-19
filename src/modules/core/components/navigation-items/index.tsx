@@ -32,6 +32,7 @@ export const NavigationItems = ({}: NavigationItemsProp) => {
         previousParams: queryParams.toString(),
         previousPath: path,
       },
+      preventScrollReset: true,
     });
   };
 
