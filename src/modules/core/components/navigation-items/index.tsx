@@ -1,34 +1,53 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useStyles from '../../../../hooks/useStyles';
 import { Box, Button } from '@mui/material';
 import { navItems } from '../../../../config/router';
-import './NavigationItems.css';
+import './navigation-items.css';
+
+interface NavigationState {
+  previousPath: string;
+  previousParams: string;
+}
 
 interface NavigationItemsProp {}
 
 export const NavigationItems = ({}: NavigationItemsProp) => {
   const myStyles = useStyles();
-  const currentPathName = useLocation().pathname; // Cada vez que cambia la ruta, vuelve a renderizar el componente
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPathName = location.pathname;
+
   const isActiveItem = (path: string) => currentPathName === path;
+
+  const handleNavigation = (path: string) => {
+    const queryParams = new URLSearchParams(location.search);
+    const previousState: NavigationState = location.state;
+    const pathWithParams =
+      previousState?.previousPath !== path && previousState?.previousParams
+        ? `${path}?${previousState?.previousParams}`
+        : path;
+
+    navigate(pathWithParams, {
+      state: {
+        previousParams: queryParams.toString(),
+        previousPath: path,
+      },
+    });
+  };
 
   return (
     <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
       {navItems.map((item, key) => (
-        <NavLink
-          to={item.path}
+        <Button
           key={key}
-          // state={{ from: window.location.pathname }}
-          // preventScrollReset={true}
+          onClick={() => handleNavigation(item.path)}
+          className={`hover-effect-nav-link ${
+            isActiveItem(item.path) ? 'active-nav-link' : ''
+          }`}
+          sx={isActiveItem(item.path) ? myStyles.navLinkActive : {}}
         >
-          <Button
-            className={`hover-effect-nav-link ${
-              isActiveItem(item.path) ? 'active-nav-link' : ''
-            }`}
-            sx={isActiveItem(item.path) ? myStyles.navLinkActive : {}}
-          >
-            {item.name}
-          </Button>
-        </NavLink>
+          {item.name}
+        </Button>
       ))}
     </Box>
   );
