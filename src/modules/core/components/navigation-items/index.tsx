@@ -29,10 +29,11 @@ export const NavigationItems = ({}: NavigationItemsProp) => {
 
     navigate(pathWithParams, {
       state: {
+        ...previousState,
         previousParams: queryParams.toString(),
         previousPath: path,
+        preventScrollReset: true,
       },
-      preventScrollReset: true,
     });
   };
 

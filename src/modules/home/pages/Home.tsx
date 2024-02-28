@@ -2,7 +2,7 @@ import { Button, Container, Divider, Grid, Typography } from '@mui/material';
 import PopularCities from '../components/popular-cities';
 import Logo from '../../core/components/logo';
 import Hero from '../../shared/components/hero';
-import { Link as Anchor } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/images/home-bg.png';
 import callToAction from '../../../assets/images/call-to-action.png';
 import heorImageLowQuality from '../../../assets/images/home-bg-low-quality.png';
@@ -12,6 +12,7 @@ const Home = () => {
   // const heroImage = 'src/assets/images/home-bg.png';
   // const callToAction = 'src/assets/images/call-to-action.png';
   // const heorImageLowQuality = 'src/assets/images/home-bg-low-quality.png';
+  const navigate = useNavigate();
 
   return (
     <Container disableGutters maxWidth="lg">
@@ -76,16 +77,17 @@ const Home = () => {
             an easy-to-use interface and a host of itinerary options, planning
             your next trip has never been easier.
           </Typography>
-          <Anchor
-            to="/cities"
-            // preventScrollReset={false}
-            state={{ prevetScrollReset: false }}
-            style={{ width: '100%', display: 'contents' }}
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ my: 2 }}
+            fullWidth
+            onClick={() =>
+              navigate('/cities', { state: { preventScrollReset: false } })
+            }
           >
-            <Button variant="contained" color="primary" sx={{ my: 2 }}>
-              View More
-            </Button>
-          </Anchor>
+            View More
+          </Button>
         </Grid>
       </Grid>
 
